@@ -1,0 +1,39 @@
+/* Seed brand tokens — see brand-guidelines/index.html */
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root {
+  /* Primary */
+  --seed-orange: #DE6538;
+  --seed-loam: #22201E;
+
+  /* Secondary */
+  --seed-silt: #EFEBE3;
+  --seed-clay: #A9441D;   /* orange for text on light grounds */
+  --seed-canopy: #2E4B33;
+  --seed-shoot: #9DBF6A;
+  --seed-husk: #D9C9A8;
+
+  /* Field data (Seed Sense status only) */
+  --seed-data-dry: #C9A04A;
+  --seed-data-optimal: #5E8F47;
+  --seed-data-wet: #3D7A94;
+  --seed-data-alert: #B8322A;
+
+  /* Typography */
+  --seed-font-display: "Newsreader", "New York", "Iowan Old Style", Georgia, serif;
+  --seed-font-body: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --seed-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale: 1.25 ratio, 16px base */
+  --seed-text-label: 0.75rem;   /* 12px, mono caps, +12% tracking */
+  --seed-text-body: 1rem;       /* 16 / 26 */
+  --seed-text-lead: 1.25rem;    /* 20 / 30 */
+  --seed-text-h3: 1.625rem;     /* 26 / 34 */
+  --seed-text-h2: 2.25rem;      /* 36 / 43 */
+  --seed-text-h1: 3.25rem;      /* 52 / 57 */
+  --seed-text-display: 5.5rem;  /* 88 / 92 */
+
+  /* Shape */
+  --seed-radius: 6px;
+  --seed-icon-stroke: 1.5px;
+}

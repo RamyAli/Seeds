@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seed Brand Guidelines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a numbered brand book. Sticky chapter index on wide screens, full-bleed Loam bands where the logo lives, Silt paper everywhere else. */
+:root {
+  /* Brand palette */
+  --seed-orange: #DE6538;
+  --clay: #A9441D;
+  --loam: #22201E;
+  --silt: #EFEBE3;
+  --husk: #D9C9A8;
+  --canopy: #2E4B33;
+  --shoot: #9DBF6A;
+  /* Field-data palette */
+  --data-dry: #C9A04A;
+  --data-optimal: #5E8F47;
+  --data-wet: #3D7A94;
+  --data-alert: #B8322A;
+  /* Page neutrals (biased warm, toward the soil) */
+  --paper: #F6F3EE;
+  --ink: var(--loam);
+  --ink-2: #57524B;
+  --rule: #D8D1C5;
+  --white: #FFFFFF;
+
+  --font-display: "Newsreader", "New York", "Iowan Old Style", Georgia, serif;
+  --font-body: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.625rem;
+  --step-3: 2.25rem;
+  --step-4: 3.25rem;
+  --step-5: clamp(3rem, 8vw, 5.5rem);
+
+  --gutter: clamp(16px, 4vw, 48px);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; }
+a { color: var(--clay); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--seed-orange); outline-offset: 3px; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; line-height: 1.1; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.mono { font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: 0.02em; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); }
+.lede { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.3; max-width: 34ch; font-weight: 300; }
+.prose { max-width: 65ch; display: grid; gap: 1rem; color: var(--ink-2); }
+.prose strong { color: var(--ink); font-weight: 600; }
+
+/* ---------- Shell ---------- */
+.shell { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 1040px) { .shell { grid-template-columns: 220px minmax(0, 1fr); } }
+.index {
+  display: none;
+}
+@media (min-width: 1040px) {
+  .index {
+    display: block;
+    position: sticky; top: env(safe-area-inset-top, 0px);
+    align-self: start; height: 100vh;
+    padding: 32px 24px;
+    border-right: 1px solid var(--rule);
+  }
+  .index svg { width: 96px; height: auto; display: block; margin-bottom: 32px; }
+  .index ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .index a { display: flex; gap: 12px; padding: 6px 0; color: var(--ink-2); text-decoration: none; font-size: 0.9375rem; }
+  .index a span { font-family: var(--font-mono); font-size: 0.75rem; color: var(--clay); padding-top: 3px; }
+  .index a:hover { color: var(--ink); }
+}
+main { min-width: 0; }
+
+/* ---------- Sections ---------- */
+.chapter { padding-inline: var(--gutter); padding-block: clamp(56px, 9vw, 112px); border-top: 1px solid var(--rule); }
+.chapter > .inner { max-width: 1040px; margin-inline: auto; display: grid; gap: clamp(32px, 5vw, 56px); }
+.chapter-head { display: grid; gap: 16px; }
+.chapter-head h2 { font-size: var(--step-4); letter-spacing: -0.01em; }
+.chapter-num { display: inline-flex; align-items: center; gap: 0.35em; font-family: var(--font-mono); font-size: 0.8125rem; color: var(--clay); letter-spacing: 0.08em; text-transform: uppercase; }
+.chapter-num i { display: inline-block; width: 6px; height: 18px; background: var(--seed-orange); border-radius: 0 0 0 0; }
+.dark { background: var(--loam); color: var(--silt); border-top: 0; }
+.dark .eyebrow, .dark .prose { color: #BDB5A8; }
+.dark .prose strong { color: var(--silt); }
+.dark .chapter-num { color: var(--seed-orange); }
+.sub { display: grid; gap: 20px; }
+.sub h3 { font-size: var(--step-2); }
+.sub > p.note { color: var(--ink-2); max-width: 65ch; }
+.dark .sub > p.note { color: #BDB5A8; }
+
+.grid { display: grid; gap: 20px; }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.g4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+.g3f { grid-template-columns: 1fr; }
+@media (min-width: 560px) { .g3f { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 900px) { .g3f { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.grid > * { min-width: 0; }
+
+/* ---------- Cover ---------- */
+.cover { background: var(--loam); color: var(--silt); padding-inline: var(--gutter); padding-block: clamp(48px, 8vw, 96px) clamp(40px, 6vw, 64px); }
+.cover .inner { max-width: 1040px; margin-inline: auto; display: grid; gap: clamp(40px, 7vw, 88px); }
+.cover-top { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.cover-top .eyebrow { color: #A79F92; }
+.cover-logo { width: min(100%, 760px); height: auto; display: block; color: var(--seed-orange); }
+.cover-foot { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); align-items: end; border-top: 1px solid #3A3733; padding-top: 24px; }
+.cover-foot .lede { color: var(--silt); }
+.cover-foot .lede em { color: var(--seed-orange); font-style: italic; }
+.cover-meta { display: grid; gap: 4px; color: #A79F92; }
+
+/* ---------- Brand ---------- */
+.values { counter-reset: v; }
+.value { border-top: 2px solid var(--ink); padding-top: 16px; display: grid; gap: 8px; align-content: start; }
+.value h4 { font-size: var(--step-1); }
+.value p { color: var(--ink-2); font-size: 0.9375rem; }
+.pillars { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.pillar { background: var(--paper); padding: 24px; display: grid; gap: 10px; align-content: start; }
+.pillar h4 { font-size: var(--step-1); }
+.pillar p { color: var(--ink-2); font-size: 0.9375rem; }
+.pillar .eyebrow { color: var(--clay); }
+.statement { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.2; max-width: 26ch; font-weight: 300; }
+.statement b { font-weight: 500; color: var(--clay); }
+
+/* ---------- Voice ---------- */
+.trait { display: grid; gap: 8px; padding: 20px 0; border-top: 1px solid var(--rule); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 720px) { .trait { grid-template-columns: 200px minmax(0, 1fr) minmax(0, 1fr); gap: 24px; } }
+.trait h4 { font-size: var(--step-1); }
+.trait .is::before, .trait .isnt::before { display: block; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+.trait .is::before { content: "We are"; color: var(--data-optimal); }
+.trait .isnt::before { content: "We are not"; color: var(--data-alert); }
+.trait p { color: var(--ink-2); font-size: 0.9375rem; }
+.rewrite { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.rewrite figure { margin: 0; padding: 20px; border: 1px solid var(--rule); display: grid; gap: 10px; align-content: start; background: var(--white); }
+.rewrite figure.yes { border-color: var(--data-optimal); }
+.rewrite figcaption { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.rewrite .no figcaption { color: var(--data-alert); }
+.rewrite .yes figcaption { color: var(--data-optimal); }
+.rewrite blockquote { margin: 0; font-family: var(--font-display); font-size: var(--step-1); line-height: 1.35; }
+.lexicon { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+.lexicon div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 0.9375rem; }
+.lexicon div:first-child { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+.lexicon s { color: var(--ink-2); text-decoration-color: var(--data-alert); }
+
+/* ---------- Logo ---------- */
+.stage { display: grid; place-items: center; padding: clamp(32px, 6vw, 72px) clamp(20px, 4vw, 48px); min-height: 220px; position: relative; }
+.stage svg { width: 100%; height: auto; display: block; }
+.stage.loam { background: var(--loam); }
+.stage.silt { background: var(--silt); }
+.stage.orange { background: var(--seed-orange); }
+.stage.canopy { background: var(--canopy); }
+.stage.white { background: var(--white); border: 1px solid var(--rule); }
+.stage .tag { position: absolute; left: 12px; bottom: 10px; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; }
+.stage.loam .tag, .stage.canopy .tag { color: #A79F92; }
+.stage.silt .tag, .stage.white .tag { color: var(--ink-2); }
+.stage.orange .tag { color: var(--loam); }
+.logo-primary { max-width: 560px; }
+.anatomy { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); align-items: center; }
+.anatomy-fig { background: var(--loam); padding: 32px 24px 24px; }
+.anatomy-fig svg { width: 100%; height: auto; display: block; overflow: visible; }
+.anatomy-list { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
+.anatomy-list li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 12px; }
+.anatomy-list b { font-family: var(--font-mono); font-weight: 500; color: var(--clay); font-size: 0.875rem; }
+.anatomy-list p { color: var(--ink-2); font-size: 0.9375rem; }
+.anatomy-list h4 { font-family: var(--font-body); font-weight: 600; font-size: 1rem; line-height: 1.4; }
+.clear-fig { background: var(--silt); padding: clamp(24px, 5vw, 56px); display: grid; place-items: center; }
+.clear-fig svg { width: 100%; max-width: 620px; height: auto; display: block; }
+.minsize { display: flex; flex-wrap: wrap; gap: 32px; align-items: end; padding: 32px; background: var(--white); border: 1px solid var(--rule); }
+.minsize figure { margin: 0; display: grid; gap: 10px; justify-items: start; }
+.minsize figcaption { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-2); }
+.variant { display: grid; gap: 12px; align-content: start; }
+.variant .stage { height: 220px; }
+.variant h4 { font-family: var(--font-body); font-weight: 600; font-size: 1rem; }
+.variant p { color: var(--ink-2); font-size: 0.9375rem; }
+.misuse { display: grid; gap: 10px; align-content: start; }
+.misuse .stage { min-height: 150px; overflow: hidden; padding: 32px 24px; }
+.misuse .stage::after { content: ""; position: absolute; inset: 0; background:
+  linear-gradient(to top right, transparent calc(50% - 1px), var(--data-alert) calc(50% - 1px), var(--data-alert) calc(50% + 1px), transparent calc(50% + 1px)); opacity: 0.85; pointer-events: none; }
+.misuse p { font-size: 0.9375rem; color: var(--ink-2); }
+.misuse p b { color: var(--ink); font-weight: 600; }
+
+/* ---------- Color ---------- */
+.swatch { display: grid; grid-template-rows: auto auto; border: 1px solid var(--rule); background: var(--white); }
+.swatch .chip { aspect-ratio: 4 / 3; padding: 16px; display: flex; align-items: flex-end; font-family: var(--font-display); font-size: var(--step-2); }
+.swatch.big .chip { aspect-ratio: 16 / 10; font-size: var(--step-3); }
+.swatch dl { margin: 0; padding: 14px 16px 16px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 14px; font-family: var(--font-mono); font-size: 0.75rem; }
+.swatch dt { color: var(--ink-2); }
+.swatch dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.swatch p { padding: 0 16px 16px; font-size: 0.875rem; color: var(--ink-2); }
+.ratio { display: flex; height: 72px; border: 1px solid var(--rule); }
+.ratio div { display: flex; align-items: flex-end; padding: 8px 10px; font-family: var(--font-mono); font-size: 0.75rem; min-width: 0; overflow: hidden; white-space: nowrap; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--rule); background: var(--white); }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 0.9375rem; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+th { font-family: var(--font-mono); font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+tr:last-child td { border-bottom: 0; }
+.pair { display: inline-flex; align-items: center; padding: 6px 12px; font-weight: 600; min-width: 128px; }
+.pass { color: var(--data-optimal); font-weight: 600; }
+.limit { color: #8A6A1F; font-weight: 600; }
+.fail { color: var(--data-alert); font-weight: 600; }
+
+/* ---------- Type ---------- */
+.family { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); padding: 28px 0; border-top: 1px solid var(--rule); }
+@media (min-width: 820px) { .family { grid-template-columns: 260px minmax(0, 1fr); gap: 40px; } }
+.family .meta { display: grid; gap: 6px; align-content: start; }
+.family .meta h4 { font-family: var(--font-body); font-weight: 600; font-size: 1rem; }
+.family .meta p { color: var(--ink-2); font-size: 0.9375rem; }
+.family .glyphs { font-size: clamp(2.5rem, 6vw, 4.25rem); line-height: 1.05; overflow-wrap: anywhere; }
+.family .alpha { margin-top: 12px; color: var(--ink-2); font-size: 1.125rem; overflow-wrap: anywhere; }
+.scale { display: grid; border-top: 1px solid var(--rule); }
+.scale div { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 16px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+@media (min-width: 720px) { .scale div { grid-template-columns: 180px minmax(0, 1fr); gap: 24px; } }
+.scale .spec { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-2); line-height: 1.5; }
+.scale .sample { min-width: 0; overflow-wrap: anywhere; }
+
+/* ---------- Graphic language ---------- */
+.device { display: grid; gap: 12px; align-content: start; }
+.device .stage { height: 260px; }
+.device h4 { font-family: var(--font-body); font-weight: 600; font-size: 1rem; }
+.device p { color: var(--ink-2); font-size: 0.9375rem; }
+.husk-frame { display: grid; grid-template-columns: 22px minmax(0, 1fr) 22px; align-items: stretch; gap: 18px; width: 100%; max-width: 300px; }
+.husk-frame svg { width: 22px; height: 100%; display: block; }
+.husk-frame .fig { display: grid; gap: 2px; padding-block: 8px; text-align: center; }
+.husk-frame .fig b { font-family: var(--font-display); font-weight: 400; font-size: 3.25rem; line-height: 1; color: var(--silt); }
+.husk-frame .fig span { font-family: var(--font-mono); font-size: 0.75rem; color: #BDB5A8; }
+.icons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+@media (min-width: 640px) { .icons { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 960px) { .icons { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+.icons figure { margin: 0; background: var(--paper); display: grid; justify-items: center; gap: 12px; padding: 24px 8px 16px; }
+.icons svg { width: 40px; height: 40px; stroke: var(--ink); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.icons figcaption { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--ink-2); text-align: center; }
+.rules { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.rules li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; color: var(--ink-2); font-size: 0.9375rem; }
+.rules li::before { content: ""; width: 8px; height: 8px; margin-top: 8px; background: var(--seed-orange); border-radius: 50%; }
+
+/* ---------- Photography ---------- */
+.shot { display: grid; gap: 12px; align-content: start; }
+.frame { position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 16px; color: var(--silt); }
+.frame span { position: relative; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; }
+.frame.f1 { aspect-ratio: 4 / 5; background:
+  radial-gradient(120% 70% at 70% 15%, #E9A86A 0%, transparent 55%),
+  linear-gradient(180deg, #8C6A44 0%, #5A4129 55%, #2C221A 100%); }
+.frame.f2 { aspect-ratio: 4 / 5; background:
+  radial-gradient(14px 20px at 30% 40%, #E3CFA4 60%, transparent 62%),
+  radial-gradient(12px 18px at 52% 58%, #D9C08E 60%, transparent 62%),
+  radial-gradient(13px 19px at 68% 36%, #E8D6AE 60%, transparent 62%),
+  radial-gradient(11px 17px at 42% 72%, #CDB37E 60%, transparent 62%),
+  linear-gradient(160deg, #4A3A2C, #2A221C); }
+.frame.f3 { aspect-ratio: 4 / 5; background:
+  repeating-linear-gradient(100deg, transparent 0 22px, rgba(0,0,0,.18) 22px 26px) left bottom / 100% 61% no-repeat,
+  linear-gradient(180deg, #BFD3D9 0%, #DCE3D4 38%, #6F8F4E 39%, #3F5E2C 100%); }
+.shot h4 { font-family: var(--font-body); font-weight: 600; font-size: 1rem; }
+.shot p { color: var(--ink-2); font-size: 0.9375rem; }
+.dodont { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.dodont > div { display: grid; gap: 12px; align-content: start; padding: 20px; background: var(--white); border-top: 3px solid var(--data-optimal); }
+.dodont > div.dont { border-top-color: var(--data-alert); }
+.dodont h4 { font-family: var(--font-mono); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* ---------- Applications ---------- */
+.apps { display: grid; gap: 32px 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); }
+.app { display: grid; gap: 12px; align-content: start; }
+.app .bench { background: var(--silt); padding: clamp(24px, 4vw, 40px); display: grid; place-items: center; height: 480px; }
+.app h4 { font-family: var(--font-body); font-weight: 600; font-size: 1rem; }
+.app p { color: var(--ink-2); font-size: 0.9375rem; }
+
+.packet { width: 220px; max-width: 100%; aspect-ratio: 5 / 8; background: var(--loam); color: var(--silt); display: grid; grid-template-rows: auto 1fr auto; box-shadow: 0 18px 30px -18px rgba(34,32,30,.55); position: relative; }
+.packet::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: repeating-linear-gradient(90deg, var(--loam) 0 6px, #2E2B28 6px 8px); }
+.packet .ptop { padding: 22px 16px 0; }
+.packet .ptop svg { width: 112px; height: auto; display: block; }
+.packet .pmid { padding: 16px; display: grid; align-content: center; gap: 6px; }
+.packet .variety { font-family: var(--font-display); font-size: 1.875rem; line-height: 1; color: var(--seed-orange); }
+.packet .crop { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: #BDB5A8; }
+.packet .pspec { background: var(--seed-orange); color: var(--loam); padding: 12px 16px; display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; font-family: var(--font-mono); font-size: 0.6875rem; }
+.packet .pspec b { font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; }
+
+.probe { display: grid; justify-items: center; }
+.probe .body { width: 168px; background: var(--loam); border-radius: 22px 22px 14px 14px; padding: 16px 14px 18px; display: grid; gap: 12px; box-shadow: 0 18px 30px -18px rgba(34,32,30,.55); }
+.probe .body svg { width: 54px; height: auto; display: block; }
+.probe .screen { background: #12110F; border-radius: 8px; padding: 10px 12px; display: grid; gap: 6px; }
+.probe .row { display: flex; justify-content: space-between; gap: 8px; font-family: var(--font-mono); font-size: 0.6875rem; color: #A79F92; }
+.probe .row b { color: var(--silt); font-weight: 500; font-variant-numeric: tabular-nums; }
+.probe .row b.ok { color: var(--shoot); }
+.probe .led { display: flex; gap: 6px; align-items: center; font-family: var(--font-mono); font-size: 0.625rem; color: #A79F92; letter-spacing: 0.08em; }
+.probe .led::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--shoot); }
+.probe .spike { width: 18px; height: 120px; background: linear-gradient(90deg, #9C978F, #D6D1C8 45%, #8C877F); clip-path: polygon(0 0, 100% 0, 100% 86%, 50% 100%, 0 86%); }
+.probe .ground { width: 220px; max-width: 100%; height: 2px; background: var(--ink-2); margin-top: -70px; position: relative; }
+
+.phone { width: 236px; max-width: 100%; background: var(--paper); border: 8px solid var(--loam); border-radius: 30px; padding: 16px 14px 18px; display: grid; gap: 12px; box-shadow: 0 18px 30px -18px rgba(34,32,30,.55); }
+.phone .bar { display: flex; justify-content: space-between; align-items: center; }
+.phone .bar svg { width: 64px; height: auto; display: block; }
+.phone .bar span { font-family: var(--font-mono); font-size: 0.625rem; color: var(--ink-2); }
+.phone h5 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 1.375rem; line-height: 1.1; }
+.phone .loc { font-family: var(--font-mono); font-size: 0.625rem; color: var(--ink-2); letter-spacing: 0.06em; text-transform: uppercase; }
+.reading { background: var(--white); border: 1px solid var(--rule); padding: 10px 12px; display: grid; gap: 6px; }
+.reading .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--ink-2); }
+.reading .val { font-family: var(--font-display); font-size: 1.75rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.reading .val small { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--ink-2); margin-left: 4px; }
+.chip { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 0.625rem; padding: 2px 7px; border-radius: 99px; letter-spacing: 0.04em; }
+.chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.chip.ok { color: #3F6A2D; background: #E3ECD6; }
+.chip.dry { color: #7A5A12; background: #F3E7C8; }
+.spark { width: 100%; height: 28px; display: block; }
+.btn-p { background: var(--seed-orange); color: var(--loam); border: 0; font: 600 0.875rem/1 var(--font-body); padding: 12px 16px; text-align: center; border-radius: 6px; }
+
+.bcard-stack { display: grid; gap: 16px; justify-items: center; }
+.bcard { width: 280px; max-width: 100%; aspect-ratio: 85 / 55; padding: 18px 20px; display: grid; box-shadow: 0 14px 24px -16px rgba(34,32,30,.5); }
+.bcard.front { background: var(--loam); place-items: center; }
+.bcard.front svg { width: 170px; height: auto; }
+.bcard.back { background: var(--white); grid-template-rows: 1fr auto; }
+.bcard.back .who b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 1.375rem; line-height: 1.1; }
+.bcard.back .who span { font-size: 0.75rem; color: var(--clay); font-weight: 600; }
+.bcard.back .contact { font-family: var(--font-mono); font-size: 0.625rem; color: var(--ink-2); display: flex; justify-content: space-between; align-items: end; gap: 8px; }
+.bcard.back .contact svg { width: 36px; height: auto; flex: none; }
+
+.ui-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; padding: 28px; background: var(--white); border: 1px solid var(--rule); }
+.btn { font: 600 0.9375rem/1 var(--font-body); padding: 14px 20px; border-radius: 6px; border: 1.5px solid transparent; cursor: pointer; }
+.btn.primary { background: var(--seed-orange); color: var(--loam); }
+.btn.primary:hover { background: #E77A50; }
+.btn.secondary { background: transparent; color: var(--loam); border-color: var(--loam); }
+.btn.secondary:hover { background: var(--silt); }
+.btn.dark-btn { background: var(--loam); color: var(--silt); }
+.btn.dark-btn:hover { background: #38342F; }
+.btn.text { background: none; color: var(--clay); padding-inline: 4px; text-decoration: underline; text-underline-offset: 4px; }
+
+/* ---------- Assets ---------- */
+.files { display: grid; border-top: 1px solid #3A3733; }
+.files div { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 14px 0; border-bottom: 1px solid #3A3733; }
+@media (min-width: 720px) { .files div { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px; } }
+.files code { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--seed-orange); overflow-wrap: anywhere; }
+.files span { color: #BDB5A8; font-size: 0.9375rem; }
+.colophon { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: end; border-top: 1px solid #3A3733; padding-top: 32px; }
+.colophon svg { width: 180px; height: auto; display: block; }
+.colophon p { font-family: var(--font-mono); font-size: 0.75rem; color: #A79F92; }
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <path id="p-l" d="M29.8707 1.43705C26.2862 4.4905 23.0004 8.30731 20.0134 12.8875C17.0263 17.4677 14.6366 22.6784 12.8444 28.5198C11.0522 34.2948 10.156 40.5676 10.156 47.3383C10.156 54.0426 11.0522 60.3155 12.8444 66.1569C14.6366 71.9982 17.0263 77.209 20.0134 81.7892C23.0004 86.303 26.2862 90.1198 29.8707 93.2396V93.7375H0V0.939209H29.8707V1.43705Z"/>
+    <path id="p-w" d="M102.203 1.42404C112.171 1.42404 123.046 7.63797 130.684 13.593L126.8 27.0565H125.894C118.515 9.70928 109.064 3.10698 98.8372 3.10698C86.021 3.10698 78.6419 10.3566 77.8652 18.124C75.4055 44.0154 130.943 35.4712 130.943 67.8355C130.943 83.2409 117.091 94.1152 98.7078 94.1152C83.3024 94.1152 73.7226 88.937 63.6249 81.299L67.5086 66.5409H68.4148C75.0171 79.7455 87.0566 91.5261 104.016 91.5261C115.019 91.5261 124.211 84.406 125.246 76.2502C128.612 48.6758 72.9458 57.4789 72.9458 24.9852C72.9458 14.4992 81.3605 1.42404 102.203 1.42404ZM189.985 51.5239C197.364 53.4657 204.096 60.9743 203.06 72.7548C202.283 81.9463 194.128 94.1152 175.745 94.1152C157.88 94.1152 140.662 85.3122 140.144 63.9518C139.497 41.5557 159.822 31.8464 174.062 31.0697C185.066 30.5519 200.212 35.8596 202.025 51.5239C200.859 51.5239 192.833 51.5239 192.833 51.5239H189.985ZM168.236 32.6232C159.433 34.3061 153.737 41.6852 151.407 50.4882H192.704C191.021 39.2255 180.923 30.1635 168.236 32.6232ZM201.895 73.0138C203.449 59.5502 194.516 51.5239 184.677 51.5239H151.148C149.465 58.3851 149.853 66.0231 152.054 72.237C156.844 85.83 166.553 91.785 179.758 91.2672C190.891 90.7494 200.601 83.1114 201.895 73.0138ZM262.172 51.5239C269.552 53.4657 276.283 60.9743 275.248 72.7548C274.471 81.9463 266.315 94.1152 247.932 94.1152C230.067 94.1152 212.849 85.3122 212.332 63.9518C211.684 41.5557 232.009 31.8464 246.249 31.0697C257.253 30.5519 272.4 35.8596 274.212 51.5239C273.047 51.5239 265.021 51.5239 265.021 51.5239H262.172ZM240.424 32.6232C231.621 34.3061 225.925 41.6852 223.594 50.4882H264.891C263.208 39.2255 253.111 30.1635 240.424 32.6232ZM274.083 73.0138C275.636 59.5502 266.703 51.5239 256.865 51.5239H223.335C221.652 58.3851 222.041 66.0231 224.242 72.237C229.032 85.83 238.741 91.785 251.945 91.2672C263.079 90.7494 272.788 83.1114 274.083 73.0138ZM348.73 92.4323C348.73 92.6912 348.73 93.3385 348.73 93.3385H335.655V58.644C333.195 73.661 326.593 94.1152 308.469 94.1152C297.983 94.1152 285.037 85.0533 284.519 68.4828C283.742 36.5069 313.517 31.0697 327.887 31.0697C330.865 31.0697 333.454 31.5875 335.655 32.2348V9.9682C335.655 5.43721 335.266 4.14264 332.677 3.75426C332.677 3.49535 332.677 2.7186 332.677 2.7186L344.975 1.2413e-05H345.882V84.7943C345.882 89.3253 346.788 91.2672 348.73 92.4323ZM314.294 91.785C328.793 88.937 335.655 61.8805 335.655 51.0061V32.8821C335.007 32.7526 332.03 31.717 327.887 31.717C315.33 31.9759 292.804 37.4131 294.617 70.4246C295.264 81.6874 303.161 93.8563 314.294 91.785Z"/>
+    <path id="p-r" d="M382.612 93.2396C386.197 90.1861 389.482 86.3693 392.47 81.7892C395.457 77.209 397.846 71.9982 399.639 66.1568C401.431 60.3818 402.327 54.109 402.327 47.3383C402.327 40.634 401.431 34.3612 399.639 28.5198C397.846 22.6784 395.457 17.4676 392.47 12.8874C389.482 8.37366 386.197 4.55684 382.612 1.43702L382.612 0.939176L412.483 0.939178L412.483 93.7374L382.612 93.7374L382.612 93.2396Z"/>
+    <path id="p-s" d="M102.203 1.42404C112.171 1.42404 123.046 7.63797 130.684 13.593L126.8 27.0565H125.894C118.515 9.70928 109.064 3.10698 98.8372 3.10698C86.021 3.10698 78.6419 10.3566 77.8652 18.124C75.4055 44.0154 130.943 35.4712 130.943 67.8355C130.943 83.2409 117.091 94.1152 98.7078 94.1152C83.3024 94.1152 73.7226 88.937 63.6249 81.299L67.5086 66.5409H68.4148C75.0171 79.7455 87.0566 91.5261 104.016 91.5261C115.019 91.5261 124.211 84.406 125.246 76.2502C128.612 48.6758 72.9458 57.4789 72.9458 24.9852C72.9458 14.4992 81.3605 1.42404 102.203 1.42404Z"/>
+    <symbol id="logo" viewBox="0 0 413 95"><use href="#p-l"/><use href="#p-w"/><use href="#p-r"/></symbol>
+    <symbol id="wordmark" viewBox="63 0 286 95"><use href="#p-w"/></symbol>
+    <symbol id="mark" viewBox="0 0 171 95"><use href="#p-l"/><use href="#p-s" transform="translate(-11.75 0)"/><use href="#p-r" transform="translate(-241.42 0)"/></symbol>
+    <!-- Icons: 24px grid, 1.5px stroke, round caps -->
+    <symbol id="i-seed" viewBox="0 0 24 24"><path d="M12 2.5c4.5 3.2 5.6 10 0 19c-5.6-9-4.5-15.8 0-19z"/><path d="M12 7.5v9"/></symbol>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21.5v-9"/><path d="M12 12.5c0-4.2-3-6.5-7.5-6.5c0 4.2 3 6.5 7.5 6.5z"/><path d="M12 10.5c0-3.4 2.4-5.5 6.5-5.5c0 3.4-2.4 5.5-6.5 5.5z"/><path d="M7 21.5h10"/></symbol>
+    <symbol id="i-probe" viewBox="0 0 24 24"><rect x="8" y="2.5" width="8" height="7" rx="1.5"/><path d="M10.5 9.5v8l1.5 4l1.5-4v-8"/><path d="M2.5 14.5h6M15.5 14.5h6"/><path d="M11 5.5h2"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 2.5c3.2 4.2 6.5 7.8 6.5 11.5a6.5 6.5 0 0 1-13 0c0-3.7 3.3-7.3 6.5-11.5z"/><path d="M9 14.5a3 3 0 0 0 3 3"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+    <symbol id="i-temp" viewBox="0 0 24 24"><path d="M10 4.5a2 2 0 0 1 4 0v9.6a4 4 0 1 1-4 0z"/><path d="M12 9v8"/><path d="M16.5 6h2M16.5 9h2"/></symbol>
+    <symbol id="i-wheat" viewBox="0 0 24 24"><path d="M12 22V9"/><path d="M12 13c-3 0-4.5-2-4.5-4.5c3 0 4.5 2 4.5 4.5zM12 13c3 0 4.5-2 4.5-4.5c-3 0-4.5 2-4.5 4.5zM12 18c-3 0-4.5-2-4.5-4.5c3 0 4.5 2 4.5 4.5zM12 18c3 0 4.5-2 4.5-4.5c-3 0-4.5 2-4.5 4.5z"/><path d="M12 8.5c-1.6-1.2-1.6-3.6 0-6c1.6 2.4 1.6 4.8 0 6z"/></symbol>
+    <symbol id="i-rows" viewBox="0 0 24 24"><path d="M2.5 9.5h19"/><path d="M12 9.5v12M12 9.5L5 21.5M12 9.5l7 12M12 9.5L2.5 17M12 9.5l9.5 7.5"/><path d="M16 6.5a2.5 2.5 0 0 0-5 0"/></symbol>
+    <symbol id="i-signal" viewBox="0 0 24 24"><circle cx="12" cy="17.5" r="1.5"/><path d="M8.5 14a5 5 0 0 1 7 0M5.5 11a9 9 0 0 1 13 0M2.5 8a13 13 0 0 1 19 0"/></symbol>
+    <symbol id="i-ph" viewBox="0 0 24 24"><path d="M9 2.5h6M10 2.5v6.5l-5 9.5a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9.5V2.5"/><path d="M7 15.5h10"/></symbol>
+    <symbol id="i-tractor" viewBox="0 0 24 24"><circle cx="7" cy="16.5" r="4"/><circle cx="18.5" cy="18" r="2.5"/><path d="M11 16.5h5M3 12.5V7.5h7l1.5 5H20v5"/><path d="M14 12.5V8.5"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M12 18v-4.5M12 13.5c0-1.5 1-2.5 2.5-2.5M12 15c0-1.5-1-2.5-2.5-2.5"/></symbol>
+  </defs>
+</svg>
+
+<div class="shell">
+  <nav class="index" aria-label="Chapters">
+    <svg viewBox="0 0 413 95" fill="#22201E" role="img" aria-label="Seed"><use href="#logo"/></svg>
+    <ol>
+      <li><a href="#brand"><span>01</span>Brand</a></li>
+      <li><a href="#voice"><span>02</span>Voice</a></li>
+      <li><a href="#logo-ch"><span>03</span>Logo</a></li>
+      <li><a href="#color"><span>04</span>Colour</a></li>
+      <li><a href="#type"><span>05</span>Typography</a></li>
+      <li><a href="#graphics"><span>06</span>Graphics &amp; icons</a></li>
+      <li><a href="#photo"><span>07</span>Photography</a></li>
+      <li><a href="#apps"><span>08</span>Applications</a></li>
+      <li><a href="#assets"><span>09</span>Assets</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <!-- ================= COVER ================= -->
+    <header class="cover">
+      <div class="inner">
+        <div class="cover-top">
+          <span class="eyebrow">Brand guidelines · Edition 1.0</span>
+          <span class="eyebrow">October 2026</span>
+        </div>
+        <svg class="cover-logo" viewBox="0 0 413 95" fill="#DE6538" role="img" aria-label="Seed"><use href="#logo"/></svg>
+        <div class="cover-foot">
+          <p class="lede">Seeds, soil sensors and field tools for farmers. <em>From seed to signal.</em></p>
+          <div class="cover-meta mono">
+            <span>For designers, marketers, product teams, packaging suppliers and partners.</span>
+            <span>Keep this book open when making anything that carries the Seed name.</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= 01 BRAND ================= -->
+    <section class="chapter" id="brand">
+      <div class="inner">
+        <div class="chapter-head">
+          <span class="chapter-num"><i></i>01 · Brand</span>
+          <h2>Who we are</h2>
+        </div>
+        <p class="statement">Seed supplies the <b>seed in the ground</b> and the <b>instruments that read the ground</b>, so every farmer can make the next decision with better information.</p>
+        <div class="prose">
+          <p>Seed is an agricultural company with two halves that belong together. <strong>Seed Stock</strong> breeds and sells certified seed for field crops and vegetables. <strong>Seed Sense</strong> builds soil probes, weather nodes and the Seed Field app that turns their readings into plain advice: when to irrigate, when to fertilise, when to plant.</p>
+          <p>The brand has one job: make a farmer trust that what comes out of a Seed packet and what shows up on a Seed screen are equally reliable. Everything in this book serves that job.</p>
+        </div>
+
+        <div class="sub">
+          <h3>Positioning</h3>
+          <div class="pillars">
+            <div class="pillar"><span class="eyebrow">Mission</span><h4>Put better information in every furrow.</h4><p>Pair proven genetics with live soil data so growers spend less on water, fertiliser and guesswork.</p></div>
+            <div class="pillar"><span class="eyebrow">Vision</span><h4>Every field knows what it needs.</h4><p>A future where a smallholder and a 5,000-hectare operation read their soil with the same clarity.</p></div>
+            <div class="pillar"><span class="eyebrow">Promise</span><h4>From seed to signal.</h4><p>One company that stands behind both the seed you sow and the reading you act on.</p></div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Values</h3>
+          <div class="grid g4 values">
+            <div class="value"><h4>Grounded</h4><p>We start from the field, not the lab. Every product is tested on working farms before launch.</p></div>
+            <div class="value"><h4>Measured</h4><p>We say what the data shows and how sure we are. Germination rates and sensor accuracy are printed, never hidden.</p></div>
+            <div class="value"><h4>Patient</h4><p>Farming runs on seasons. We build tools that last many of them and support them for years.</p></div>
+            <div class="value"><h4>Shared</h4><p>Growers own their field data. We help them share it with agronomists and co-ops on their terms.</p></div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Who we talk to</h3>
+          <div class="grid g3">
+            <div class="value"><h4>Growers</h4><p>Family farms to large operations. Practical, time-poor, sceptical of hype. They want yields, not dashboards.</p></div>
+            <div class="value"><h4>Agronomists &amp; advisers</h4><p>They want the numbers, the methods behind them and export formats that fit their tools.</p></div>
+            <div class="value"><h4>Distributors &amp; co-ops</h4><p>They need clear packaging, reliable supply and a brand their members already recognise.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 02 VOICE ================= -->
+    <section class="chapter" id="voice">
+      <div class="inner">
+        <div class="chapter-head">
+          <span class="chapter-num"><i></i>02 · Voice</span>
+          <h2>How we sound</h2>
+        </div>
+        <div class="prose">
+          <p>We write the way a good agronomist talks at the edge of a field: plainly, with numbers when they help, and with respect for the grower's experience. We never explain farming to farmers.</p>
+        </div>
+
+        <div>
+          <div class="trait"><h4>Plain-spoken</h4><p class="is">Short sentences. Common words. One idea at a time.</p><p class="isnt">Jargon-heavy, buzzword-driven or "revolutionary".</p></div>
+          <div class="trait"><h4>Precise</h4><p class="is">Real units, real ranges: 68 days to maturity, ±2% moisture accuracy.</p><p class="isnt">Vague promises like "boost your yields".</p></div>
+          <div class="trait"><h4>Warm</h4><p class="is">Encouraging, on the grower's side, honest about a bad season.</p><p class="isnt">Cute, folksy or full of farm puns.</p></div>
+          <div class="trait"><h4>Calm</h4><p class="is">Alerts state the problem and the next step.</p><p class="isnt">Alarmist. No red capitals, no exclamation marks in warnings.</p></div>
+        </div>
+
+        <div class="sub">
+          <h3>Rewrite examples</h3>
+          <div class="rewrite">
+            <figure class="no"><figcaption>Instead of</figcaption><blockquote>Revolutionise your farm with our AI-powered, next-gen soil intelligence platform!</blockquote></figure>
+            <figure class="yes"><figcaption>Write</figcaption><blockquote>Seed Probe reads soil moisture every 15 minutes and tells you when Plot 4 needs water.</blockquote></figure>
+            <figure class="no"><figcaption>Instead of</figcaption><blockquote>WARNING!!! Critical moisture deficit detected.</blockquote></figure>
+            <figure class="yes"><figcaption>Write</figcaption><blockquote>North Field is drying out: 18% moisture, below the 24% target. Irrigate within 2 days.</blockquote></figure>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Words we use</h3>
+          <div class="lexicon">
+            <div><span>Say</span><span>Avoid</span></div>
+            <div><span>Grower, farmer</span><s>User, customer</s></div>
+            <div><span>Field, plot, block</span><s>Asset, location</s></div>
+            <div><span>Reading, measurement</span><s>Insight, intelligence</s></div>
+            <div><span>Advice, next step</span><s>Actionable recommendation</s></div>
+            <div><span>Season, harvest</span><s>Cycle, period</s></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 03 LOGO ================= -->
+    <section class="chapter dark" id="logo-ch">
+      <div class="inner">
+        <div class="chapter-head">
+          <span class="chapter-num"><i></i>03 · Logo</span>
+          <h2>The Seed logo</h2>
+        </div>
+        <div class="prose">
+          <p>The logo is the name <strong>Seed</strong>, set in a high-contrast serif and held between two solid brackets. The brackets are the husk: the protective coat around a seed. Together they read as something valuable, protected and about to grow.</p>
+          <p>Always use the master artwork files. Never retype the name, redraw the brackets or rebuild the lockup.</p>
+        </div>
+        <div class="stage loam" style="padding-block: clamp(48px, 8vw, 96px);">
+          <svg class="logo-primary" viewBox="0 0 413 95" fill="#DE6538" role="img" aria-label="Seed primary logo"><use href="#logo"/></svg>
+          <span class="tag">Primary logo · Seed Orange on Loam</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" style="border-top:0">
+      <div class="inner">
+        <div class="sub">
+          <h3>Anatomy</h3>
+          <div class="anatomy">
+            <div class="anatomy-fig">
+              <svg viewBox="-10 -34 433 150" role="img" aria-label="Logo anatomy diagram">
+                <g fill="#DE6538"><use href="#logo" width="413" height="95"/></g>
+                <g stroke="#A79F92" stroke-width="1" fill="none" stroke-dasharray="3 3">
+                  <path d="M-6 0.9H419M-6 93.7H419"/>
+                </g>
+                <g fill="#EFEBE3" font-family="IBM Plex Mono, monospace" font-size="11">
+                  <circle cx="15" cy="-18" r="10" fill="#EFEBE3"/><text x="15" y="-14" fill="#22201E" text-anchor="middle">1</text>
+                  <circle cx="200" cy="-18" r="10"/><text x="200" y="-14" fill="#22201E" text-anchor="middle">2</text>
+                  <circle cx="397" cy="-18" r="10"/><text x="397" y="-14" fill="#22201E" text-anchor="middle">1</text>
+                  <text x="-6" y="112" fill="#A79F92">cap height = bracket height</text>
+                </g>
+              </svg>
+            </div>
+            <ol class="anatomy-list">
+              <li><b>1</b><div><h4>Husk brackets</h4><p>Two solid blocks with a concave inner edge. They are exactly as tall as the capital S, and they mirror each other. Never use one without the other.</p></div></li>
+              <li><b>2</b><div><h4>Wordmark</h4><p>"Seed" in a high-contrast display serif. The open counters of the e's and the tall stem of the d echo a seed coat splitting and a shoot rising.</p></div></li>
+              <li><b>x</b><div><h4>Unit of measure</h4><p>The width of one bracket is <b style="color:inherit;font-family:var(--font-mono)">x</b>. Clear space and the mark's spacing are all measured in x.</p></div></li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Clear space</h3>
+          <p class="note">Keep at least <b>1x</b> of empty space on every side of the logo, where x is the width of one bracket. Nothing else, not text, edges or other logos, enters this zone. On packaging and signage, use 2x where room allows.</p>
+          <div class="clear-fig">
+            <svg viewBox="-60 -50 533 195" role="img" aria-label="Clear space diagram">
+              <rect x="-30" y="-29" width="473" height="153" fill="none" stroke="#A9441D" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <g fill="#DE6538" fill-opacity="0.16">
+                <rect x="-30" y="-29" width="30" height="153"/><rect x="413" y="-29" width="30" height="153"/>
+                <rect x="0" y="-29" width="413" height="30"/><rect x="0" y="94" width="413" height="30"/>
+              </g>
+              <g fill="#22201E"><use href="#logo" width="413" height="95"/></g>
+              <g fill="#A9441D" font-family="IBM Plex Mono, monospace" font-size="13" text-anchor="middle">
+                <text x="-15" y="52">x</text><text x="428" y="52">x</text><text x="206" y="-9">x</text><text x="206" y="114">x</text>
+              </g>
+              <g stroke="#A9441D" stroke-width="1"><path d="M0 138v-6M30 138v-6M0 135h30"/></g>
+              <text x="36" y="139" fill="#57524B" font-family="IBM Plex Mono, monospace" font-size="11">x = bracket width</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Minimum size</h3>
+          <p class="note">Below these sizes the hairlines of the serif break up. When space is tighter, switch to the mark.</p>
+          <div class="minsize">
+            <figure><svg viewBox="0 0 413 95" width="120" fill="#22201E" role="img" aria-label="Seed"><use href="#logo"/></svg><figcaption>Full logo · 120 px / 30 mm wide</figcaption></figure>
+            <figure><svg viewBox="0 0 171 95" width="40" fill="#22201E" role="img" aria-label="Seed"><use href="#mark"/></svg><figcaption>Mark · 40 px / 10 mm wide</figcaption></figure>
+            <figure><svg viewBox="0 0 512 512" width="24" role="img" aria-label="Seed"><rect width="512" height="512" rx="112" fill="#22201E"/><g fill="#DE6538" transform="translate(102 170.5) scale(1.8)"><use href="#mark" width="171" height="95"/></g></svg><figcaption>App icon · 24 px</figcaption></figure>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Logo family</h3>
+          <div class="grid g3f">
+            <div class="variant">
+              <div class="stage loam"><svg viewBox="0 0 413 95" fill="#DE6538" style="max-width:260px" role="img" aria-label="Seed"><use href="#logo"/></svg></div>
+              <h4>Primary logo</h4><p>The default. Use it whenever there is room: packaging fronts, website header, signage, presentations.</p>
+            </div>
+            <div class="variant">
+              <div class="stage loam"><svg viewBox="0 0 171 95" fill="#DE6538" style="max-width:120px" role="img" aria-label="Seed"><use href="#mark"/></svg></div>
+              <h4>Mark</h4><p>The S held in the husk. For device housings, social avatars, favicons and anywhere the full logo would fall below 120 px.</p>
+            </div>
+            <div class="variant">
+              <div class="stage silt"><svg viewBox="0 0 512 512" style="max-width:120px" role="img" aria-label="Seed app icon"><rect width="512" height="512" rx="112" fill="#22201E"/><g fill="#DE6538" transform="translate(102 170.5) scale(1.8)"><use href="#mark" width="171" height="95"/></g></svg></div>
+              <h4>App icon</h4><p>The mark on a Loam tile, scaled to 60% of the tile width. Used for Seed Field and on-device screens.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Colour versions</h3>
+          <p class="note">Seed Orange on Loam is the hero pairing. On light grounds, the logo goes Loam. Seed Orange is not used for the logo on Silt or white, because it falls below 3:1 contrast there.</p>
+          <div class="grid g3f">
+            <div class="stage loam"><svg viewBox="0 0 413 95" fill="#DE6538" style="max-width:240px" role="img" aria-label="Seed"><use href="#logo"/></svg><span class="tag">Orange on Loam · primary</span></div>
+            <div class="stage silt"><svg viewBox="0 0 413 95" fill="#22201E" style="max-width:240px" role="img" aria-label="Seed"><use href="#logo"/></svg><span class="tag">Loam on Silt</span></div>
+            <div class="stage white"><svg viewBox="0 0 413 95" fill="#22201E" style="max-width:240px" role="img" aria-label="Seed"><use href="#logo"/></svg><span class="tag">Loam on white</span></div>
+            <div class="stage orange"><svg viewBox="0 0 413 95" fill="#22201E" style="max-width:240px" role="img" aria-label="Seed"><use href="#logo"/></svg><span class="tag">Loam on Orange</span></div>
+            <div class="stage canopy"><svg viewBox="0 0 413 95" fill="#EFEBE3" style="max-width:240px" role="img" aria-label="Seed"><use href="#logo"/></svg><span class="tag">Silt on Canopy</span></div>
+            <div class="stage loam"><svg viewBox="0 0 413 95" fill="#EFEBE3" style="max-width:240px" role="img" aria-label="Seed"><use href="#logo"/></svg><span class="tag">Silt on Loam · one-colour print</span></div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Misuse</h3>
+          <p class="note">These are the mistakes we see most. If a layout seems to need one of them, change the layout instead.</p>
+          <div class="grid g3f">
+            <div class="misuse"><div class="stage loam"><svg viewBox="0 0 413 95" fill="#DE6538" style="max-width:170px;transform:scaleX(1.4)" role="img" aria-label="Stretched logo"><use href="#logo"/></svg></div><p><b>Don't stretch or squash.</b> Scale proportionally only.</p></div>
+            <div class="misuse"><div class="stage loam"><svg viewBox="0 0 413 95" fill="#4FA35A" style="max-width:220px" role="img" aria-label="Recoloured logo"><use href="#logo"/></svg></div><p><b>Don't recolour.</b> Only the approved colour versions above.</p></div>
+            <div class="misuse"><div class="stage loam"><svg viewBox="-60 0 533 95" fill="#DE6538" style="max-width:240px" role="img" aria-label="Separated brackets"><use href="#p-l" transform="translate(-50 0)"/><use href="#p-w"/><use href="#p-r" transform="translate(50 0)"/></svg></div><p><b>Don't move the brackets.</b> Their spacing is fixed.</p></div>
+            <div class="misuse"><div class="stage loam"><svg viewBox="0 0 413 95" fill="#DE6538" style="max-width:220px;transform:rotate(-12deg)" role="img" aria-label="Rotated logo"><use href="#logo"/></svg></div><p><b>Don't rotate.</b> The logo always sits level.</p></div>
+            <div class="misuse"><div class="stage silt"><svg viewBox="0 0 413 95" fill="#DE6538" style="max-width:220px" role="img" aria-label="Low contrast logo"><use href="#logo"/></svg></div><p><b>Don't use orange on light grounds.</b> Use the Loam version.</p></div>
+            <div class="misuse"><div class="stage loam"><svg viewBox="0 0 413 95" fill="none" stroke="#DE6538" stroke-width="1.5" style="max-width:220px;filter:drop-shadow(4px 6px 0 #9DBF6A)" role="img" aria-label="Outlined logo with shadow"><use href="#logo"/></svg></div><p><b>Don't outline or add effects.</b> No strokes, shadows or gradients.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 04 COLOR ================= -->
+    <section class="chapter" id="color">
+      <div class="inner">
+        <div class="chapter-head">
+          <span class="chapter-num"><i></i>04 · Colour</span>
+          <h2>Colour</h2>
+        </div>
+        <div class="prose">
+          <p>The palette comes from the field: the orange of a seed coat and late-afternoon light, the dark of turned soil, the pale grey-beige of dry silt, and the greens of the crop. <strong>Seed Orange and Loam carry the brand.</strong> Everything else supports them.</p>
+        </div>
+
+        <div class="sub">
+          <h3>Primary</h3>
+          <p class="note">CMYK values are direct conversions. Always proof printed colour against the Pantone reference on the actual stock.</p>
+          <div class="grid g2">
+            <div class="swatch big"><div class="chip" style="background:#DE6538;color:#22201E">Seed Orange</div>
+              <dl><dt>HEX</dt><dd>#DE6538</dd><dt>RGB</dt><dd>222 101 56</dd><dt>CMYK</dt><dd>0 55 75 13</dd><dt>Pantone</dt><dd>7579 C (closest)</dd></dl>
+              <p>The logo colour. Use for the logo on Loam, primary buttons and one highlight per layout.</p></div>
+            <div class="swatch big"><div class="chip" style="background:#22201E;color:#DE6538">Loam</div>
+              <dl><dt>HEX</dt><dd>#22201E</dd><dt>RGB</dt><dd>34 32 30</dd><dt>CMYK</dt><dd>0 6 12 87</dd><dt>Pantone</dt><dd>Neutral Black C (closest)</dd></dl>
+              <p>Rich soil black. Main text colour and the ground for hero moments, packaging and devices.</p></div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Secondary</h3>
+          <div class="grid g4">
+            <div class="swatch"><div class="chip" style="background:#EFEBE3;color:#22201E">Silt</div><dl><dt>HEX</dt><dd>#EFEBE3</dd><dt>RGB</dt><dd>239 235 227</dd><dt>CMYK</dt><dd>0 2 5 6</dd></dl><p>Light backgrounds, paper stock.</p></div>
+            <div class="swatch"><div class="chip" style="background:#A9441D;color:#EFEBE3">Clay</div><dl><dt>HEX</dt><dd>#A9441D</dd><dt>RGB</dt><dd>169 68 29</dd><dt>CMYK</dt><dd>0 60 83 34</dd></dl><p>Orange for text and links on light grounds.</p></div>
+            <div class="swatch"><div class="chip" style="background:#2E4B33;color:#EFEBE3">Canopy</div><dl><dt>HEX</dt><dd>#2E4B33</dd><dt>RGB</dt><dd>46 75 51</dd><dt>CMYK</dt><dd>39 0 32 71</dd></dl><p>Seed Stock packaging, crop content.</p></div>
+            <div class="swatch"><div class="chip" style="background:#9DBF6A;color:#22201E">Shoot</div><dl><dt>HEX</dt><dd>#9DBF6A</dd><dt>RGB</dt><dd>157 191 106</dd><dt>CMYK</dt><dd>18 0 45 25</dd></dl><p>Healthy status, small accents on Loam.</p></div>
+            <div class="swatch"><div class="chip" style="background:#D9C9A8;color:#22201E">Husk</div><dl><dt>HEX</dt><dd>#D9C9A8</dd><dt>RGB</dt><dd>217 201 168</dd><dt>CMYK</dt><dd>0 7 23 15</dd></dl><p>Kraft paper, cards, secondary panels.</p></div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Field data colours</h3>
+          <p class="note">Used only in Seed Sense products, charts and alerts, to show the state of a reading. They are never decorative, and they never replace Seed Orange as the brand colour.</p>
+          <div class="grid g4">
+            <div class="swatch"><div class="chip" style="background:#C9A04A;color:#22201E;font-size:1.125rem">Dry</div><dl><dt>HEX</dt><dd>#C9A04A</dd><dt>Use</dt><dd>Below target</dd></dl></div>
+            <div class="swatch"><div class="chip" style="background:#5E8F47;color:#FFFFFF;font-size:1.125rem">Optimal</div><dl><dt>HEX</dt><dd>#5E8F47</dd><dt>Use</dt><dd>In range</dd></dl></div>
+            <div class="swatch"><div class="chip" style="background:#3D7A94;color:#FFFFFF;font-size:1.125rem">Wet</div><dl><dt>HEX</dt><dd>#3D7A94</dd><dt>Use</dt><dd>Above target</dd></dl></div>
+            <div class="swatch"><div class="chip" style="background:#B8322A;color:#FFFFFF;font-size:1.125rem">Alert</div><dl><dt>HEX</dt><dd>#B8322A</dd><dt>Use</dt><dd>Act now, faults</dd></dl></div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Proportion</h3>
+          <p class="note">A typical Seed layout is mostly Silt or Loam, with Seed Orange kept rare enough to stay special.</p>
+          <div class="ratio" role="img" aria-label="Colour proportion: Silt 50%, Loam 30%, Seed Orange 10%, Canopy and Husk 7%, data colours 3%">
+            <div style="flex:50;background:#EFEBE3;color:#22201E">Silt 50%</div>
+            <div style="flex:30;background:#22201E;color:#EFEBE3">Loam 30%</div>
+            <div style="flex:10;background:#DE6538;color:#22201E">Orange 10%</div>
+            <div style="flex:7;background:#2E4B33;color:#EFEBE3">7%</div>
+            <div style="flex:3;background:#5E8F47"></div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Accessible pairings</h3>
+          <p class="note">WCAG 2.2 contrast ratios. AA needs 4.5:1 for body text and 3:1 for large text (24 px, or 19 px bold) and graphics.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Pairing</th><th>Ratio</th><th>Use for</th></tr></thead>
+              <tbody>
+                <tr><td><span class="pair" style="background:#EFEBE3;color:#22201E">Loam on Silt</span></td><td class="num">13.7 : 1</td><td><span class="pass">AAA</span> · all text</td></tr>
+                <tr><td><span class="pair" style="background:#22201E;color:#9DBF6A">Shoot on Loam</span></td><td class="num">7.8 : 1</td><td><span class="pass">AAA</span> · status text on devices</td></tr>
+                <tr><td><span class="pair" style="background:#2E4B33;color:#EFEBE3">Silt on Canopy</span></td><td class="num">8.1 : 1</td><td><span class="pass">AAA</span> · all text</td></tr>
+                <tr><td><span class="pair" style="background:#FFFFFF;color:#A9441D">Clay on white</span></td><td class="num">6.0 : 1</td><td><span class="pass">AA</span> · links, highlights</td></tr>
+                <tr><td><span class="pair" style="background:#22201E;color:#DE6538">Orange on Loam</span></td><td class="num">4.7 : 1</td><td><span class="pass">AA</span> · all text, logo</td></tr>
+                <tr><td><span class="pair" style="background:#DE6538;color:#22201E">Loam on Orange</span></td><td class="num">4.7 : 1</td><td><span class="pass">AA</span> · button labels</td></tr>
+                <tr><td><span class="pair" style="background:#DE6538;color:#FFFFFF">White on Orange</span></td><td class="num">3.5 : 1</td><td><span class="limit">Large only</span> · headlines 24 px+</td></tr>
+                <tr><td><span class="pair" style="background:#EFEBE3;color:#DE6538">Orange on Silt</span></td><td class="num">2.9 : 1</td><td><span class="fail">Avoid</span> · decoration only</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 05 TYPE ================= -->
+    <section class="chapter" id="type">
+      <div class="inner">
+        <div class="chapter-head">
+          <span class="chapter-num"><i></i>05 · Typography</span>
+          <h2>Typography</h2>
+        </div>
+        <div class="prose">
+          <p>The logo is drawn from <strong>New York</strong>, a serif that is licensed only for Apple platforms. For everything we set ourselves, we use three free, open-licence families from Google Fonts: a serif that shares New York's proportions, a sturdy grotesque for reading, and a mono for numbers and specifications.</p>
+        </div>
+
+        <div>
+          <div class="family">
+            <div class="meta"><span class="eyebrow">Display</span><h4>Newsreader</h4><p>Headlines, pull quotes, product and variety names. Light (300) and Regular (400), with italics for emphasis. Use the optical-size axis: large sizes get the finer display cut.</p></div>
+            <div><div class="glyphs" style="font-family:var(--font-display);font-weight:300">Grown in good ground</div><div class="alpha" style="font-family:var(--font-display)">Aa Bb Cc Dd Ee Ff Gg 0123456789 <i>Italic</i></div></div>
+          </div>
+          <div class="family">
+            <div class="meta"><span class="eyebrow">Text &amp; interface</span><h4>Schibsted Grotesk</h4><p>Body copy, buttons, labels, navigation. Regular (400) for reading, Semibold (600) for labels and buttons.</p></div>
+            <div><div class="glyphs" style="font-family:var(--font-body);font-weight:500;font-size:clamp(2rem,5vw,3.25rem)">Plant on 14 April</div><div class="alpha" style="font-family:var(--font-body)">Aa Bb Cc Dd Ee Ff Gg 0123456789 <b>Semibold</b></div></div>
+          </div>
+          <div class="family">
+            <div class="meta"><span class="eyebrow">Data &amp; specification</span><h4>IBM Plex Mono</h4><p>Sensor readings, lot numbers, specs on packets and device screens. Always tabular, so columns of numbers line up.</p></div>
+            <div><div class="glyphs" style="font-family:var(--font-mono);font-size:clamp(1.5rem,4vw,2.5rem)">VWC 31.6% · pH 6.5</div><div class="alpha" style="font-family:var(--font-mono);font-size:1rem">LOT SD-24-0918 · 18.4 °C · 1.12 dS/m</div></div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Type scale</h3>
+          <p class="note">A 1.25 ratio from a 16 px base. Line height tightens as size grows.</p>
+          <div class="scale">
+            <div><span class="spec">Display · 88 / 92<br>Newsreader 300</span><span class="sample" style="font-family:var(--font-display);font-weight:300;font-size:var(--step-5);line-height:1.05">From seed to signal</span></div>
+            <div><span class="spec">H1 · 52 / 57<br>Newsreader 400</span><span class="sample" style="font-family:var(--font-display);font-size:var(--step-4);line-height:1.1">Know your soil</span></div>
+            <div><span class="spec">H2 · 36 / 43<br>Newsreader 400</span><span class="sample" style="font-family:var(--font-display);font-size:var(--step-3);line-height:1.2">Hybrid maize for dry seasons</span></div>
+            <div><span class="spec">H3 · 26 / 34<br>Newsreader 400</span><span class="sample" style="font-family:var(--font-display);font-size:var(--step-2);line-height:1.3">Planting guide, spring 2027</span></div>
+            <div><span class="spec">Lead · 20 / 30<br>Schibsted 400</span><span class="sample" style="font-size:var(--step-1);line-height:1.5">Seed Probe measures moisture, temperature and salinity at three depths.</span></div>
+            <div><span class="spec">Body · 16 / 26<br>Schibsted 400</span><span class="sample">Push the probe into moist soil until the orange collar is level with the surface. It starts reporting within five minutes.</span></div>
+            <div><span class="spec">Label · 12 / 16 · +12%<br>Plex Mono 400, caps</span><span class="sample eyebrow">Days to maturity</span></div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Rules</h3>
+          <ul class="rules">
+            <li>Headlines are sentence case. No all-caps headlines; caps are for small mono labels only.</li>
+            <li>Never set body copy in Newsreader below 18 px, or headlines in Schibsted Grotesk above 36 px.</li>
+            <li>Every number a grower acts on gets its unit: 31.6% VWC, 18.4 °C, 68 days.</li>
+            <li>Left-align text. Centre only short lines on packaging and covers.</li>
+            <li>Keep body text between 55 and 75 characters per line.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 06 GRAPHICS ================= -->
+    <section class="chapter" id="graphics">
+      <div class="inner">
+        <div class="chapter-head">
+          <span class="chapter-num"><i></i>06 · Graphics &amp; icons</span>
+          <h2>Graphic language</h2>
+        </div>
+        <div class="prose"><p>Two devices come straight from the logo, and one from the field. Use one of them per layout, not all three.</p></div>
+        <div class="grid g3f">
+          <div class="device">
+            <div class="stage loam">
+              <div class="husk-frame"><svg viewBox="0 0.9 30 93" preserveAspectRatio="none" fill="#DE6538" aria-hidden="true"><use href="#p-l"/></svg><div class="fig"><b>92%</b><span>germination rate</span></div><svg viewBox="382.6 0.9 30 93" preserveAspectRatio="none" fill="#DE6538" aria-hidden="true"><use href="#p-r"/></svg></div>
+            </div>
+            <h4>Husk brackets</h4><p>The logo's brackets, used on their own to hold the single most important number or word in a layout. One pair per page, in Seed Orange.</p>
+          </div>
+          <div class="device">
+            <div class="stage silt">
+              <svg viewBox="0 0 300 160" role="img" aria-label="Furrow line pattern" style="max-width:300px">
+                <g fill="none" stroke="#22201E" stroke-width="1.25" stroke-linecap="round">
+                  <path d="M0 150 C80 120 220 120 300 150"/><path d="M0 132 C80 102 220 102 300 132"/><path d="M0 114 C80 84 220 84 300 114"/><path d="M0 96 C80 66 220 66 300 96"/><path d="M0 78 C80 48 220 48 300 78"/><path d="M0 60 C80 30 220 30 300 60"/>
+                </g>
+                <g fill="#DE6538"><ellipse cx="96" cy="84" rx="4" ry="6"/><ellipse cx="150" cy="78" rx="4" ry="6"/><ellipse cx="204" cy="84" rx="4" ry="6"/></g>
+              </svg>
+            </div>
+            <h4>Furrow lines</h4><p>Evenly spaced curved lines, like ploughed rows seen across a field. Loam on Silt or Silt on Loam, 1–1.5 px. Seed Orange marks a point of interest on a row.</p>
+          </div>
+          <div class="device">
+            <div class="stage loam">
+              <svg viewBox="0 0 300 160" role="img" aria-label="Seed spacing grid" style="max-width:300px">
+                <defs><pattern id="seedgrid" width="20" height="20" patternUnits="userSpaceOnUse"><ellipse cx="10" cy="10" rx="2" ry="3" fill="#57524B"/></pattern></defs>
+                <rect width="300" height="160" fill="url(#seedgrid)"/>
+                <g fill="#DE6538"><ellipse cx="130" cy="70" rx="2" ry="3"/><ellipse cx="150" cy="70" rx="2" ry="3"/><ellipse cx="170" cy="70" rx="2" ry="3"/><ellipse cx="130" cy="90" rx="2" ry="3"/><ellipse cx="150" cy="90" rx="2" ry="3"/><ellipse cx="170" cy="90" rx="2" ry="3"/></g>
+              </svg>
+            </div>
+            <h4>Seed spacing grid</h4><p>A grid of seed shapes at planting spacing. Use as a quiet background on Loam; highlight a group in Seed Orange to show a plot or sensor zone.</p>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Icons</h3>
+          <p class="note">Line icons on a 24 px grid with a 1.5 px stroke, round caps and joins. Icons are drawn in Loam or Silt. Seed Orange is reserved for an active or selected state.</p>
+          <div class="icons">
+            <figure><svg><use href="#i-seed"/></svg><figcaption>Seed</figcaption></figure>
+            <figure><svg><use href="#i-sprout"/></svg><figcaption>Germination</figcaption></figure>
+            <figure><svg><use href="#i-probe"/></svg><figcaption>Soil probe</figcaption></figure>
+            <figure><svg><use href="#i-drop"/></svg><figcaption>Moisture</figcaption></figure>
+            <figure><svg><use href="#i-temp"/></svg><figcaption>Soil temp</figcaption></figure>
+            <figure><svg><use href="#i-ph"/></svg><figcaption>pH / nutrients</figcaption></figure>
+            <figure><svg><use href="#i-sun"/></svg><figcaption>Weather</figcaption></figure>
+            <figure><svg><use href="#i-wheat"/></svg><figcaption>Harvest</figcaption></figure>
+            <figure><svg><use href="#i-rows"/></svg><figcaption>Field</figcaption></figure>
+            <figure><svg><use href="#i-tractor"/></svg><figcaption>Machinery</figcaption></figure>
+            <figure><svg><use href="#i-signal"/></svg><figcaption>Connectivity</figcaption></figure>
+            <figure><svg><use href="#i-calendar"/></svg><figcaption>Planting date</figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 07 PHOTO ================= -->
+    <section class="chapter" id="photo">
+      <div class="inner">
+        <div class="chapter-head">
+          <span class="chapter-num"><i></i>07 · Photography</span>
+          <h2>Photography</h2>
+        </div>
+        <div class="prose"><p>Our photographs show real growers on real farms, in working conditions. Light is natural and low: early morning or the last two hours before sunset, which is where Seed Orange comes from. Colour is warm and slightly muted, never over-saturated.</p></div>
+        <div class="grid g3f">
+          <div class="shot"><div class="frame f1"><span>Hands &amp; soil · 4:5</span></div><h4>Close to the ground</h4><p>Hands in soil, seed in a palm, a probe going in. Shallow depth of field, eye level with the crop.</p></div>
+          <div class="shot"><div class="frame f2"><span>Seed detail · 4:5</span></div><h4>The seed itself</h4><p>Macro shots of seed on dark soil or Loam backdrops. Treat seed like a precious object.</p></div>
+          <div class="shot"><div class="frame f3"><span>Field · 4:5 or 16:9</span></div><h4>The working field</h4><p>Wide shots with real rows, real machinery, real weather. Horizon in the upper third.</p></div>
+        </div>
+        <div class="dodont">
+          <div><h4 style="color:var(--data-optimal)">Do</h4><ul class="rules"><li>Photograph customers and staff on their own farms, with permission.</li><li>Show the product in use, with soil on it.</li><li>Include different regions, crops, ages and farm sizes.</li><li>Leave calm space for a headline.</li></ul></div>
+          <div class="dont"><h4 style="color:var(--data-alert)">Don't</h4><ul class="rules"><li>Use posed stock photos of spotless farmers in new clothes.</li><li>Use glowing "digital farm" composites or floating data overlays.</li><li>Push saturation or add heavy filters.</li><li>Place the logo over a busy part of a photo.</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 08 APPLICATIONS ================= -->
+    <section class="chapter" id="apps">
+      <div class="inner">
+        <div class="chapter-head">
+          <span class="chapter-num"><i></i>08 · Applications</span>
+          <h2>The brand at work</h2>
+        </div>
+        <div class="prose"><p>Example applications across both halves of the business. Product names, readings and contact details are illustrative.</p></div>
+        <div class="apps">
+          <div class="app">
+            <div class="bench">
+              <div class="packet" role="img" aria-label="Seed packet example">
+                <div class="ptop"><svg viewBox="0 0 413 95" fill="#DE6538"><use href="#logo"/></svg></div>
+                <div class="pmid"><span class="crop">Tomato · Determinate</span><span class="variety">Red Furrow</span></div>
+                <div class="pspec"><span>Days to maturity</span><b>68</b><span>Germination</span><b>92%</b><span>Seed count</span><b>250</b><span>Lot</span><b>SD-24-0918</b></div>
+              </div>
+            </div>
+            <h4>Seed Stock packet</h4><p>Loam body, logo top-left, variety name in Newsreader and Seed Orange, specification band in Plex Mono. Crop family sets an optional Canopy or Husk variant.</p>
+          </div>
+          <div class="app">
+            <div class="bench">
+              <div class="probe" role="img" aria-label="Seed Probe soil sensor example">
+                <div class="body">
+                  <svg viewBox="0 0 171 95" fill="#DE6538"><use href="#mark"/></svg>
+                  <div class="screen">
+                    <div class="row"><span>Moisture</span><b class="ok">31.6%</b></div>
+                    <div class="row"><span>Temp</span><b>18.4 °C</b></div>
+                    <div class="row"><span>pH</span><b>6.5</b></div>
+                    <div class="row"><span>EC</span><b>1.12 dS/m</b></div>
+                  </div>
+                  <span class="led">Connected · 15 min</span>
+                </div>
+                <div class="spike"></div>
+              </div>
+            </div>
+            <h4>Seed Probe soil sensor</h4><p>Loam housing with the mark, never the full logo, at 40 px or more. Screen readings in Plex Mono with Shoot for in-range values.</p>
+          </div>
+          <div class="app">
+            <div class="bench">
+              <div class="phone" role="img" aria-label="Seed Field app screen example">
+                <div class="bar"><svg viewBox="0 0 413 95" fill="#22201E"><use href="#logo"/></svg><span>06:42</span></div>
+                <div><span class="loc">North Field · Plot 4</span><h5>Irrigate within 2 days</h5></div>
+                <div class="reading">
+                  <div class="top"><span>Soil moisture</span><span class="chip dry">Dry</span></div>
+                  <div class="val">18<small>% VWC</small></div>
+                  <svg class="spark" viewBox="0 0 200 28" preserveAspectRatio="none"><line x1="0" y1="10" x2="200" y2="10" stroke="#5E8F47" stroke-dasharray="3 3" stroke-width="1"/><polyline points="0,6 30,8 60,11 90,13 120,16 150,19 180,21 200,23" fill="none" stroke="#C9A04A" stroke-width="2"/><circle cx="200" cy="23" r="3" fill="#C9A04A"/></svg>
+                </div>
+                <div class="reading">
+                  <div class="top"><span>Soil temp</span><span class="chip ok">Optimal</span></div>
+                  <div class="val">18.4<small>°C</small></div>
+                </div>
+                <div class="btn-p">Schedule irrigation</div>
+              </div>
+            </div>
+            <h4>Seed Field app</h4><p>Silt-toned screens, Loam text, one Seed Orange action per screen. Status uses field data colours as small chips, not full-screen colour.</p>
+          </div>
+          <div class="app">
+            <div class="bench">
+              <div class="bcard-stack" role="img" aria-label="Business card example">
+                <div class="bcard front"><svg viewBox="0 0 413 95" fill="#DE6538"><use href="#logo"/></svg></div>
+                <div class="bcard back">
+                  <div class="who"><b>Lina Farouk</b><span>Field Agronomist</span></div>
+                  <div class="contact"><span>+20 100 000 0000<br>lina@seed.example</span><svg viewBox="0 0 171 95" fill="#22201E"><use href="#mark"/></svg></div>
+                </div>
+              </div>
+            </div>
+            <h4>Business cards</h4><p>85 × 55 mm. Front: primary logo centred on Loam. Back: white uncoated stock, name in Newsreader, details in Plex Mono.</p>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Interface buttons</h3>
+          <p class="note">One primary action per screen. Corner radius is 6 px across all controls.</p>
+          <div class="ui-row">
+            <button class="btn primary" type="button">Order seed</button>
+            <button class="btn secondary" type="button">View planting guide</button>
+            <button class="btn dark-btn" type="button">Pair a probe</button>
+            <button class="btn text" type="button">See field history</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 09 ASSETS ================= -->
+    <section class="chapter dark" id="assets">
+      <div class="inner">
+        <div class="chapter-head">
+          <span class="chapter-num"><i></i>09 · Assets</span>
+          <h2>Files &amp; tokens</h2>
+        </div>
+        <div class="prose"><p>Master files live in the <strong>Seeds</strong> repository. Use these instead of screenshots or copies from this page.</p></div>
+        <div class="files">
+          <div><code>assets/logo/seed-logo-{orange,loam,silt,white}.svg</code><span>Primary logo in each approved colour</span></div>
+          <div><code>assets/logo/seed-mark-{orange,loam,silt,white}.svg</code><span>Mark: the S held in the husk brackets</span></div>
+          <div><code>assets/logo/seed-wordmark-{orange,loam,silt,white}.svg</code><span>Wordmark without brackets, for legal lines and co-branding only</span></div>
+          <div><code>assets/logo/seed-app-icon.svg</code><span>App icon, Orange on Loam, 512 × 512</span></div>
+          <div><code>assets/logo/seed-app-icon-orange.svg</code><span>Alternate app icon, Loam on Orange</span></div>
+          <div><code>tokens/tokens.css</code><span>CSS custom properties for colour, type and radius</span></div>
+          <div><code>tokens/tokens.json</code><span>The same tokens for design tools and native apps</span></div>
+          <div><code>brand-guidelines/index.html</code><span>This book</span></div>
+        </div>
+        <div class="colophon">
+          <svg viewBox="0 0 413 95" fill="#DE6538" role="img" aria-label="Seed"><use href="#logo"/></svg>
+          <p>Seed Brand Guidelines · Edition 1.0 · October 2026</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>
