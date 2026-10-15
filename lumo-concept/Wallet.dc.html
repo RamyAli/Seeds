@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lumo – Rewards wallet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+button,a{font-family:inherit}
+a{color:#15171A}a:hover{color:#3D4249}
+.chip{transition:background .15s ease,color .15s ease}
+.chip:focus-visible,.cta:focus-visible{outline:2px solid #1D5FD1;outline-offset:2px}
+@keyframes lumoRing{from{stroke-dashoffset:201}}
+.lvl{animation:lumoRing 1.2s cubic-bezier(.2,.8,.2,1) both}
+@media (prefers-reduced-motion: reduce){.lvl{animation:none}.chip{transition:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F6F5F1; color: #15171A; font-family: 'Readex Pro', system-ui, sans-serif; font-size: 15px; line-height: 1.4">
+  <div style="padding: 52px 20px 0; display: flex; flex-direction: column; gap: 12px">
+    <header style="display: flex; align-items: center; justify-content: space-between; height: 44px">
+      <h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.02em">Rewards</h1>
+      <button style="height: 44px; padding: 0 14px; border-radius: 22px; border: 1px solid #E3E0D8; background: #FFFFFF; color: #15171A; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>How points work</button>
+    </header>
+
+    <section style="background: #15171A; color: #F2F1EC; border-radius: 26px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div style="display: flex; flex-direction: column">
+          <span style="font-size: 13px; color: #A1A8B0">Your points</span>
+          <span style="font-size: 48px; line-height: 1.05; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums">2,340</span>
+          <span style="font-size: 13px; color: #FFB547; font-weight: 500">Worth AED 117.00 in bill credit</span>
+        </div>
+        <div role="img" aria-label="Level 3, 90 percent to level 4" style="position: relative; width: 76px; height: 76px">
+          <svg width="76" height="76" viewBox="0 0 76 76" style="transform: rotate(-90deg)" aria-hidden="true">
+            <circle cx="38" cy="38" r="32" fill="none" stroke="#2A3138" stroke-width="7"></circle>
+            <circle class="lvl" cx="38" cy="38" r="32" fill="none" stroke="#FFB547" stroke-width="7" stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="20"></circle>
+          </svg>
+          <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1">
+            <span style="font-size: 10px; color: #A1A8B0">Level</span>
+            <span style="font-size: 22px; font-weight: 600">3</span>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 12px; color: #C9CCD1; border-top: 1px solid #2A3138; padding-top: 10px">
+        <span><b style="color: #F2F1EC">Sun Shifter</b> · 260 pts to Grid Guardian</span>
+        <span>20 pts = AED 1</span>
+      </div>
+    </section>
+
+    <section aria-labelledby="redeem-h" style="background: #FFFFFF; border-radius: 22px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+      <h2 id="redeem-h" style="margin: 0; font-size: 15px; font-weight: 600">Turn points into bill credit</h2>
+      <div role="radiogroup" aria-label="Amount to redeem" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{options}}" as="o" hint-placeholder-count="3">
+          <button class="chip" role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 56px; border-radius: 16px; border: {{o.border}}; background: {{o.bg}}; color: {{o.fg}}; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2">
+            <span style="font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums">AED {{o.aed}}</span>
+            <span style="font-size: 11px; opacity: 0.8">{{o.pts}} pts</span>
+          </button>
+        </sc-for>
+      </div>
+      <button class="cta" style="height: 50px; border-radius: 25px; border: 0; background: #F5A524; color: #15171A; font-size: 15px; font-weight: 600; cursor: pointer">Take AED {{aed}} off my July bill</button>
+    </section>
+
+    <section style="background: #FFFFFF; border-radius: 22px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <span style="font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9A5B00" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4 0 7-3 7-7 0-4-3-6-4-10-2 2-3 4-3 6-1-1-2-2-2-4-2 2-5 5-5 8 0 4 3 7 7 7z"></path></svg>4-moment streak</span>
+        <span style="font-size: 12px; color: #5B616A">Next: Thu 5 pm</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; text-align: center; font-size: 11px; color: #5B616A">
+        <sc-for list="{{week}}" as="w" hint-placeholder-count="7">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+            <span aria-label="{{w.aria}}" style="width: 34px; height: 34px; border-radius: 17px; background: {{w.bg}}; border: {{w.border}}; color: #15171A; display: flex; align-items: center; justify-content: center">
+              <sc-if value="{{w.done}}" hint-placeholder-val="{{ true }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>
+              </sc-if>
+            </span>
+            <span>{{w.d}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <h2 style="margin: 0; font-size: 15px; font-weight: 600">Badges</h2>
+        <span style="font-size: 12px; color: #5B616A">3 of 12</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+        <div style="background: #FFFFFF; border-radius: 18px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center">
+          <span style="width: 44px; height: 44px; border-radius: 22px; background: #FFF3DC; color: #9A5B00; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg></span>
+          <span style="font-size: 11px; line-height: 1.2; font-weight: 500">First shift</span>
+        </div>
+        <div style="background: #FFFFFF; border-radius: 18px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center">
+          <span style="width: 44px; height: 44px; border-radius: 22px; background: #E3EDFE; color: #1D5FD1; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></span>
+          <span style="font-size: 11px; line-height: 1.2; font-weight: 500">Night owl</span>
+        </div>
+        <div style="background: #FFFFFF; border-radius: 18px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center">
+          <span style="width: 44px; height: 44px; border-radius: 22px; background: #DDF5F1; color: #0F766E; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"></path></svg></span>
+          <span style="font-size: 11px; line-height: 1.2; font-weight: 500">Heatwave hero</span>
+        </div>
+        <div style="background: transparent; border: 1.5px dashed #C9C5BC; border-radius: 18px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center">
+          <span style="width: 44px; height: 44px; border-radius: 22px; background: #EFEDE7; color: #5B616A; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></span>
+          <span style="font-size: 11px; line-height: 1.2; color: #5B616A">Grid Guardian · L4</span>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Recent points" style="background: #FFFFFF; border-radius: 20px; display: flex; flex-direction: column">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px">
+        <div style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">Grid moment</span><span style="font-size: 12px; color: #5B616A">Today · 5–7 pm</span></div>
+        <span style="font-size: 15px; font-weight: 600; color: #9A5B00">+120</span>
+      </div>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; padding: 6px 12px 0; background: rgba(246,245,241,0.94); backdrop-filter: blur(16px); border-top: 1px solid #E3E0D8; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+    <a href="Main.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #5B616A; text-decoration: none; font-size: 11px">
+      <span style="height: 28px; display: flex; align-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg></span>Home</a>
+    <a href="SolarDetail.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #5B616A; text-decoration: none; font-size: 11px">
+      <span style="height: 28px; display: flex; align-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M7 15v3M12 10v8M17 6v12"></path></svg></span>Usage</a>
+    <a href="Wallet.dc.html" aria-current="page" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #15171A; text-decoration: none; font-size: 11px; font-weight: 600">
+      <span style="width: 52px; height: 28px; border-radius: 14px; background: #15171A; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"></path></svg></span>Rewards</a>
+    <a href="Main.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #5B616A; text-decoration: none; font-size: 11px">
+      <span style="height: 28px; display: flex; align-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span>Account</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { pick: 1 };
+  }
+  renderVals() {
+    const opts = [{ pts: '500', aed: 25 }, { pts: '1,000', aed: 50 }, { pts: '2,000', aed: 100 }];
+    const options = opts.map((o, i) => {
+      const on = this.state.pick === i;
+      return Object.assign({}, o, {
+        on,
+        bg: on ? '#15171A' : '#FFFFFF',
+        fg: on ? '#FFFFFF' : '#15171A',
+        border: on ? '2px solid #15171A' : '1px solid #E3E0D8',
+        pick: () => this.setState({ pick: i })
+      });
+    });
+    const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+    const done = [true, true, true, false, false, false, false];
+    const week = days.map((d, i) => ({
+      d,
+      done: done[i],
+      bg: done[i] ? '#F5A524' : (i === 3 ? '#FFFFFF' : '#EFEDE7'),
+      border: i === 3 && !done[i] ? '1.5px dashed #9A5B00' : '0',
+      aria: d + ': ' + (done[i] ? 'moment completed' : 'no moment')
+    }));
+    return { options, aed: opts[this.state.pick].aed, week };
+  }
+}
+</script>
+</body>
+</html>

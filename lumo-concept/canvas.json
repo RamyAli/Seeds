@@ -1,0 +1,44 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-10-15T22:45:00Z"},
+  "title": "Lumo – Energy App Concept",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 390, "h": 844, "title": "01 Home · Live energy flow (day, light)", "is_interactive": true, "radius": 44},
+    "HomeNight.dc.html": {"x": 470, "y": 0, "w": 390, "h": 844, "title": "01b Home · Night, battery discharging (dark)", "radius": 44},
+    "SolarDetail.dc.html": {"x": 940, "y": 0, "w": 390, "h": 844, "title": "02 Node detail · Solar", "is_interactive": true, "radius": 44},
+    "CloudyDay.dc.html": {"x": 1410, "y": 0, "w": 390, "h": 844, "title": "08 Edge state · Cloudy day + battery offline", "radius": 44},
+    "LockScreen.dc.html": {"x": 0, "y": 1244, "w": 390, "h": 844, "title": "03 Grid moment · Lock screen push", "is_interactive": true, "radius": 44},
+    "GridMoment.dc.html": {"x": 470, "y": 1244, "w": 390, "h": 844, "title": "04 Grid moment · Detail + Accept", "is_interactive": true, "radius": 44},
+    "ActiveEvent.dc.html": {"x": 940, "y": 1244, "w": 390, "h": 844, "title": "05 Active event · Countdown (dark)", "is_interactive": true, "radius": 44},
+    "EventResult.dc.html": {"x": 1410, "y": 1244, "w": 390, "h": 844, "title": "06 Event result · Rewards earned", "is_interactive": true, "radius": 44},
+    "Wallet.dc.html": {"x": 1880, "y": 1244, "w": 390, "h": 844, "title": "07 Rewards wallet", "is_interactive": true, "radius": 44},
+    "HomeArabic.dc.html": {"x": 0, "y": 2488, "w": 390, "h": 844, "title": "01 AR · الرئيسية (RTL)", "radius": 44},
+    "GridMomentArabic.dc.html": {"x": 470, "y": 2488, "w": 390, "h": 844, "title": "04 AR · لحظة الشبكة (RTL)", "is_interactive": true, "radius": 44},
+    "UserFlow.dc.html": {"x": 940, "y": 2488, "w": 1330, "h": 844, "title": "User flow · notification → accept → active → reward"},
+    "DesignSystem.dc.html": {"x": 0, "y": 3732, "w": 1440, "h": 2480, "title": "Mini design system"}
+  },
+  "order": [
+    "Main.dc.html",
+    "HomeNight.dc.html",
+    "SolarDetail.dc.html",
+    "CloudyDay.dc.html",
+    "LockScreen.dc.html",
+    "GridMoment.dc.html",
+    "ActiveEvent.dc.html",
+    "EventResult.dc.html",
+    "Wallet.dc.html",
+    "HomeArabic.dc.html",
+    "GridMomentArabic.dc.html",
+    "UserFlow.dc.html",
+    "DesignSystem.dc.html"
+  ],
+  "notes": {
+    "t1": {"x": 0, "y": -300, "text": "Feature 1 · Live Energy Flow", "kind": "title1", "maxW": 1800},
+    "t2": {"x": 0, "y": 944, "text": "Feature 2 · Shift & Earn", "kind": "title1", "maxW": 2270},
+    "t3": {"x": 0, "y": 2188, "text": "Arabic RTL + user flow", "kind": "title1", "maxW": 2270},
+    "t4": {"x": 0, "y": 3432, "text": "Design system", "kind": "title1", "maxW": 1440}
+  },
+  "designSystems": []
+}

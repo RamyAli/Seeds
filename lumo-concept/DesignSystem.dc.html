@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lumo design system</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+button,a{font-family:inherit}
+a{color:#1D5FD1}a:hover{color:#15171A}
+@keyframes lumoFlow{to{stroke-dashoffset:-16}}
+@keyframes lumoPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+.flow{stroke-dasharray:0.1 16;stroke-linecap:round;animation:lumoFlow linear infinite}
+.pulse{animation:lumoPulse 1.6s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.flow,.pulse{animation:none}}
+</style>
+</helmet>
+<div style="width: 1440px; height: 2480px; box-sizing: border-box; padding: 72px; background: #F6F5F1; color: #15171A; font-family: 'Readex Pro', system-ui, sans-serif; font-size: 15px; line-height: 1.45; display: flex; flex-direction: column; gap: 56px">
+
+  <header style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid #E3E0D8; padding-bottom: 32px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <span style="width: 72px; height: 72px; border-radius: 20px; background: #15171A; display: flex; align-items: center; justify-content: center">
+        <svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="11" r="5" fill="#F5A524"></circle><rect x="5" y="17" width="14" height="2.5" rx="1.25" fill="#3B82F6"></rect></svg>
+      </span>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 56px; line-height: 1; font-weight: 600; letter-spacing: -0.04em">lumo</span>
+        <span style="font-size: 15px; color: #5B616A">Mini design system · v0.1 concept</span>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 220px); gap: 24px">
+      <div style="display: flex; flex-direction: column; gap: 4px"><b>Calm</b><span style="font-size: 13px; color: #5B616A">Neutral ground, one accent per job. Energy is the hero, not the chrome.</span></div>
+      <div style="display: flex; flex-direction: column; gap: 4px"><b>Glanceable</b><span style="font-size: 13px; color: #5B616A">One big number per screen. Everything else supports it.</span></div>
+      <div style="display: flex; flex-direction: column; gap: 4px"><b>Rewarding</b><span style="font-size: 13px; color: #5B616A">Celebrate the shift. Never scold the miss.</span></div>
+    </div>
+  </header>
+
+  <section style="display: flex; flex-direction: column; gap: 20px">
+    <h2 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Colour</h2>
+    <p style="margin: 0; color: #5B616A; max-width: 760px">Each energy source owns one hue: <b style="color: #15171A">Solar = amber</b>, <b style="color: #15171A">Battery = teal</b>, <b style="color: #15171A">Grid = electric blue</b>, Home = ink. Fills are for marks and lines. Text uses the darker "ink" step. Colour always comes with an icon and a label.</p>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+      <div style="background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+        <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #5B616A">LIGHT</span>
+        <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; font-size: 11px">
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #F6F5F1; border: 1px solid #E3E0D8"></span><b>Ground</b><span style="color: #5B616A">#F6F5F1</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #FFFFFF; border: 1px solid #E3E0D8"></span><b>Surface</b><span style="color: #5B616A">#FFFFFF</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #EFEDE7"></span><b>Surface 2</b><span style="color: #5B616A">#EFEDE7</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #E3E0D8"></span><b>Line</b><span style="color: #5B616A">#E3E0D8</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #5B616A"></span><b>Ink 2</b><span style="color: #5B616A">#5B616A · 5.7:1</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #15171A"></span><b>Ink</b><span style="color: #5B616A">#15171A · 16:1</span></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; font-size: 12px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <div style="display: flex; height: 56px; border-radius: 12px; overflow: hidden"><span style="flex: 2; background: #F5A524"></span><span style="flex: 1; background: #9A5B00"></span><span style="flex: 1; background: #FFF3DC"></span></div>
+            <b>Solar</b><span style="color: #5B616A">Fill #F5A524 · Ink #9A5B00 (5.4:1) · Tint #FFF3DC</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <div style="display: flex; height: 56px; border-radius: 12px; overflow: hidden"><span style="flex: 2; background: #14B8A6"></span><span style="flex: 1; background: #0F766E"></span><span style="flex: 1; background: #DDF5F1"></span></div>
+            <b>Battery</b><span style="color: #5B616A">Fill #14B8A6 · Ink #0F766E (5.5:1) · Tint #DDF5F1</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <div style="display: flex; height: 56px; border-radius: 12px; overflow: hidden"><span style="flex: 2; background: #3B82F6"></span><span style="flex: 1; background: #1D5FD1"></span><span style="flex: 1; background: #E3EDFE"></span></div>
+            <b>Grid</b><span style="color: #5B616A">Fill #3B82F6 · Ink #1D5FD1 (5.1:1) · Tint #E3EDFE</span>
+          </div>
+        </div>
+      </div>
+      <div style="background: #0E1114; color: #F2F1EC; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+        <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #A1A8B0">DARK</span>
+        <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; font-size: 11px">
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #0E1114; border: 1px solid #2A3138"></span><b>Ground</b><span style="color: #A1A8B0">#0E1114</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #171B20"></span><b>Surface</b><span style="color: #A1A8B0">#171B20</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #20262C"></span><b>Surface 2</b><span style="color: #A1A8B0">#20262C</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #2A3138"></span><b>Line</b><span style="color: #A1A8B0">#2A3138</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #A1A8B0"></span><b>Ink 2</b><span style="color: #A1A8B0">#A1A8B0 · 7.6:1</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="height: 56px; border-radius: 12px; background: #F2F1EC"></span><b>Ink</b><span style="color: #A1A8B0">#F2F1EC · 17:1</span></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; font-size: 12px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <div style="display: flex; height: 56px; border-radius: 12px; overflow: hidden"><span style="flex: 3; background: #FFB547"></span><span style="flex: 1; background: #2B2110"></span></div>
+            <b>Solar</b><span style="color: #A1A8B0">Fill + ink #FFB547 (9.9:1) · Tint #2B2110</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <div style="display: flex; height: 56px; border-radius: 12px; overflow: hidden"><span style="flex: 3; background: #2DD4BF"></span><span style="flex: 1; background: #0E2A27"></span></div>
+            <b>Battery</b><span style="color: #A1A8B0">Fill + ink #2DD4BF (10:1) · Tint #0E2A27</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <div style="display: flex; height: 56px; border-radius: 12px; overflow: hidden"><span style="flex: 3; background: #6EA8FF"></span><span style="flex: 1; background: #13233B"></span></div>
+            <b>Grid</b><span style="color: #A1A8B0">Fill + ink #6EA8FF (7.3:1) · Tint #13233B</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px">
+    <div style="display: flex; flex-direction: column; gap: 20px">
+      <h2 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Type</h2>
+      <p style="margin: 0; color: #5B616A">Readex Pro, one family for Latin and Arabic, so both languages share weight and rhythm. Numbers use tabular figures so live values don't jitter. No letter-spacing on Arabic.</p>
+      <div style="background: #FFFFFF; border-radius: 24px; padding: 8px 24px; display: flex; flex-direction: column">
+        <div style="display: flex; align-items: baseline; gap: 24px; padding: 14px 0; border-bottom: 1px solid #EFEDE7"><span style="width: 150px; flex: none; font-size: 12px; color: #5B616A">Display · 60/57 · 600 · −4%</span><span style="font-size: 60px; line-height: 0.95; font-weight: 600; letter-spacing: -0.04em">82%</span></div>
+        <div style="display: flex; align-items: baseline; gap: 24px; padding: 14px 0; border-bottom: 1px solid #EFEDE7"><span style="width: 150px; flex: none; font-size: 12px; color: #5B616A">Numeral L · 44/46 · 600</span><span style="font-size: 44px; line-height: 1.05; font-weight: 600; letter-spacing: -0.03em">+120</span></div>
+        <div style="display: flex; align-items: baseline; gap: 24px; padding: 14px 0; border-bottom: 1px solid #EFEDE7"><span style="width: 150px; flex: none; font-size: 12px; color: #5B616A">Title · 28/34 · 600</span><span style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em">Rewards</span></div>
+        <div style="display: flex; align-items: baseline; gap: 24px; padding: 14px 0; border-bottom: 1px solid #EFEDE7"><span style="width: 150px; flex: none; font-size: 12px; color: #5B616A">Headline · 22/27 · 600</span><span style="font-size: 22px; font-weight: 600">The grid is under pressure</span></div>
+        <div style="display: flex; align-items: baseline; gap: 24px; padding: 14px 0; border-bottom: 1px solid #EFEDE7"><span style="width: 150px; flex: none; font-size: 12px; color: #5B616A">Stat · 24/30 · 600</span><span style="font-size: 24px; font-weight: 600">AED 12.60</span></div>
+        <div style="display: flex; align-items: baseline; gap: 24px; padding: 14px 0; border-bottom: 1px solid #EFEDE7"><span style="width: 150px; flex: none; font-size: 12px; color: #5B616A">Body · 15/22 · 400</span><span style="font-size: 15px">Your battery will be full by 1 pm.</span></div>
+        <div style="display: flex; align-items: baseline; gap: 24px; padding: 14px 0; border-bottom: 1px solid #EFEDE7"><span style="width: 150px; flex: none; font-size: 12px; color: #5B616A">Caption · 12/17 · 400</span><span style="font-size: 12px; color: #5B616A">Full by 1:00 pm</span></div>
+        <div style="display: flex; align-items: baseline; gap: 24px; padding: 14px 0"><span style="width: 150px; flex: none; font-size: 12px; color: #5B616A">Arabic body · 15/24</span><span lang="ar" dir="rtl" style="font-size: 15px; line-height: 1.6">ستمتلئ بطاريتك بحلول الساعة 1 ظهرًا</span></div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 20px">
+      <h2 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Spacing, shape, touch</h2>
+      <div style="background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; align-items: flex-end; gap: 14px">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #5B616A"><span style="width: 4px; height: 4px; background: #15171A"></span>4</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #5B616A"><span style="width: 8px; height: 8px; background: #15171A"></span>8</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #5B616A"><span style="width: 12px; height: 12px; background: #15171A"></span>12</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #5B616A"><span style="width: 16px; height: 16px; background: #15171A"></span>16</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #5B616A"><span style="width: 20px; height: 20px; background: #15171A"></span>20</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #5B616A"><span style="width: 24px; height: 24px; background: #15171A"></span>24</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #5B616A"><span style="width: 32px; height: 32px; background: #15171A"></span>32</div>
+          <span style="font-size: 13px; color: #5B616A; margin-left: 12px">4 pt base · 20 pt screen gutter · 10–14 pt between cards</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px">
+          <span style="width: 56px; height: 40px; border-radius: 12px; background: #EFEDE7"></span>
+          <span style="width: 56px; height: 40px; border-radius: 18px; background: #EFEDE7"></span>
+          <span style="width: 56px; height: 40px; border-radius: 24px; background: #EFEDE7"></span>
+          <span style="font-size: 13px; color: #5B616A">Radius 12 icon tiles · 18–20 tiles · 22–26 cards · full pills for buttons</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px">
+          <span style="width: 44px; height: 44px; border-radius: 22px; border: 2px dashed #1D5FD1; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #1D5FD1">44</span>
+          <span style="font-size: 13px; color: #5B616A">Every tap target is at least 44 × 44 pt, including icon buttons, toggles and flow nodes (56 pt).</span>
+        </div>
+      </div>
+      <h2 style="margin: 8px 0 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Accessibility</h2>
+      <div style="background: #FFFFFF; border-radius: 24px; padding: 20px 24px; display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+        <span><b>Contrast.</b> All text is 4.5:1 or better (WCAG AA). Fills like amber only carry dark ink text (8.7:1).</span>
+        <span><b>Never colour alone.</b> Nodes carry an icon, a name and a value. Offline is a dashed outline plus "!" and the word "Offline". Toggles show a check.</span>
+        <span><b>Screen readers.</b> Each flow node is a button with a full sentence, e.g. "Battery: 64%, charging at 2.1 kW".</span>
+        <span><b>Reduced motion.</b> Flows stop and stay as solid lines with arrows. Counters jump straight to the final value.</span>
+        <span><b>RTL.</b> Layout mirrors: battery and solar swap sides, progress and switches run right-to-left. Numerals stay Western (0–9), as most UAE apps do.</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="display: flex; flex-direction: column; gap: 20px">
+    <h2 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Components</h2>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px">
+
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 13px; font-weight: 600; color: #5B616A">STAT TILE</span>
+        <div style="background: #FFFFFF; border-radius: 20px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 12px; color: #5B616A; display: flex; justify-content: space-between">Battery <span style="color: #0F766E; font-weight: 500">Charging</span></span>
+          <span style="font-size: 24px; font-weight: 600">64%</span>
+          <div style="height: 6px; border-radius: 3px; background: #DDF5F1; overflow: hidden; margin: 2px 0"><div style="width: 64%; height: 6px; border-radius: 3px; background: #14B8A6"></div></div>
+          <span style="font-size: 12px; color: #5B616A">Full by 1:00 pm</span>
+        </div>
+        <span style="font-size: 12px; color: #5B616A">Label → value → optional meter → plain-language context.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 13px; font-weight: 600; color: #5B616A">FLOW NODE · STATES</span>
+        <div style="background: #FFFFFF; border-radius: 20px; padding: 16px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; text-align: center; font-size: 11px">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 52px; height: 52px; border-radius: 26px; background: #FFF3DC; border: 2px solid #F5A524; color: #9A5B00; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></span>Producing</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 52px; height: 52px; border-radius: 26px; background: #DDF5F1; border: 2px solid #14B8A6; color: #0F766E; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="18" height="10" rx="2"></rect><path d="M22 11v2M11.5 9.5 9.5 12h3l-2 2.5"></path></svg></span>Charging</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 52px; height: 52px; border-radius: 26px; background: #F6F5F1; border: 2px dashed #8E929A; color: #5B616A; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14v-5l-2-5H7l-2 5z"></path><circle cx="7.5" cy="17.5" r="1.5"></circle><circle cx="16.5" cy="17.5" r="1.5"></circle></svg></span>Idle</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="position: relative; width: 52px; height: 52px; border-radius: 26px; background: #EFEDE7; border: 2px dashed #8E929A; color: #5B616A; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="2" y="7" width="18" height="10" rx="2"></rect><path d="M22 11v2"></path></svg><span style="position: absolute; right: -4px; top: -4px; width: 18px; height: 18px; border-radius: 9px; background: #15171A; color: #FFFFFF; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">!</span></span>Offline</div>
+        </div>
+        <span style="font-size: 12px; color: #5B616A">56 pt hit area. Solid ring = active, dashed = idle or offline. Label above or below, never colour alone.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 13px; font-weight: 600; color: #5B616A">FLOW LINE</span>
+        <div style="background: #FFFFFF; border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+          <svg width="100%" height="76" viewBox="0 0 260 76" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M8 14 H252" stroke="#F5A524" stroke-opacity="0.18" stroke-width="9" stroke-linecap="round"></path>
+            <path class="flow" d="M8 14 H252" stroke="#F5A524" stroke-width="9" fill="none" style="animation-duration: 0.6s"></path>
+            <path d="M8 40 H252" stroke="#14B8A6" stroke-opacity="0.18" stroke-width="5" stroke-linecap="round"></path>
+            <path class="flow" d="M8 40 H252" stroke="#14B8A6" stroke-width="5" fill="none" style="animation-duration: 1.2s"></path>
+            <path d="M8 64 H252" stroke="#B9B5AC" stroke-width="2" stroke-dasharray="3 6" stroke-linecap="round"></path>
+          </svg>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: #5B616A"><span>8 kW · 9 pt · 0.6 s</span><span>2 kW · 5 pt · 1.2 s</span><span>Idle</span></div>
+        </div>
+        <span style="font-size: 12px; color: #5B616A">Width 2–9 pt and particle speed scale with power. Direction = where power goes.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 13px; font-weight: 600; color: #5B616A">PROGRESS RING</span>
+        <div style="background: #FFFFFF; border-radius: 20px; padding: 16px; display: flex; align-items: center; gap: 18px">
+          <div style="position: relative; width: 96px; height: 96px">
+            <svg width="96" height="96" viewBox="0 0 96 96" style="transform: rotate(-90deg)" aria-hidden="true"><circle cx="48" cy="48" r="40" fill="none" stroke="#EFEDE7" stroke-width="9"></circle><circle cx="48" cy="48" r="40" fill="none" stroke="#F5A524" stroke-width="9" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="75"></circle></svg>
+            <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1"><b style="font-size: 20px">70%</b><span style="font-size: 10px; color: #5B616A">done</span></div>
+          </div>
+          <span style="font-size: 12px; color: #5B616A">Countdowns, levels, battery. Always paired with the number in the centre.</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; grid-column: span 2">
+        <span style="font-size: 13px; font-weight: 600; color: #5B616A">INSIGHT CARD</span>
+        <div style="background: #FFF3DC; border-radius: 20px; padding: 14px; display: flex; gap: 12px; align-items: center">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 18px; background: #F5A524; color: #15171A; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"></rect><circle cx="12" cy="13" r="5"></circle></svg></span>
+          <p style="margin: 0; font-size: 14px; flex: 1">Your battery will be full by <b>1 pm</b> — a good time to run the washing machine.</p>
+          <button style="height: 44px; padding: 0 16px; border-radius: 22px; border: 0; background: #15171A; color: #FFFFFF; font-size: 14px; font-weight: 500; cursor: pointer">Remind me</button>
+        </div>
+        <span style="font-size: 12px; color: #5B616A">One per screen. Tint matches the source it talks about: amber for sun, blue for grid or night, neutral for edge states. Always one action.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; grid-column: span 2">
+        <span style="font-size: 13px; font-weight: 600; color: #5B616A">DEVICE TOGGLE ROW · ON / OFF</span>
+        <div style="background: #FFFFFF; border-radius: 20px; display: flex; flex-direction: column">
+          <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px">
+            <span style="width: 40px; height: 40px; border-radius: 12px; background: #E3EDFE; color: #1D5FD1; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M12 2v20M4.9 7l14.2 10M4.9 17 19.1 7"></path></svg></span>
+            <div style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">AC <span style="font-size: 12px; font-weight: 500; color: #9A5B00">+60</span></span><span style="font-size: 12px; color: #5B616A">Pre-cool to 22°C now, then 25°C from 5 to 7 pm</span></div>
+            <span role="img" aria-label="On" style="width: 52px; height: 32px; border-radius: 16px; background: #15171A; padding: 3px; display: flex; justify-content: flex-end"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#15171A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg></span></span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-top: 1px solid #EFEDE7; opacity: 0.62">
+            <span style="width: 40px; height: 40px; border-radius: 12px; background: #EFEDE7; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M6 14V4M14 14V4M6 8h8"></path></svg></span>
+            <div style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Pool pump <span style="font-size: 12px; font-weight: 500; color: #9A5B00">+20</span></span><span style="font-size: 12px; color: #5B616A">Skip the 5 pm cycle, run at 8 pm instead</span></div>
+            <span role="img" aria-label="Off" style="width: 52px; height: 32px; border-radius: 16px; background: #C9C5BC; padding: 3px; display: flex"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF"></span></span>
+          </div>
+        </div>
+        <span style="font-size: 12px; color: #5B616A">Device · points · the exact change in plain words (from → to, and until when). Switch is 44 pt tall and shows a check when on.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; grid-column: span 2">
+        <span style="font-size: 13px; font-weight: 600; color: #5B616A">EVENT CARD</span>
+        <div style="background: #15171A; color: #F2F1EC; border-radius: 24px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; justify-content: space-between; font-size: 12px"><span style="background: #2A2F36; padding: 4px 10px; border-radius: 12px">Today · 5–7 pm</span><span style="color: #A1A8B0">Starts in 1 h 18 m</span></div>
+          <span style="font-size: 20px; font-weight: 600">The grid is under pressure this evening</span>
+          <div style="display: flex; align-items: baseline; gap: 6px; color: #FFB547"><span style="font-size: 36px; font-weight: 600; line-height: 1">+120</span><span>points</span></div>
+        </div>
+        <span style="font-size: 12px; color: #5B616A">Ink card stands out from the neutral page: time, plain reason, reward in amber.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; grid-column: span 2">
+        <span style="font-size: 13px; font-weight: 600; color: #5B616A">BUTTONS</span>
+        <div style="background: #FFFFFF; border-radius: 24px; padding: 18px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+          <button style="height: 54px; padding: 0 22px; border-radius: 27px; border: 0; background: #F5A524; color: #15171A; font-size: 16px; font-weight: 600; cursor: pointer">Accept · earn 120 points</button>
+          <button style="height: 54px; padding: 0 22px; border-radius: 27px; border: 0; background: #15171A; color: #FFFFFF; font-size: 16px; font-weight: 600; cursor: pointer">Open my wallet</button>
+          <button style="height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #15171A; background: transparent; color: #15171A; font-size: 14px; font-weight: 500; cursor: pointer">Fix it</button>
+          <button style="height: 44px; padding: 0 14px; border-radius: 22px; border: 0; background: transparent; color: #5B616A; font-size: 14px; cursor: pointer">Not this time</button>
+        </div>
+        <span style="font-size: 12px; color: #5B616A">Amber = earn. Ink = go somewhere. Outline = fix. Text = decline, worded neutrally.</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px">
+    <div style="display: flex; flex-direction: column; gap: 20px">
+      <h2 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Motion</h2>
+      <div style="background: #FFFFFF; border-radius: 24px; padding: 8px 24px; display: flex; flex-direction: column; font-size: 13px">
+        <div style="display: grid; grid-template-columns: 170px 190px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid #E3E0D8; font-size: 12px; color: #5B616A; font-weight: 600"><span>Element</span><span>Timing</span><span>What it tells you</span></div>
+        <div style="display: grid; grid-template-columns: 170px 190px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid #EFEDE7"><b>Energy flow particles</b><span>Linear loop, 0.6 s (8 kW) to 2.4 s (1 kW)</span><span>Dots travel the way power moves. Faster and wider = more power.</span></div>
+        <div style="display: grid; grid-template-columns: 170px 190px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid #EFEDE7"><b>Solar glow</b><span>2.4 s ease-out ring</span><span>The sun is producing right now.</span></div>
+        <div style="display: grid; grid-template-columns: 170px 190px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid #EFEDE7"><b>Battery fill</b><span>Width eases 600 ms; 2 s breathe</span><span>Charging breathes up; discharging breathes down. Stops when idle.</span></div>
+        <div style="display: grid; grid-template-columns: 170px 190px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid #EFEDE7"><b>Live dot</b><span>1.6 s pulse</span><span>Data is live. Becomes "Updated 8 sec ago" when the feed lags.</span></div>
+        <div style="display: grid; grid-template-columns: 170px 190px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid #EFEDE7"><b>Notification</b><span>500 ms spring, actions +120 ms</span><span>Something good to do, arriving softly.</span></div>
+        <div style="display: grid; grid-template-columns: 170px 190px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid #EFEDE7"><b>Toggle + points total</b><span>250 ms spring; number rolls 300 ms</span><span>Each device choice changes the reward right away.</span></div>
+        <div style="display: grid; grid-template-columns: 170px 190px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid #EFEDE7"><b>Countdown ring</b><span>1 s linear per tick; halo 4 s</span><span>Calm progress. No red, no urgency.</span></div>
+        <div style="display: grid; grid-template-columns: 170px 190px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid #EFEDE7"><b>Points counter</b><span>0 → N in 1.2 s, cubic ease-out</span><span>The payoff lands, slowing near the end.</span></div>
+        <div style="display: grid; grid-template-columns: 170px 190px 1fr; gap: 16px; padding: 10px 0"><b>Success</b><span>Pop 600 ms, check draws 450 ms, 7 confetti bits 1.4 s, tiles rise 150 ms apart</span><span>Celebration. Plays once and never loops.</span></div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 20px">
+      <h2 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Voice &amp; copy</h2>
+      <div style="background: #15171A; color: #F2F1EC; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 14px; font-size: 14px">
+        <div style="display: flex; flex-direction: column; gap: 2px"><b style="color: #FFB547">Say what it means</b><span style="color: #C9CCD1">"Enough to run about 3 ACs" next to 5.4 kW. kWh always comes with a comparison.</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><b style="color: #FFB547">Lead with the human result</b><span style="color: #C9CCD1">"82% powered by the sun", not "Self-consumption ratio 0.82".</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><b style="color: #FFB547">Name every change</b><span style="color: #C9CCD1">"Pause until 7 pm · still 80% by 7 am". No hidden automation.</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><b style="color: #FFB547">Reward, never guilt</b><span style="color: #C9CCD1">"Not this time", "Your streak is paused, not lost", "You keep the points earned so far".</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><b style="color: #FFB547">Write for both languages</b><span style="color: #C9CCD1">Short sentences that translate cleanly. Arabic copy is written fresh, not word for word.</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2480}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lumo – Shift and Earn flow</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+a{color:#1D5FD1}a:hover{color:#15171A}
+</style>
+</helmet>
+<div style="width: 1330px; height: 844px; box-sizing: border-box; padding: 48px; background: #F6F5F1; color: #15171A; font-family: 'Readex Pro', system-ui, sans-serif; font-size: 14px; line-height: 1.45; display: flex; flex-direction: column; gap: 28px">
+  <div style="display: flex; justify-content: space-between; align-items: flex-end">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <span style="font-size: 13px; font-weight: 500; color: #9A5B00; letter-spacing: 0.06em">USER FLOW</span>
+      <h1 style="margin: 0; font-size: 36px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em">Shift &amp; Earn: notification → accept → active → reward</h1>
+    </div>
+    <span style="font-size: 13px; color: #5B616A; max-width: 300px; text-align: right">One tap for Omar. Lumo changes the devices, keeps the house comfortable, and pays out in points.</span>
+  </div>
+
+  <div style="display: flex; align-items: stretch; gap: 0">
+    <a href="LockScreen.dc.html" style="width: 272px; flex: none; background: #FFFFFF; border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #15171A">
+      <div style="display: flex; align-items: center; gap: 10px"><span style="width: 32px; height: 32px; border-radius: 16px; background: #15171A; color: #FFFFFF; font-weight: 600; display: flex; align-items: center; justify-content: center">1</span><span style="font-size: 18px; font-weight: 600">Notify</span></div>
+      <span style="font-size: 12px; color: #5B616A">Screen 03 · Lock screen push</span>
+      <div style="background: #F6F5F1; border-radius: 14px; padding: 10px 12px; font-size: 13px">"Grid moment, 5–7 pm · earn 120 points. Pre-cool now and pause the EV charge — one tap and we'll handle it."</div>
+      <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px"><b>Trigger</b><span style="color: #3D4249">Grid operator flags evening pressure; sent ~80 min ahead so pre-cooling has time to work.</span></div>
+      <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px"><b>Motion</b><span style="color: #3D4249">Card drops in with a soft spring (500 ms); action buttons follow 120 ms later.</span></div>
+    </a>
+    <div aria-hidden="true" style="width: 48px; flex: none; display: flex; align-items: center; justify-content: center; color: #15171A">
+      <svg width="40" height="16" viewBox="0 0 40 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h34M30 2l6 6-6 6"></path></svg>
+    </div>
+    <a href="GridMoment.dc.html" style="width: 272px; flex: none; background: #FFFFFF; border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #15171A">
+      <div style="display: flex; align-items: center; gap: 10px"><span style="width: 32px; height: 32px; border-radius: 16px; background: #15171A; color: #FFFFFF; font-weight: 600; display: flex; align-items: center; justify-content: center">2</span><span style="font-size: 18px; font-weight: 600">Accept</span></div>
+      <span style="font-size: 12px; color: #5B616A">Screen 04 · Grid moment detail</span>
+      <div style="background: #F6F5F1; border-radius: 14px; padding: 10px 12px; font-size: 13px; display: flex; flex-direction: column; gap: 2px">
+        <span>AC: 22°C now, 25°C from 5–7 pm</span><span>Battery: fill from sun, run house 5–7</span><span>EV: pause till 7 pm, 80% by 7 am</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px"><b>What happens</b><span style="color: #3D4249">Every device change is listed in plain words and can be switched off. Points update live.</span></div>
+      <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px"><b>Motion</b><span style="color: #3D4249">Toggle knob springs (250 ms); points total rolls to the new number.</span></div>
+    </a>
+    <div aria-hidden="true" style="width: 48px; flex: none; display: flex; align-items: center; justify-content: center; color: #15171A">
+      <svg width="40" height="16" viewBox="0 0 40 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h34M30 2l6 6-6 6"></path></svg>
+    </div>
+    <a href="ActiveEvent.dc.html" style="width: 272px; flex: none; background: #15171A; color: #F2F1EC; border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 10px; text-decoration: none">
+      <div style="display: flex; align-items: center; gap: 10px"><span style="width: 32px; height: 32px; border-radius: 16px; background: #FFB547; color: #15171A; font-weight: 600; display: flex; align-items: center; justify-content: center">3</span><span style="font-size: 18px; font-weight: 600">Active</span></div>
+      <span style="font-size: 12px; color: #A1A8B0">Screen 05 · Live countdown</span>
+      <div style="background: #20262C; border-radius: 14px; padding: 10px 12px; font-size: 13px">"Ends in 1:24:36 · +35 / 120 points · Grid use now 0.2 kW, 95% less than usual."</div>
+      <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px"><b>Safety net</b><span style="color: #C9CCD1">Comfort guard brings the AC back above 26°C inside. "Stop early" keeps points earned.</span></div>
+      <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px"><b>Motion</b><span style="color: #C9CCD1">Ring fills each second (1 s linear); outer halo breathes every 4 s; Live dot pulses.</span></div>
+    </a>
+    <div aria-hidden="true" style="width: 48px; flex: none; display: flex; align-items: center; justify-content: center; color: #15171A">
+      <svg width="40" height="16" viewBox="0 0 40 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h34M30 2l6 6-6 6"></path></svg>
+    </div>
+    <a href="EventResult.dc.html" style="width: 272px; flex: none; background: #FFF3DC; border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #15171A">
+      <div style="display: flex; align-items: center; gap: 10px"><span style="width: 32px; height: 32px; border-radius: 16px; background: #F5A524; color: #15171A; font-weight: 600; display: flex; align-items: center; justify-content: center">4</span><span style="font-size: 18px; font-weight: 600">Reward</span></div>
+      <span style="font-size: 12px; color: #6B4100">Screen 06 · Result → 07 Wallet</span>
+      <div style="background: #FFFFFF; border-radius: 14px; padding: 10px 12px; font-size: 13px">"Nicely done, Omar. +120 points · AED 4.80 off your bill · 3.2 kg CO₂ avoided."</div>
+      <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px"><b>Then</b><span style="color: #3D4249">Streak and level progress, then the wallet to turn points into bill credit (20 pts = AED 1).</span></div>
+      <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px"><b>Motion</b><span style="color: #3D4249">Check draws (450 ms), 7 confetti bits burst (1.4 s), points count 0→120 (1.2 s ease-out), tiles rise in 150 ms apart.</span></div>
+    </a>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <span style="font-size: 13px; font-weight: 600; color: #5B616A; letter-spacing: 0.06em">OTHER PATHS · NEVER GUILT-DRIVEN</span>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+      <div style="border: 1.5px dashed #C9C5BC; border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+        <b>"Not today"</b><span style="font-size: 13px; color: #3D4249">No warning, no lost points. The moment stays in the Rewards feed until 5 pm in case Omar changes his mind.</span>
+      </div>
+      <div style="border: 1.5px dashed #C9C5BC; border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+        <b>Stop early</b><span style="font-size: 13px; color: #3D4249">Devices go back to normal within 1 minute. Points are paid for the time completed: "You keep the 35 points earned so far."</span>
+      </div>
+      <div style="border: 1.5px dashed #C9C5BC; border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+        <b>Comfort guard trips</b><span style="font-size: 13px; color: #3D4249">AC returns to normal automatically. A neutral note explains why; the rest of the moment still counts.</span>
+      </div>
+      <div style="border: 1.5px dashed #C9C5BC; border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+        <b>Device offline / cloudy</b><span style="font-size: 13px; color: #3D4249">Moments that need the battery are skipped and the streak is paused, not lost (screen 08).</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1330,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

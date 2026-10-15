@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lumo – Solar details</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+button,a{font-family:inherit}
+a{color:#15171A}a:hover{color:#5B616A}
+.bar:focus-visible{outline:2px solid #15171A;outline-offset:2px;border-radius:4px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F6F5F1; color: #15171A; font-family: 'Readex Pro', system-ui, sans-serif; font-size: 15px; line-height: 1.4">
+  <div style="padding: 52px 20px 0; display: flex; flex-direction: column; gap: 12px">
+
+    <header style="display: flex; align-items: center; justify-content: space-between; height: 44px">
+      <a href="Main.dc.html" aria-label="Back to Home" style="width: 44px; height: 44px; border-radius: 22px; background: #FFFFFF; border: 1px solid #E3E0D8; display: flex; align-items: center; justify-content: center; text-decoration: none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 6px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A5B00" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>Solar</h1>
+      <button aria-label="Solar system settings" style="width: 44px; height: 44px; border-radius: 22px; background: #FFFFFF; border: 1px solid #E3E0D8; display: flex; align-items: center; justify-content: center; padding: 0; color: #15171A; cursor: pointer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle></svg>
+      </button>
+    </header>
+
+    <section style="display: flex; align-items: flex-end; justify-content: space-between">
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 14px; color: #5B616A">Producing right now</span>
+        <span style="font-size: 52px; line-height: 1; font-weight: 600; letter-spacing: -0.04em; font-variant-numeric: tabular-nums">5.4<span style="font-size: 20px; font-weight: 500; letter-spacing: 0; color: #5B616A"> kW</span></span>
+        <span style="font-size: 13px; color: #5B616A; margin-top: 4px">Enough to run about 3 ACs at once</span>
+      </div>
+      <span style="font-size: 12px; font-weight: 500; color: #0F766E; background: #DDF5F1; padding: 4px 10px; border-radius: 12px; display: flex; align-items: center; gap: 4px">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>All 18 panels OK</span>
+    </section>
+
+    <section style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <div style="background: #FFFFFF; border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column">
+        <span style="font-size: 12px; color: #5B616A">Made today</span>
+        <span style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums">14.2 <span style="font-size: 13px; font-weight: 500; color: #5B616A">kWh</span></span>
+        <span style="font-size: 12px; color: #5B616A">≈ 4 hours of your home</span>
+      </div>
+      <div style="background: #FFFFFF; border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column">
+        <span style="font-size: 12px; color: #5B616A">Saved today</span>
+        <span style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums"><span style="font-size: 13px; font-weight: 500; color: #5B616A">AED </span>5.70</span>
+        <span style="font-size: 12px; color: #5B616A">vs. buying it all</span>
+      </div>
+      <div style="background: #FFFFFF; border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column">
+        <span style="font-size: 12px; color: #5B616A">Peak today</span>
+        <span style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums">12:40 <span style="font-size: 13px; font-weight: 500; color: #5B616A">pm</span></span>
+        <span style="font-size: 12px; color: #5B616A">Up to 6.1 kW expected</span>
+      </div>
+      <div style="background: #FFFFFF; border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column">
+        <span style="font-size: 12px; color: #5B616A">Sunshine left</span>
+        <span style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums">7 h 50 m</span>
+        <span style="font-size: 12px; color: #5B616A">Sunset 7:12 pm</span>
+      </div>
+    </section>
+
+    <section aria-label="Solar production over 24 hours" style="background: #FFFFFF; border-radius: 22px; padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-size: 15px; font-weight: 600">Today, hour by hour</span>
+        <span aria-live="polite" style="font-size: 12px; color: #5B616A; font-variant-numeric: tabular-nums"><b style="color: #15171A">{{readout.time}}</b> · {{readout.value}} · {{readout.tag}}</span>
+      </div>
+      <div style="position: relative; height: 128px; margin-top: 4px">
+        <div style="position: absolute; left: 0; right: 0; top: 28px; border-top: 1px solid #EFEDE7"></div>
+        <div style="position: absolute; left: 0; right: 0; top: 78px; border-top: 1px solid #EFEDE7"></div>
+        <span style="position: absolute; right: 0; top: 13px; font-size: 10px; color: #5B616A">6 kW</span>
+        <span style="position: absolute; right: 0; top: 63px; font-size: 10px; color: #5B616A">3 kW</span>
+        <div style="position: absolute; left: 152px; top: 0; bottom: 0; border-left: 1.5px dashed #15171A"></div>
+        <span style="position: absolute; left: 156px; top: 0; font-size: 10px; font-weight: 600">Now</span>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 128px; display: flex; align-items: flex-end; gap: 0">
+          <sc-for list="{{bars}}" as="b" hint-placeholder-count="24">
+            <button class="bar" aria-label="{{b.label}}" onMouseEnter="{{b.pick}}" onFocus="{{b.pick}}" onClick="{{b.pick}}" style="flex: 1; height: 128px; padding: 0 2px; border: 0; background: transparent; display: flex; align-items: flex-end; cursor: pointer">
+              <span style="display: block; width: 100%; height: {{b.h}}px; background: {{b.fill}}; border-radius: 4px 4px 0 0; outline: {{b.ring}}"></span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="border-top: 1px solid #C9C5BC; display: flex; justify-content: space-between; font-size: 10px; color: #5B616A; padding-top: 4px">
+        <span>12 am</span><span>6 am</span><span>12 pm</span><span>6 pm</span><span>12 am</span>
+      </div>
+      <div style="display: flex; gap: 14px; font-size: 11px; color: #5B616A">
+        <span style="display: flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #F5A524"></span>Made so far</span>
+        <span style="display: flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #FBDCA6; border: 1px dashed #9A5B00"></span>Forecast</span>
+      </div>
+    </section>
+
+    <section style="background: #FFFFFF; border-radius: 22px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 600">Where your sunshine went</span>
+      <div role="img" aria-label="Home 58%, battery 34%, sold to grid 8%" style="display: flex; gap: 2px; height: 10px">
+        <span style="flex: 58; background: #15171A; border-radius: 5px 0 0 5px"></span>
+        <span style="flex: 34; background: #14B8A6"></span>
+        <span style="flex: 8; background: #3B82F6; border-radius: 0 5px 5px 0"></span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; font-size: 12px">
+        <div style="display: flex; flex-direction: column"><span style="color: #5B616A; display: flex; align-items: center; gap: 4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"></path></svg>Home</span><b style="font-size: 15px">58%</b><span style="color: #5B616A">8.2 kWh</span></div>
+        <div style="display: flex; flex-direction: column"><span style="color: #5B616A; display: flex; align-items: center; gap: 4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="7" width="18" height="10" rx="2"></rect><path d="M22 11v2"></path></svg>Battery</span><b style="font-size: 15px">34%</b><span style="color: #5B616A">4.8 kWh</span></div>
+        <div style="display: flex; flex-direction: column"><span style="color: #5B616A; display: flex; align-items: center; gap: 4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 22 12 2l4 20M6 8h12M5 14h14"></path></svg>Sold to grid</span><b style="font-size: 15px">8%</b><span style="color: #5B616A">1.2 kWh</span></div>
+      </div>
+    </section>
+
+    <p style="margin: 0; font-size: 12px; color: #5B616A; display: flex; gap: 6px; align-items: flex-start">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex: none; margin-top: 2px" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+      <span><b style="color: #15171A">kW</b> is how fast power flows right now. <b style="color: #15171A">kWh</b> is energy added up over time — 1 kWh runs your AC for about 30 minutes.</span>
+    </p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 11 };
+  }
+  renderVals() {
+    const kw = [0,0,0,0,0,0,0.4,1.6,2.9,3.9,4.8,5.4,6.0,6.1,5.7,4.9,3.8,2.5,1.1,0.2,0,0,0,0];
+    const nowHour = 11;
+    const fmt = (h) => (h % 12 === 0 ? 12 : h % 12) + (h < 12 ? ' am' : ' pm');
+    const bars = kw.map((v, h) => {
+      const forecast = h > nowHour;
+      const picked = this.state.picked === h;
+      return {
+        h: v === 0 ? 2 : Math.max(4, Math.round(v / 6.6 * 110)),
+        fill: v === 0 ? '#E3E0D8' : (forecast ? '#FBDCA6' : '#F5A524'),
+        ring: picked ? '2px solid #15171A' : 'none',
+        label: fmt(h) + ': ' + v.toFixed(1) + ' kW' + (forecast ? ' forecast' : ''),
+        pick: () => this.setState({ picked: h })
+      };
+    });
+    const p = this.state.picked;
+    return {
+      bars,
+      readout: {
+        time: fmt(p),
+        value: kw[p].toFixed(1) + ' kW',
+        tag: p === nowHour ? 'Now' : (p > nowHour ? 'Forecast' : 'Made')
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
