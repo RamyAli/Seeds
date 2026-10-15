@@ -6,17 +6,20 @@
 /* Layout: a quiet specimen sheet. Short header with playback controls, then a grid of tiles,
    each one a 160x140 stage holding one glass icon and the note that describes its motion. */
 :root {
-  --bg: #FDF9F6;
+  /* Base hue from the slider. The gradient runs base -> lighter base -> base + 44deg,
+     which at 227 reproduces the original blue-to-purple set. */
+  --h: 227;
+  --bg: hsl(var(--h) 60% 98%);
   --tile: #FFFFFF;
-  --tile-edge: #F2E4DA;
-  --fg: #2A1C14;
-  --muted: #86685A;
-  --accent: #D9480F;
-  --grad: linear-gradient(140deg, #FF6A1A 0%, #FFAE6B 52%, #D9361E 100%);
-  --grad-a: #FF6A1A;
-  --grad-b: #FFAE6B;
-  --grad-c: #D9361E;
-  --glass: rgba(255, 214, 190, 0.58);
+  --tile-edge: hsl(var(--h) 50% 93%);
+  --fg: hsl(var(--h) 32% 15%);
+  --muted: hsl(var(--h) 16% 46%);
+  --accent: hsl(var(--h) 75% 50%);
+  --grad-a: hsl(var(--h) 100% 59%);
+  --grad-b: hsl(var(--h) 100% 72%);
+  --grad-c: hsl(calc(var(--h) + 44) 76% 53%);
+  --grad: linear-gradient(140deg, var(--grad-a) 0%, var(--grad-b) 52%, var(--grad-c) 100%);
+  --glass: hsl(var(--h) 75% 87% / 0.58);
   --glass-edge: rgba(255, 255, 255, 0.55);
   --knob: #FFFFFF;
   --dot: #FFFFFF;
@@ -31,14 +34,14 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #170F0B; --tile: #22170F; --tile-edge: #3D2A1D; --fg: #FFF1E8; --muted: #C9A893; --accent: #FF9A5A;
-    --glass: rgba(255, 170, 120, 0.17); --glass-edge: rgba(255, 255, 255, 0.16); --knob: #FFF3EB; --dot: #FFFFFF;
+    --bg: hsl(var(--h) 38% 8%); --tile: hsl(var(--h) 33% 12%); --tile-edge: hsl(var(--h) 35% 21%); --fg: hsl(var(--h) 100% 96%); --muted: hsl(var(--h) 25% 70%); --accent: hsl(var(--h) 100% 78%);
+    --glass: hsl(var(--h) 100% 80% / 0.17); --glass-edge: rgba(255, 255, 255, 0.16); --knob: hsl(var(--h) 100% 97%); --dot: #FFFFFF;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #170F0B; --tile: #22170F; --tile-edge: #3D2A1D; --fg: #FFF1E8; --muted: #C9A893; --accent: #FF9A5A;
-  --glass: rgba(255, 170, 120, 0.17); --glass-edge: rgba(255, 255, 255, 0.16); --knob: #FFF3EB; --dot: #FFFFFF;
+  --bg: hsl(var(--h) 38% 8%); --tile: hsl(var(--h) 33% 12%); --tile-edge: hsl(var(--h) 35% 21%); --fg: hsl(var(--h) 100% 96%); --muted: hsl(var(--h) 25% 70%); --accent: hsl(var(--h) 100% 78%);
+  --glass: hsl(var(--h) 100% 80% / 0.17); --glass-edge: rgba(255, 255, 255, 0.16); --knob: hsl(var(--h) 100% 97%); --dot: #FFFFFF;
   color-scheme: dark;
 }
 
@@ -74,7 +77,25 @@ h1 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: c
 .btn:hover, .seg button:hover { border-color: var(--accent); }
 .seg { display: inline-flex; border: 1px solid var(--tile-edge); border-radius: 999px; background: var(--tile); padding: 3px; gap: 2px; }
 .seg button { border: 0; padding: 7px 12px; font-family: var(--font-mono); font-weight: 500; background: transparent; }
-.seg button[aria-pressed="true"] { background: var(--accent); color: var(--tile); }
+.seg button[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 18%, var(--tile)); color: var(--fg); box-shadow: inset 0 0 0 1px var(--accent); }
+.hue { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--tile-edge); border-radius: 999px; background: var(--tile); padding: 6px 8px 6px 14px; }
+.hue label { font: 600 13px/1 var(--font-body); }
+.hue output { font: 500 12px/1 var(--font-mono); color: var(--muted); min-width: 4ch; text-align: right; font-variant-numeric: tabular-nums; }
+.hue input[type="range"] {
+  -webkit-appearance: none; appearance: none; width: 160px; max-width: 40vw; height: 12px; border-radius: 999px; margin: 0; cursor: pointer;
+  background: linear-gradient(90deg, hsl(0 100% 62%), hsl(60 100% 55%), hsl(120 85% 50%), hsl(180 100% 45%), hsl(240 100% 62%), hsl(300 100% 60%), hsl(360 100% 62%));
+}
+.hue input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--grad-a); border: 3px solid #FFFFFF; box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+}
+.hue input[type="range"]::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--grad-a); border: 3px solid #FFFFFF; box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+}
+.swatches { display: inline-flex; gap: 6px; }
+.swatches button { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--tile); box-shadow: 0 0 0 1px var(--tile-edge); cursor: pointer; padding: 0; }
+.swatches button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--fg); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
@@ -126,7 +147,7 @@ svg.g { background: none; overflow: visible; }
 .toggle .orb { left: 92px; top: 22px; width: 60px; height: 60px; border-radius: 50%; }
 .toggle .track { left: 8px; top: 46px; width: 112px; height: 54px; border-radius: 27px; }
 .toggle .knob { position: absolute; left: 15px; top: 53px; width: 40px; height: 40px; border-radius: 50%;
-  background: var(--knob); box-shadow: 0 2px 8px rgba(255, 106, 26, .25), inset 0 0 0 2px rgba(255, 174, 107, .4); }
+  background: var(--knob); box-shadow: 0 2px 8px hsl(var(--h) 100% 59% / .22), inset 0 0 0 2px hsl(var(--h) 100% 72% / .35); }
 .run .toggle .knob { animation: knobSlide calc(3s / var(--speed)) var(--spring); }
 .run .toggle .orb { animation: orbPulse calc(3s / var(--speed)) var(--spring); }
 @keyframes knobSlide { 0%, 20% { transform: translateX(0) } 40%, 70% { transform: translateX(58px) } 90%, 100% { transform: translateX(0) } }
@@ -251,9 +272,20 @@ svg.g { background: none; overflow: visible; }
     <div class="intro">
       <div class="eyebrow">Frosted glass · 10 icons · CSS only</div>
       <h1>Glass Icon Motion</h1>
-      <p class="lede">Each icon has one small motion that says what it does. The frosted front layer blurs the gradient shape behind it, so the movement shows through the glass. Click any icon to restart it.</p>
+      <p class="lede">Each icon has one small motion that says what it does. The frosted front layer blurs the gradient shape behind it, so the movement shows through the glass. Drag the base color to recolor the whole set, and click any icon to restart it.</p>
     </div>
     <div class="controls">
+      <div class="hue">
+        <label for="hue">Base color</label>
+        <input type="range" id="hue" min="0" max="359" step="1" value="227" aria-describedby="hue-out">
+        <output id="hue-out" for="hue">227°</output>
+      </div>
+      <div class="swatches" role="group" aria-label="Preset colors">
+        <button type="button" id="sw-blue" data-h="227" aria-label="Blue, 227°" style="background: hsl(227 100% 59%)"></button>
+        <button type="button" id="sw-orange" data-h="20" aria-label="Orange, 20°" style="background: hsl(20 100% 59%)"></button>
+        <button type="button" id="sw-green" data-h="150" aria-label="Green, 150°" style="background: hsl(150 100% 59%)"></button>
+        <button type="button" id="sw-pink" data-h="330" aria-label="Pink, 330°" style="background: hsl(330 100% 59%)"></button>
+      </div>
       <button class="btn" id="toggle" type="button" aria-pressed="false">Pause</button>
       <div class="seg" role="group" aria-label="Playback speed">
         <button type="button" id="speed-05" data-speed="0.5" aria-pressed="false">0.5×</button>
@@ -266,13 +298,13 @@ svg.g { background: none; overflow: visible; }
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#FF6A1A"/><stop offset=".52" stop-color="#FFAE6B"/><stop offset="1" stop-color="#D9361E"/>
+        <stop offset="0" style="stop-color: var(--grad-a)"/><stop offset=".52" style="stop-color: var(--grad-b)"/><stop offset="1" style="stop-color: var(--grad-c)"/>
       </linearGradient>
       <linearGradient id="gv" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#D9361E"/><stop offset=".55" stop-color="#FFAE6B"/><stop offset="1" stop-color="#FF6A1A"/>
+        <stop offset="0" style="stop-color: var(--grad-c)"/><stop offset=".55" style="stop-color: var(--grad-b)"/><stop offset="1" style="stop-color: var(--grad-a)"/>
       </linearGradient>
       <linearGradient id="gh" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#FF6A1A"/><stop offset=".5" stop-color="#FFAE6B"/><stop offset="1" stop-color="#D9361E"/>
+        <stop offset="0" style="stop-color: var(--grad-a)"/><stop offset=".5" style="stop-color: var(--grad-b)"/><stop offset="1" style="stop-color: var(--grad-c)"/>
       </linearGradient>
     </defs>
   </svg>
@@ -313,7 +345,7 @@ svg.g { background: none; overflow: visible; }
 
     <button class="tile run" type="button" id="t-download" aria-label="Download, restart animation">
       <div class="stage cloud" aria-hidden="true">
-        <svg class="g arrow" viewBox="0 0 36 76"><path d="M18 4 V50" stroke="url(#gv)" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M5 50 L18 66 L31 50 Z" fill="#FF6A1A" stroke="#FF6A1A" stroke-width="6" stroke-linejoin="round"/></svg>
+        <svg class="g arrow" viewBox="0 0 36 76"><path d="M18 4 V50" stroke="url(#gv)" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M5 50 L18 66 L31 50 Z" style="fill: var(--grad-a); stroke: var(--grad-a)" stroke-width="6" stroke-linejoin="round"/></svg>
         <div class="gl puff"></div>
       </div>
       <div class="cap"><b>Download</b><span>The arrow falls through the cloud and settles below it.</span><code>2.0s · drop through</code></div>
@@ -362,6 +394,23 @@ svg.g { background: none; overflow: visible; }
       document.querySelectorAll('.seg button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
     });
   });
+
+  var hue = document.getElementById('hue');
+  var hueOut = document.getElementById('hue-out');
+  var swatches = document.querySelectorAll('.swatches button');
+  function setHue(h, save) {
+    h = Math.round(Number(h)) % 360;
+    root.style.setProperty('--h', h);
+    hue.value = h;
+    hueOut.textContent = h + '°';
+    swatches.forEach(function (b) { b.setAttribute('aria-pressed', String(Number(b.dataset.h) === h)); });
+    if (save) { try { localStorage.setItem('glass-hue', String(h)); } catch (e) {} }
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('glass-hue'); } catch (e) {}
+  setHue(saved !== null && !isNaN(saved) ? saved : 227, false);
+  hue.addEventListener('input', function () { setHue(hue.value, true); });
+  swatches.forEach(function (b) { b.addEventListener('click', function () { setHue(b.dataset.h, true); }); });
 
   document.querySelectorAll('.tile').forEach(function (t) {
     t.addEventListener('click', function () {
