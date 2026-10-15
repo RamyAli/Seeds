@@ -18,4 +18,6 @@ The live canvas is at https://claude.ai/artifact/XptEcRsuE1hruRTaxtNH1V. Each `.
 | — | User flow: notification → accept → active → reward | `UserFlow.dc.html` |
 | — | Mini design system: colour, type, components, motion, a11y, voice | `DesignSystem.dc.html` |
 
+Visual language: iOS 26 Liquid Glass with Airbnb-style warmth. Frosted glass cards sit over soft ambient light, with a floating glass tab bar, Apple system colours (solar orange, battery green, grid blue), Figtree for Latin and Readex Pro for Arabic, and an isometric villa as the energy-flow hub.
+
 `canvas.json` holds the artboard layout. The files use the Design canvas format: inline styles, plus a small `DCLogic` class for state such as the toggles, the countdown and the points counter.

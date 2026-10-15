@@ -8,88 +8,100 @@
 <body>
 <x-dc>
 <helmet>
-<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0}
 *{box-sizing:border-box}
 button,a{font-family:inherit}
-a{color:#F2F1EC}a:hover{color:#FFB547}
+a{color:#F5F5F7}a:hover{color:#FFB340}
+.glass{background:rgba(255,255,255,.07);-webkit-backdrop-filter:blur(28px) saturate(160%);backdrop-filter:blur(28px) saturate(160%);border:1px solid rgba(255,255,255,.12);box-shadow:0 12px 32px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12)}
+.glass-hi{background:rgba(255,255,255,.12);-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border:1px solid rgba(255,255,255,.18);box-shadow:0 6px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.18)}
+.blob{position:absolute;border-radius:50%;filter:blur(64px);pointer-events:none}
 @keyframes lumoPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
-@keyframes lumoBreathe{0%,100%{opacity:.18}50%{opacity:.32}}
+@keyframes lumoBreathe{0%,100%{opacity:.45;transform:scale(.96)}50%{opacity:.8;transform:scale(1.04)}}
 .pulse{animation:lumoPulse 1.6s ease-in-out infinite}
 .breathe{animation:lumoBreathe 4s ease-in-out infinite}
 .ring{transition:stroke-dashoffset 1s linear}
 @media (prefers-reduced-motion: reduce){.pulse,.breathe{animation:none}.ring{transition:none}}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0E1114; color: #F2F1EC; font-family: 'Readex Pro', system-ui, sans-serif; font-size: 15px; line-height: 1.4">
-  <div style="padding: 52px 20px 0; display: flex; flex-direction: column; gap: 14px">
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0B0F1A; color: #F5F5F7; font-family: 'Figtree', -apple-system, system-ui, sans-serif; font-size: 15px; line-height: 1.4">
+  <div class="blob breathe" style="width: 340px; height: 340px; left: 25px; top: 90px; background: #FF8A00; opacity: 0.55"></div>
+  <div class="blob" style="width: 280px; height: 280px; left: -140px; bottom: 80px; background: #1E40AF; opacity: 0.6"></div>
+  <div class="blob" style="width: 240px; height: 240px; right: -110px; bottom: -40px; background: #0E7A55; opacity: 0.5"></div>
 
+  <div style="position: relative; padding: 52px 20px 0; display: flex; flex-direction: column; gap: 14px">
     <header style="display: flex; align-items: center; justify-content: space-between; height: 44px">
-      <a href="Main.dc.html" aria-label="Minimise, the grid moment keeps running" style="width: 44px; height: 44px; border-radius: 22px; background: #171B20; border: 1px solid #2A3138; display: flex; align-items: center; justify-content: center">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+      <a href="Main.dc.html" class="glass-hi" aria-label="Minimise, the grid moment keeps running" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
       </a>
-      <span style="font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; background: #2B2110; color: #FFB547; padding: 6px 12px; border-radius: 16px">
-        <span class="pulse" style="width: 7px; height: 7px; border-radius: 4px; background: #FFB547"></span>Grid moment live</span>
+      <span class="glass-hi" style="height: 36px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 7px; color: #FFB340; padding: 0 14px; border-radius: 18px">
+        <span class="pulse" style="width: 7px; height: 7px; border-radius: 4px; background: #FFB340"></span>Grid moment live</span>
       <span style="width: 44px"></span>
     </header>
 
-    <a href="EventResult.dc.html" aria-label="{{ringLabel}}" style="align-self: center; position: relative; width: 260px; height: 260px; margin-top: 4px; text-decoration: none; color: inherit">
-      <svg width="260" height="260" viewBox="0 0 260 260" style="position: absolute; inset: 0; transform: rotate(-90deg)" aria-hidden="true">
-        <circle class="breathe" cx="130" cy="130" r="124" fill="none" stroke="#FFB547" stroke-width="2"></circle>
-        <circle cx="130" cy="130" r="110" fill="none" stroke="#20262C" stroke-width="14"></circle>
-        <circle class="ring" cx="130" cy="130" r="110" fill="none" stroke="#FFB547" stroke-width="14" stroke-linecap="round" stroke-dasharray="691.15" stroke-dashoffset="{{dashOffset}}"></circle>
+    <a href="EventResult.dc.html" aria-label="{{ringLabel}}" style="align-self: center; position: relative; width: 268px; height: 268px; margin-top: 2px; text-decoration: none; color: inherit">
+      <span class="glass" style="position: absolute; inset: 26px; border-radius: 50%"></span>
+      <svg width="268" height="268" viewBox="0 0 268 268" style="position: absolute; inset: 0; transform: rotate(-90deg)" aria-hidden="true">
+        <defs>
+          <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#FFD60A"></stop>
+            <stop offset="1" stop-color="#FF7A00"></stop>
+          </linearGradient>
+        </defs>
+        <circle cx="134" cy="134" r="120" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="16"></circle>
+        <circle class="ring" cx="134" cy="134" r="120" fill="none" stroke="url(#ringGrad)" stroke-width="16" stroke-linecap="round" stroke-dasharray="753.98" stroke-dashoffset="{{dashOffset}}"></circle>
       </svg>
       <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px">
-        <span style="font-size: 13px; color: #A1A8B0">Ends in</span>
-        <span style="font-size: 46px; line-height: 1.05; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">{{clock}}</span>
-        <span style="font-size: 13px; color: #A1A8B0">at 7:00 pm</span>
+        <span style="font-size: 13px; color: #AEAEB2">Ends in</span>
+        <span style="font-size: 50px; line-height: 1.05; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums">{{clock}}</span>
+        <span style="font-size: 13px; color: #AEAEB2">at 7:00 pm</span>
       </div>
     </a>
 
     <section style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
-      <div style="background: #171B20; border-radius: 20px; padding: 12px 14px; display: flex; flex-direction: column">
-        <span style="font-size: 12px; color: #A1A8B0">Points so far</span>
-        <span style="font-size: 26px; font-weight: 600; color: #FFB547; font-variant-numeric: tabular-nums">+{{earned}}<span style="font-size: 13px; font-weight: 500; color: #A1A8B0"> / 120</span></span>
-        <div role="img" aria-label="{{earned}} of 120 points" style="height: 6px; border-radius: 3px; background: #20262C; margin-top: 4px; overflow: hidden">
-          <div style="height: 6px; width: {{earnedPct}}%; border-radius: 3px; background: #FFB547"></div>
+      <div class="glass" style="border-radius: 24px; padding: 12px 14px; display: flex; flex-direction: column">
+        <span style="font-size: 12px; color: #AEAEB2">Points so far</span>
+        <span style="font-size: 28px; font-weight: 800; color: #FFB340; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">+{{earned}}<span style="font-size: 13px; font-weight: 600; color: #AEAEB2"> / 120</span></span>
+        <div role="img" aria-label="{{earned}} of 120 points" style="height: 6px; border-radius: 3px; background: rgba(255,255,255,.1); margin-top: 4px; overflow: hidden">
+          <div style="height: 6px; width: {{earnedPct}}%; border-radius: 3px; background: #FFB340"></div>
         </div>
       </div>
-      <div style="background: #171B20; border-radius: 20px; padding: 12px 14px; display: flex; flex-direction: column">
-        <span style="font-size: 12px; color: #A1A8B0">Grid use now</span>
-        <span style="font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums">0.2 <span style="font-size: 13px; font-weight: 500; color: #A1A8B0">kW</span></span>
-        <span style="font-size: 12px; color: #6EA8FF">95% less than usual</span>
+      <div class="glass" style="border-radius: 24px; padding: 12px 14px; display: flex; flex-direction: column">
+        <span style="font-size: 12px; color: #AEAEB2">Grid use now</span>
+        <span style="font-size: 28px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">0.2 <span style="font-size: 13px; font-weight: 600; color: #AEAEB2">kW</span></span>
+        <span style="font-size: 12px; color: #409CFF; font-weight: 600">95% less than usual</span>
       </div>
     </section>
 
-    <section aria-label="Your devices right now" style="background: #171B20; border-radius: 22px; display: flex; flex-direction: column">
-      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px">
-        <span style="width: 36px; height: 36px; flex: none; border-radius: 11px; background: #13233B; color: #6EA8FF; display: flex; align-items: center; justify-content: center">
+    <section class="glass" aria-label="Your devices right now" style="border-radius: 26px; display: flex; flex-direction: column">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 11px 14px">
+        <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; background: rgba(64,156,255,.18); color: #409CFF; display: flex; align-items: center; justify-content: center">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M12 2v20M4.9 7l14.2 10M4.9 17 19.1 7M9 4l3 2 3-2M9 20l3-2 3 2"></path></svg>
         </span>
-        <div style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">AC holding 25°C</span><span style="font-size: 12px; color: #A1A8B0">Inside now 24.1°C · comfortable</span></div>
-        <span style="font-size: 12px; color: #2DD4BF; display: flex; align-items: center; gap: 4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>On track</span>
+        <div style="flex: 1; display: flex; flex-direction: column; line-height: 1.3"><span style="font-size: 14px; font-weight: 600">AC holding 25°C</span><span style="font-size: 12px; color: #AEAEB2">Inside now 24.1°C · comfortable</span></div>
+        <span style="font-size: 12px; font-weight: 600; color: #30D158; display: flex; align-items: center; gap: 4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>On track</span>
       </div>
-      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-top: 1px solid #20262C">
-        <span style="width: 36px; height: 36px; flex: none; border-radius: 11px; background: #0E2A27; color: #2DD4BF; display: flex; align-items: center; justify-content: center">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-top: 1px solid rgba(255,255,255,.08)">
+        <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; background: rgba(48,209,88,.18); color: #30D158; display: flex; align-items: center; justify-content: center">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="18" height="10" rx="2"></rect><path d="M22 11v2M6 10v4M10 10v4"></path></svg>
         </span>
-        <div style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">Battery powering home</span><span style="font-size: 12px; color: #A1A8B0">71% · lasts past 7 pm</span></div>
-        <span style="font-size: 12px; color: #2DD4BF; display: flex; align-items: center; gap: 4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>On track</span>
+        <div style="flex: 1; display: flex; flex-direction: column; line-height: 1.3"><span style="font-size: 14px; font-weight: 600">Battery powering home</span><span style="font-size: 12px; color: #AEAEB2">71% · lasts past 7 pm</span></div>
+        <span style="font-size: 12px; font-weight: 600; color: #30D158; display: flex; align-items: center; gap: 4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>On track</span>
       </div>
-      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-top: 1px solid #20262C">
-        <span style="width: 36px; height: 36px; flex: none; border-radius: 11px; background: #20262C; color: #F2F1EC; display: flex; align-items: center; justify-content: center">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-top: 1px solid rgba(255,255,255,.08)">
+        <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; background: rgba(255,255,255,.1); color: #F5F5F7; display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg>
         </span>
-        <div style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">EV charging paused</span><span style="font-size: 12px; color: #A1A8B0">Resumes 7:00 pm · 80% by 7 am</span></div>
-        <span style="font-size: 12px; color: #2DD4BF; display: flex; align-items: center; gap: 4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>On track</span>
+        <div style="flex: 1; display: flex; flex-direction: column; line-height: 1.3"><span style="font-size: 14px; font-weight: 600">EV charging paused</span><span style="font-size: 12px; color: #AEAEB2">Resumes 7:00 pm · 80% by 7 am</span></div>
+        <span style="font-size: 12px; font-weight: 600; color: #30D158; display: flex; align-items: center; gap: 4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>On track</span>
       </div>
     </section>
   </div>
 
-  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 20px 30px; display: flex; flex-direction: column; align-items: center; gap: 4px">
-    <button style="height: 50px; width: 100%; border-radius: 25px; border: 1px solid #3A424B; background: transparent; color: #F2F1EC; font-size: 15px; font-weight: 500; cursor: pointer">Stop early</button>
-    <span style="font-size: 12px; color: #A1A8B0">No problem — you keep the {{earned}} points earned so far.</span>
+  <div style="position: absolute; left: 20px; right: 20px; bottom: 26px; display: flex; flex-direction: column; align-items: center; gap: 6px">
+    <button class="glass-hi" style="height: 52px; width: 100%; border-radius: 26px; color: #F5F5F7; font-size: 16px; font-weight: 600; cursor: pointer">Stop early</button>
+    <span style="font-size: 12px; color: #AEAEB2">No problem — you keep the {{earned}} points earned so far.</span>
   </div>
 </div>
 </x-dc>
@@ -116,7 +128,7 @@ class Component extends DCLogic {
     const earned = Math.round(120 * done);
     return {
       clock: h + ':' + pad(m) + ':' + pad(s),
-      dashOffset: (691.15 * (1 - done)).toFixed(1),
+      dashOffset: (753.98 * (1 - done)).toFixed(1),
       earned,
       earnedPct: Math.round(done * 100),
       ringLabel: 'Grid moment ends in ' + h + ' hours ' + m + ' minutes. ' + earned + ' points earned so far'
