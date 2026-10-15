@@ -4,133 +4,102 @@
 <meta charset="utf-8">
 <title>Lumo – Solar details</title>
 <script src="./support.js"></script>
+<script src="/_blob/b182923961479cc4ed198465a486c3a2"></script>
+<script src="/_blob/089d29c6ab9b713f088013abcd18ba13"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0}
 *{box-sizing:border-box}
 button,a{font-family:inherit}
-a{color:#1D1D1F}a:hover{color:#636366}
-.glass{background:rgba(255,255,255,.56);-webkit-backdrop-filter:blur(28px) saturate(180%);backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(255,255,255,.8);box-shadow:0 12px 32px rgba(31,41,66,.08),inset 0 1px 0 rgba(255,255,255,.95)}
-.glass-hi{background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.95);box-shadow:0 6px 18px rgba(31,41,66,.10),inset 0 1px 0 #FFFFFF}
-.blob{position:absolute;border-radius:50%;filter:blur(56px);pointer-events:none}
-.hit:focus-visible{outline:2px solid #0062CC;outline-offset:-2px;border-radius:8px}
-.bubble{transition:left .18s ease}
-@media (prefers-reduced-motion: reduce){.bubble{transition:none}}
+a{color:#111315}a:hover{color:#5E6369}
+canvas{display:block}
+.bar:focus-visible,.chip:focus-visible{outline:2px solid #1D5FD1;outline-offset:2px}
+.fill{transition:height .35s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-reduced-motion: reduce){.fill{transition:none}}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F1F2F5; color: #1D1D1F; font-family: 'Figtree', -apple-system, system-ui, sans-serif; font-size: 15px; line-height: 1.4">
-  <div class="blob" style="width: 380px; height: 380px; right: -160px; top: -120px; background: #FFBE6B; opacity: 0.85"></div>
-  <div class="blob" style="width: 260px; height: 260px; left: -120px; top: 420px; background: #FFE0A8; opacity: 0.8"></div>
-  <div class="blob" style="width: 240px; height: 240px; right: -100px; bottom: -40px; background: #A7CCFF; opacity: 0.6"></div>
-
-  <div style="position: relative; padding: 52px 20px 0; display: flex; flex-direction: column; gap: 12px">
-    <header style="display: flex; align-items: center; justify-content: space-between; height: 44px">
-      <a href="Main.dc.html" class="glass-hi" aria-label="Back to Home" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; text-decoration: none">
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F2F3F5; color: #111315; font-family: 'Manrope', -apple-system, system-ui, sans-serif; font-size: 15px; line-height: 1.4">
+  <div style="padding: 52px 20px 0; display: flex; flex-direction: column; gap: 12px">
+    <header style="display: flex; align-items: center; gap: 12px; height: 44px">
+      <a href="Main.dc.html" aria-label="Back to Home" style="width: 44px; height: 44px; border-radius: 22px; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
       </a>
-      <h1 style="margin: 0; font-size: 17px; font-weight: 700">Solar</h1>
-      <button class="glass-hi" aria-label="Solar system settings" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; padding: 0; color: #1D1D1F; cursor: pointer">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg>
+      <h1 style="margin: 0; font-size: 18px; font-weight: 800; flex: 1">Solar</h1>
+      <button aria-label="Solar system settings" style="width: 44px; height: 44px; border-radius: 22px; border: 0; background: #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 0; color: #111315; cursor: pointer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>
       </button>
     </header>
 
-    <div class="glass" role="tablist" aria-label="Period" style="border-radius: 22px; padding: 4px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); height: 44px">
-      <button role="tab" aria-selected="true" class="glass-hi" style="border-radius: 18px; font-size: 13px; font-weight: 700; color: #1D1D1F; cursor: pointer">Today</button>
-      <button role="tab" aria-selected="false" style="border: 0; background: transparent; border-radius: 18px; font-size: 13px; font-weight: 500; color: #3A3A3C; cursor: pointer">Week</button>
-      <button role="tab" aria-selected="false" style="border: 0; background: transparent; border-radius: 18px; font-size: 13px; font-weight: 500; color: #3A3A3C; cursor: pointer">Month</button>
+    <div role="tablist" aria-label="Period" style="display: flex; gap: 6px; background: #E6E8EB; padding: 4px; border-radius: 24px; align-self: flex-start">
+      <sc-for list="{{periods}}" as="p" hint-placeholder-count="4">
+        <button class="chip" role="tab" aria-selected="{{p.on}}" onClick="{{p.pick}}" style="height: 40px; min-width: 58px; padding: 0 14px; border-radius: 20px; border: 0; background: {{p.bg}}; color: #111315; font-size: 13px; font-weight: {{p.weight}}; cursor: pointer">{{p.label}}</button>
+      </sc-for>
     </div>
 
-    <section style="display: flex; align-items: flex-end; justify-content: space-between; margin-top: 2px">
-      <div style="display: flex; flex-direction: column">
-        <span style="font-size: 14px; font-weight: 500; color: #636366">Producing right now</span>
-        <span style="font-size: 64px; line-height: 1; font-weight: 700; letter-spacing: -0.05em; font-variant-numeric: tabular-nums">5.4<span style="font-size: 24px; font-weight: 600; letter-spacing: -0.01em; color: #636366"> kW</span></span>
-        <span style="font-size: 14px; color: #3A3A3C; margin-top: 2px">Enough to run about 3 ACs at once</span>
+    <section aria-label="Solar array" style="position: relative; height: 196px; border-radius: 28px; background: #FFFFFF; overflow: hidden">
+      <canvas ref="{{canvasRef}}" width="350" height="196" role="img" aria-label="3D view of your 18-panel solar array with the sun moving overhead and power flowing to the inverter." style="position: absolute; left: 0; top: 0; width: 350px; height: 196px; touch-action: pan-y; cursor: grab"></canvas>
+      <div style="position: absolute; left: 18px; top: 16px; display: flex; flex-direction: column; pointer-events: none">
+        <span style="font-size: 12px; font-weight: 700; color: #5E6369">Producing now</span>
+        <span style="font-size: 44px; line-height: 1.05; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums">5.4<span style="font-size: 16px; color: #5E6369; letter-spacing: 0"> kW</span></span>
+        <span style="font-size: 12px; font-weight: 600; color: #5E6369">≈ 3 ACs running</span>
       </div>
-      <span class="glass-hi" style="font-size: 12px; font-weight: 600; color: #1E7B34; padding: 6px 10px; border-radius: 14px; display: flex; align-items: center; gap: 4px">
+      <span style="position: absolute; left: 18px; bottom: 14px; height: 26px; padding: 0 10px; border-radius: 13px; background: #E9FBD0; color: #3E7C00; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 4px; pointer-events: none">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>18 panels OK</span>
     </section>
 
-    <section class="glass" aria-label="Solar production through the day" style="border-radius: 28px; padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 6px">
-      <div style="display: flex; justify-content: space-between; align-items: baseline">
-        <span style="font-size: 15px; font-weight: 700">Today, hour by hour</span>
-        <span style="font-size: 12px; color: #636366">Tap or hover the curve</span>
+    <section aria-label="Production by hour" style="background: #FFFFFF; border-radius: 28px; padding: 16px; display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start">
+        <div style="display: flex; flex-direction: column">
+          <span style="font-size: 12px; color: #5E6369; font-weight: 600">Made today</span>
+          <span style="font-size: 28px; line-height: 1.1; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums">14.2<span style="font-size: 13px; color: #5E6369; font-weight: 700; letter-spacing: 0"> kWh</span></span>
+          <span style="font-size: 11px; color: #5E6369; font-weight: 600">≈ 4 hours of your home</span>
+        </div>
+        <span style="height: 30px; padding: 0 12px; border-radius: 15px; background: #A6F23C; font-size: 12px; font-weight: 800; display: flex; align-items: center">↑ 12% vs yesterday</span>
       </div>
-      <div style="position: relative; height: 140px">
-        <div style="position: absolute; left: 0; right: 0; top: 34px; border-top: 1px dashed rgba(60,60,67,.18)"></div>
-        <div style="position: absolute; left: 0; right: 0; top: 84px; border-top: 1px dashed rgba(60,60,67,.18)"></div>
-        <span style="position: absolute; right: 0; top: 20px; font-size: 10px; color: #636366">6 kW</span>
-        <span style="position: absolute; right: 0; top: 70px; font-size: 10px; color: #636366">3 kW</span>
-        <svg width="318" height="140" viewBox="0 0 318 140" style="position: absolute; left: 0; top: 0" aria-hidden="true">
-          <defs>
-            <linearGradient id="solarFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#FF9500" stop-opacity="0.35"></stop>
-              <stop offset="1" stop-color="#FF9500" stop-opacity="0"></stop>
-            </linearGradient>
-          </defs>
-          <path d="{{areaPath}}" fill="url(#solarFill)"></path>
-          <path d="{{actualPath}}" fill="none" stroke="#FF9500" stroke-width="2.5" stroke-linecap="round"></path>
-          <path d="{{forecastPath}}" fill="none" stroke="#B25000" stroke-width="2" stroke-dasharray="4 5" stroke-linecap="round" stroke-opacity="0.7"></path>
-          <line x1="{{dot.x}}" x2="{{dot.x}}" y1="22" y2="134" stroke="#1D1D1F" stroke-opacity="0.25" stroke-width="1"></line>
-          <circle cx="{{dot.x}}" cy="{{dot.y}}" r="6" fill="#FFFFFF" stroke="#FF9500" stroke-width="3"></circle>
-        </svg>
-        <span class="bubble glass-hi" aria-live="polite" style="position: absolute; top: 0; left: {{dot.left}}px; width: 128px; height: 24px; border-radius: 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 4px; font-variant-numeric: tabular-nums">{{readout}}</span>
-        <div style="position: absolute; left: 0; top: 0; width: 318px; height: 140px; display: flex">
-          <sc-for list="{{hits}}" as="b" hint-placeholder-count="24">
-            <button class="hit" aria-label="{{b.label}}" onMouseEnter="{{b.pick}}" onFocus="{{b.pick}}" onClick="{{b.pick}}" style="flex: 1; height: 140px; border: 0; padding: 0; background: transparent; cursor: pointer"></button>
+      <div aria-live="polite" style="font-size: 12px; color: #5E6369; font-weight: 600; height: 16px"><b style="color: #111315">{{readout.time}}</b> · {{readout.value}} · {{readout.tag}}</div>
+      <div style="display: flex; gap: 6px; height: 118px; align-items: flex-end">
+        <div style="display: flex; flex-direction: column; justify-content: space-between; height: 118px; font-size: 10px; color: #5E6369; font-weight: 600; padding-bottom: 2px"><span>6</span><span>3</span><span>0</span></div>
+        <div style="flex: 1; display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); gap: 4px; height: 118px; align-items: end">
+          <sc-for list="{{bars}}" as="b" hint-placeholder-count="13">
+            <button class="bar" aria-label="{{b.label}}" onMouseEnter="{{b.pick}}" onFocus="{{b.pick}}" onClick="{{b.pick}}" style="height: 118px; padding: 0; border: 0; background: transparent; display: flex; align-items: flex-end; cursor: pointer">
+              <span class="fill" style="display: block; width: 100%; height: {{b.h}}px; border-radius: 6px; background: {{b.bg}}; border: {{b.border}}"></span>
+            </button>
           </sc-for>
         </div>
       </div>
-      <div style="display: flex; justify-content: space-between; font-size: 11px; color: #636366">
-        <span>12 am</span><span>6 am</span><span>12 pm</span><span>6 pm</span><span>12 am</span>
+      <div style="display: grid; grid-template-columns: 14px repeat(13, minmax(0, 1fr)); gap: 4px; font-size: 9px; color: #5E6369; font-weight: 600; text-align: center">
+        <span></span><span>6A</span><span></span><span>8A</span><span></span><span>10A</span><span></span><span>12P</span><span></span><span>2P</span><span></span><span>4P</span><span></span><span>6P</span>
       </div>
-      <div style="display: flex; gap: 14px; font-size: 11px; color: #636366">
-        <span style="display: flex; align-items: center; gap: 6px"><span style="width: 14px; height: 3px; border-radius: 2px; background: #FF9500"></span>Made so far</span>
-        <span style="display: flex; align-items: center; gap: 6px"><span style="width: 14px; border-top: 2px dashed #B25000"></span>Forecast</span>
-      </div>
-    </section>
-
-    <section style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
-      <div class="glass" style="border-radius: 22px; padding: 12px 14px; display: flex; flex-direction: column; line-height: 1.3">
-        <span style="font-size: 12px; color: #636366">Made today</span>
-        <span style="font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums">14.2 <span style="font-size: 13px; font-weight: 600; color: #636366">kWh</span></span>
-        <span style="font-size: 12px; color: #3A3A3C">≈ 4 hours of your home</span>
-      </div>
-      <div class="glass" style="border-radius: 22px; padding: 12px 14px; display: flex; flex-direction: column; line-height: 1.3">
-        <span style="font-size: 12px; color: #636366">Saved today</span>
-        <span style="font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums">AED 5.70</span>
-        <span style="font-size: 12px; color: #3A3A3C">vs. buying it all</span>
-      </div>
-      <div class="glass" style="border-radius: 22px; padding: 12px 14px; display: flex; flex-direction: column; line-height: 1.3">
-        <span style="font-size: 12px; color: #636366">Peak expected</span>
-        <span style="font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums">12:40 pm</span>
-        <span style="font-size: 12px; color: #3A3A3C">Up to 6.1 kW</span>
-      </div>
-      <div class="glass" style="border-radius: 22px; padding: 12px 14px; display: flex; flex-direction: column; line-height: 1.3">
-        <span style="font-size: 12px; color: #636366">Sunshine left</span>
-        <span style="font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums">7 h 50 m</span>
-        <span style="font-size: 12px; color: #3A3A3C">Sunset 7:12 pm</span>
+      <div style="display: flex; gap: 14px; font-size: 11px; color: #5E6369; font-weight: 600">
+        <span style="display: flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: repeating-linear-gradient(135deg, #C9CDD2 0 2px, #EEF0F2 2px 5px)"></span>Made</span>
+        <span style="display: flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: #A6F23C"></span>Selected</span>
+        <span style="display: flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; border: 1.5px dashed #9AA0A8"></span>Forecast</span>
       </div>
     </section>
 
-    <section class="glass" style="border-radius: 24px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
-      <span style="font-size: 15px; font-weight: 700">Where your sunshine went</span>
-      <div role="img" aria-label="Home 58%, battery 34%, sold to grid 8%" style="display: flex; gap: 3px; height: 10px; border-radius: 5px; overflow: hidden">
-        <span style="flex: 58; background: #1D1D1F"></span>
-        <span style="flex: 34; background: #34C759"></span>
-        <span style="flex: 8; background: #007AFF"></span>
+    <section style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <div style="background: #FFFFFF; border-radius: 20px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"></rect><path d="M3 10h18"></path></svg>
+        <b style="font-size: 17px; font-variant-numeric: tabular-nums">5.70<span style="font-size: 11px; color: #3E7C00"> AED</span></b>
+        <span style="font-size: 11px; color: #5E6369; font-weight: 600">Saved today</span>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; font-size: 12px; line-height: 1.3">
-        <div style="display: flex; flex-direction: column"><span style="color: #636366">Home</span><b style="font-size: 16px">58%</b><span style="color: #3A3A3C">8.2 kWh</span></div>
-        <div style="display: flex; flex-direction: column"><span style="color: #636366">Battery</span><b style="font-size: 16px">34%</b><span style="color: #3A3A3C">4.8 kWh</span></div>
-        <div style="display: flex; flex-direction: column"><span style="color: #636366">Sold to grid</span><b style="font-size: 16px">8%</b><span style="color: #3A3A3C">1.2 kWh</span></div>
+      <div style="background: #FFFFFF; border-radius: 20px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg>
+        <b style="font-size: 17px; font-variant-numeric: tabular-nums">12:40<span style="font-size: 11px; color: #3E7C00"> pm</span></b>
+        <span style="font-size: 11px; color: #5E6369; font-weight: 600">Peak, 6.1 kW</span>
+      </div>
+      <div style="background: #FFFFFF; border-radius: 20px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M17 18a5 5 0 0 0-10 0M12 2v7M4.2 10.2l1.4 1.4M1 18h2M21 18h2M18.4 11.6l1.4-1.4M23 22H1M8 6l4 4 4-4"></path></svg>
+        <b style="font-size: 17px; font-variant-numeric: tabular-nums">7:12<span style="font-size: 11px; color: #3E7C00"> pm</span></b>
+        <span style="font-size: 11px; color: #5E6369; font-weight: 600">Sunset</span>
       </div>
     </section>
 
-    <p style="margin: 0; font-size: 12px; color: #3A3A3C; line-height: 1.45"><b style="color: #1D1D1F">kW</b> is how fast power flows right now. <b style="color: #1D1D1F">kWh</b> is energy added up over time — 1 kWh runs your AC for about 30 minutes.</p>
+    <p style="margin: 0; font-size: 12px; color: #5E6369; line-height: 1.45; font-weight: 500"><b style="color: #111315">kW</b> is how fast power flows right now. <b style="color: #111315">kWh</b> is energy added up over time — 1 kWh runs your AC for about 30 minutes.</p>
   </div>
 </div>
 </x-dc>
@@ -138,40 +107,44 @@ a{color:#1D1D1F}a:hover{color:#636366}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { picked: 11 };
+    this.state = { picked: 5, period: 0 };
+  }
+  componentDidMount() { this.tries = 0; this.mount3d(); }
+  componentDidUpdate() { if (!this.view) this.mount3d(); }
+  componentWillUnmount() { clearTimeout(this.retry); if (this.view) this.view.dispose(); }
+  mount3d() {
+    if (this.view || !this.canvas) return;
+    if (!window.Lumo3D) {
+      if (this.tries++ < 40) this.retry = setTimeout(() => this.mount3d(), 150);
+      return;
+    }
+    this.view = window.Lumo3D.mount(this.canvas, { scene: 'panel', theme: 'day', shift: [0.18, 0.02], zoom: 1.05 });
   }
   renderVals() {
-    const kw = [0,0,0,0,0,0,0.4,1.6,2.9,3.9,4.8,5.4,6.0,6.1,5.7,4.9,3.8,2.5,1.1,0.2,0,0,0,0];
-    const nowHour = 11;
-    const W = 318, step = W / 24;
-    const px = (h) => (h + 0.5) * step;
-    const py = (v) => 134 - (v / 6.6) * 110;
-    const pts = kw.map((v, h) => [px(h), py(v)]);
-    const smooth = (arr) => {
-      let d = 'M' + arr[0][0].toFixed(1) + ' ' + arr[0][1].toFixed(1);
-      for (let i = 0; i < arr.length - 1; i++) {
-        const p0 = arr[i - 1] || arr[i], p1 = arr[i], p2 = arr[i + 1], p3 = arr[i + 2] || p2;
-        const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
-        const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
-        d += ' C' + c1x.toFixed(1) + ' ' + Math.min(134, c1y).toFixed(1) + ' ' + c2x.toFixed(1) + ' ' + Math.min(134, c2y).toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
-      }
-      return d;
-    };
-    const actual = pts.slice(0, nowHour + 1);
-    const forecast = pts.slice(nowHour);
-    const actualPath = smooth(actual);
-    const areaPath = actualPath + ' L' + actual[actual.length - 1][0].toFixed(1) + ' 134 L' + actual[0][0].toFixed(1) + ' 134 Z';
-    const fmt = (h) => (h % 12 === 0 ? 12 : h % 12) + (h < 12 ? ' am' : ' pm');
+    if (!this.refFn) this.refFn = (el) => { if (el) this.canvas = el; };
+    const kw = [0.4, 1.6, 2.9, 3.9, 4.8, 5.4, 6.0, 6.1, 5.7, 4.9, 3.8, 2.5, 1.1];
+    const nowIdx = 5;
+    const fmt = (i) => { const h = i + 6; return (h % 12 === 0 ? 12 : h % 12) + (h < 12 ? ' am' : ' pm'); };
     const p = this.state.picked;
-    const hits = kw.map((v, h) => ({
-      label: fmt(h) + ': ' + v.toFixed(1) + ' kW' + (h > nowHour ? ' forecast' : ''),
-      pick: () => this.setState({ picked: h })
+    const bars = kw.map((v, i) => {
+      const future = i > nowIdx, sel = i === p;
+      return {
+        h: Math.max(6, Math.round(v / 6.5 * 112)),
+        bg: sel ? '#A6F23C' : (future ? '#FFFFFF' : 'repeating-linear-gradient(135deg, #C9CDD2 0 2px, #EEF0F2 2px 6px)'),
+        border: sel ? '0' : (future ? '1.5px dashed #9AA0A8' : '0'),
+        label: fmt(i) + ': ' + v.toFixed(1) + ' kW' + (future ? ', forecast' : ''),
+        pick: () => this.setState({ picked: i })
+      };
+    });
+    const periods = ['24H', '7D', '30D', 'YTD'].map((label, i) => ({
+      label, on: this.state.period === i,
+      bg: this.state.period === i ? '#A6F23C' : 'transparent',
+      weight: this.state.period === i ? 800 : 600,
+      pick: () => this.setState({ period: i })
     }));
-    const left = Math.max(0, Math.min(W - 128, px(p) - 64));
     return {
-      actualPath, areaPath, forecastPath: smooth(forecast), hits,
-      dot: { x: px(p).toFixed(1), y: py(kw[p]).toFixed(1), left: left.toFixed(0) },
-      readout: fmt(p) + ' · ' + kw[p].toFixed(1) + ' kW' + (p === nowHour ? ' · now' : '')
+      canvasRef: this.refFn, bars, periods,
+      readout: { time: fmt(p), value: kw[p].toFixed(1) + ' kW', tag: p === nowIdx ? 'now' : (p > nowIdx ? 'forecast' : 'made') }
     };
   }
 }

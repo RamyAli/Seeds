@@ -18,6 +18,13 @@ The live canvas is at https://claude.ai/artifact/XptEcRsuE1hruRTaxtNH1V. Each `.
 | — | User flow: notification → accept → active → reward | `UserFlow.dc.html` |
 | — | Mini design system: colour, type, components, motion, a11y, voice | `DesignSystem.dc.html` |
 
-Visual language: iOS 26 Liquid Glass with Airbnb-style warmth. Frosted glass cards sit over soft ambient light, with a floating glass tab bar, Apple system colours (solar orange, battery green, grid blue), Figtree for Latin and Readex Pro for Arabic, and an isometric villa as the energy-flow hub.
+Visual language (v0.3): clean, modern UI with white cards on soft grey (#F2F3F5), a lime accent (#A6F23C), hatched bar charts, and a floating pill tab bar. Manrope is used for Latin and Readex Pro for Arabic.
+
+3D: live Three.js (r149) scenes from `3d/lumo3d.js`:
+- `home`: an isometric villa with rooftop solar, a wall battery, an EV and charger, a grid pylon, a pool and palms, plus energy particles flowing along arcs. It has day, night and cloudy themes, and a mirrored version for RTL.
+- `panel`: a solar array with a moving sun.
+- `coin`: the rewards coin.
+
+On the canvas, `three.min.js` and `lumo3d.js` are loaded as uploaded assets.
 
 `canvas.json` holds the artboard layout. The files use the Design canvas format: inline styles, plus a small `DCLogic` class for state such as the toggles, the countdown and the points counter.

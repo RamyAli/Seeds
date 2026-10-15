@@ -4,119 +4,91 @@
 <meta charset="utf-8">
 <title>Lumo – Grid moment complete</title>
 <script src="./support.js"></script>
+<script src="/_blob/b182923961479cc4ed198465a486c3a2"></script>
+<script src="/_blob/089d29c6ab9b713f088013abcd18ba13"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0}
 *{box-sizing:border-box}
 button,a{font-family:inherit}
-a{color:#1D1D1F}a:hover{color:#3A3A3C}
-.glass{background:rgba(255,255,255,.56);-webkit-backdrop-filter:blur(28px) saturate(180%);backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(255,255,255,.8);box-shadow:0 12px 32px rgba(31,41,66,.08),inset 0 1px 0 rgba(255,255,255,.95)}
-.glass-hi{background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.95);box-shadow:0 6px 18px rgba(31,41,66,.10),inset 0 1px 0 #FFFFFF}
-.blob{position:absolute;border-radius:50%;filter:blur(56px);pointer-events:none}
-@keyframes lumoPop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
-@keyframes lumoDraw{to{stroke-dashoffset:0}}
-@keyframes lumoBurst{0%{transform:translate(0,0) scale(.4);opacity:0}15%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1) rotate(160deg);opacity:0}}
+a{color:#111315}a:hover{color:#5E6369}
+canvas{display:block}
 @keyframes lumoRise{0%{transform:translateY(14px);opacity:0}100%{transform:none;opacity:1}}
-.pop{animation:lumoPop .6s cubic-bezier(.2,.9,.3,1.3) both}
-.draw{stroke-dasharray:24;stroke-dashoffset:24;animation:lumoDraw .45s .35s ease-out forwards}
-.bit{position:absolute;left:50%;top:50%;animation:lumoBurst 1.4s .2s cubic-bezier(.1,.7,.3,1) both}
-.rise1{animation:lumoRise .5s .5s ease-out both}
-.rise2{animation:lumoRise .5s .65s ease-out both}
-.rise3{animation:lumoRise .5s .8s ease-out both}
-@media (prefers-reduced-motion: reduce){.pop,.rise1,.rise2,.rise3{animation:none}.draw{animation:none;stroke-dashoffset:0}.bit{display:none}}
+.rise1{animation:lumoRise .5s .4s ease-out both}
+.rise2{animation:lumoRise .5s .55s ease-out both}
+.rise3{animation:lumoRise .5s .7s ease-out both}
+@media (prefers-reduced-motion: reduce){.rise1,.rise2,.rise3{animation:none}}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F4F2EF; color: #1D1D1F; font-family: 'Figtree', -apple-system, system-ui, sans-serif; font-size: 15px; line-height: 1.4">
-  <div class="blob" style="width: 420px; height: 420px; left: -15px; top: -150px; background: #FFB15C; opacity: 0.85"></div>
-  <div class="blob" style="width: 260px; height: 260px; right: -120px; top: 420px; background: #9CC6FF; opacity: 0.6"></div>
-  <div class="blob" style="width: 240px; height: 240px; left: -100px; bottom: 60px; background: #B6EBC4; opacity: 0.7"></div>
-
-  <div style="position: relative; padding: 52px 20px 0; display: flex; flex-direction: column; gap: 14px">
-    <header style="display: flex; justify-content: flex-end; height: 44px">
-      <a href="Main.dc.html" class="glass-hi" aria-label="Close" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center">
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F2F3F5; color: #111315; font-family: 'Manrope', -apple-system, system-ui, sans-serif; font-size: 15px; line-height: 1.4">
+  <div style="padding: 52px 20px 0; display: flex; flex-direction: column; gap: 12px">
+    <header style="display: flex; align-items: center; justify-content: space-between; height: 44px">
+      <span style="height: 32px; padding: 0 12px; border-radius: 16px; background: #E9FBD0; color: #3E7C00; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 5px">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>Grid moment complete</span>
+      <a href="Main.dc.html" aria-label="Close" style="width: 44px; height: 44px; border-radius: 22px; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
       </a>
     </header>
 
-    <section style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; margin-top: -22px">
-      <div style="position: relative; width: 84px; height: 84px">
-        <span class="bit" style="--dx: -74px; --dy: -42px; width: 9px; height: 9px; border-radius: 5px; background: #FF9500"></span>
-        <span class="bit" style="--dx: 76px; --dy: -48px; width: 12px; height: 5px; border-radius: 3px; background: #007AFF"></span>
-        <span class="bit" style="--dx: -62px; --dy: 36px; width: 12px; height: 5px; border-radius: 3px; background: #34C759"></span>
-        <span class="bit" style="--dx: 68px; --dy: 32px; width: 8px; height: 8px; border-radius: 4px; background: #FFD60A"></span>
-        <span class="bit" style="--dx: 0px; --dy: -76px; width: 7px; height: 7px; border-radius: 4px; background: #34C759"></span>
-        <span class="bit" style="--dx: -102px; --dy: -6px; width: 10px; height: 5px; border-radius: 3px; background: #FF9500"></span>
-        <span class="bit" style="--dx: 104px; --dy: -4px; width: 7px; height: 7px; border-radius: 4px; background: #007AFF"></span>
-        <span class="pop glass-hi" style="position: absolute; inset: 0; border-radius: 42px; display: flex; align-items: center; justify-content: center">
-          <span style="width: 64px; height: 64px; border-radius: 32px; background: #FF9F0A; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 8px 18px rgba(255,149,0,.35)">
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" d="m5 12 5 5L20 7"></path></svg>
-          </span>
-        </span>
+    <section style="position: relative; height: 318px; border-radius: 28px; background: #FFFFFF; overflow: hidden">
+      <canvas ref="{{canvasRef}}" width="350" height="200" role="img" aria-label="A lime Lumo points coin spinning with sparkles." style="position: absolute; left: 0; top: 0; width: 350px; height: 200px"></canvas>
+      <div aria-live="polite" style="position: absolute; left: 0; right: 0; top: 182px; display: flex; flex-direction: column; align-items: center; text-align: center">
+        <span style="font-size: 56px; line-height: 1; font-weight: 800; letter-spacing: -0.05em; font-variant-numeric: tabular-nums">+{{count}} <span style="font-size: 20px; letter-spacing: 0">points</span></span>
+        <span style="font-size: 15px; font-weight: 700; margin-top: 8px">Nicely done, Omar</span>
+        <span style="font-size: 13px; color: #5E6369; font-weight: 500; padding: 0 20px">You helped the grid through its busiest hours, and home stayed at 24°C.</span>
       </div>
-      <h1 style="margin: 8px 0 0; font-size: 28px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em">Nicely done, Omar</h1>
-      <p style="margin: 0; font-size: 14px; color: #3A3A3C; max-width: 300px">You helped the grid through its busiest two hours — and home stayed a cool 24°C.</p>
-    </section>
-
-    <section aria-live="polite" style="display: flex; flex-direction: column; align-items: center">
-      <span style="font-size: 84px; line-height: 1; font-weight: 800; letter-spacing: -0.05em; color: #B25000; font-variant-numeric: tabular-nums">+{{count}}</span>
-      <span style="font-size: 15px; font-weight: 600; color: #3A3A3C">points earned</span>
     </section>
 
     <section class="rise1" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-      <div class="glass" style="border-radius: 22px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
-        <span style="width: 30px; height: 30px; border-radius: 10px; background: rgba(52,199,89,.16); color: #1E7B34; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></span>
-        <span style="font-size: 18px; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums">AED 4.80</span>
-        <span style="font-size: 11px; line-height: 1.3; color: #3A3A3C">off this month's bill</span>
+      <div style="background: #FFFFFF; border-radius: 20px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"></rect><path d="M3 10h18"></path></svg>
+        <b style="font-size: 17px; font-variant-numeric: tabular-nums">4.80<span style="font-size: 11px; color: #3E7C00"> AED</span></b>
+        <span style="font-size: 11px; color: #5E6369; font-weight: 600">off your bill</span>
       </div>
-      <div class="glass" style="border-radius: 22px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
-        <span style="width: 30px; height: 30px; border-radius: 10px; background: rgba(52,199,89,.16); color: #1E7B34; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"></path><path d="M2 21c0-3 1.9-5.4 5.2-6"></path></svg></span>
-        <span style="font-size: 18px; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums">3.2 kg</span>
-        <span style="font-size: 11px; line-height: 1.3; color: #3A3A3C">CO₂ avoided ≈ a 16 km drive</span>
+      <div style="background: #FFFFFF; border-radius: 20px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"></path><path d="M2 21c0-3 1.9-5.4 5.2-6"></path></svg>
+        <b style="font-size: 17px; font-variant-numeric: tabular-nums">3.2<span style="font-size: 11px; color: #3E7C00"> kg</span></b>
+        <span style="font-size: 11px; color: #5E6369; font-weight: 600">CO₂ ≈ 16 km drive</span>
       </div>
-      <div class="glass" style="border-radius: 22px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
-        <span style="width: 30px; height: 30px; border-radius: 10px; background: rgba(0,122,255,.12); color: #0062CC; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg></span>
-        <span style="font-size: 18px; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums">16 kWh</span>
-        <span style="font-size: 11px; line-height: 1.3; color: #3A3A3C">moved off peak time</span>
+      <div style="background: #FFFFFF; border-radius: 20px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg>
+        <b style="font-size: 17px; font-variant-numeric: tabular-nums">16<span style="font-size: 11px; color: #3E7C00"> kWh</span></b>
+        <span style="font-size: 11px; color: #5E6369; font-weight: 600">moved off peak</span>
       </div>
     </section>
 
-    <section class="rise2" style="position: relative; overflow: hidden; background: #1D1D1F; color: #F5F5F7; border-radius: 26px; padding: 14px 16px; display: flex; align-items: center; gap: 14px">
-      <div class="blob" style="width: 160px; height: 160px; left: -50px; top: -60px; background: #FF9500; opacity: 0.45; filter: blur(40px)"></div>
-      <span style="position: relative; width: 44px; height: 44px; flex: none; border-radius: 22px; background: rgba(255,179,64,.2); color: #FFB340; display: flex; align-items: center; justify-content: center">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4 0 7-3 7-7 0-4-3-6-4-10-2 2-3 4-3 6-1-1-2-2-2-4-2 2-5 5-5 8 0 4 3 7 7 7z"></path></svg>
+    <section class="rise2" style="background: #111315; color: #F3F4F5; border-radius: 24px; padding: 14px 16px; display: flex; align-items: center; gap: 14px">
+      <span style="width: 44px; height: 44px; flex: none; border-radius: 22px; background: #A6F23C; color: #111315; display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4 0 7-3 7-7 0-4-3-6-4-10-2 2-3 4-3 6-1-1-2-2-2-4-2 2-5 5-5 8 0 4 3 7 7 7z"></path></svg>
       </span>
-      <div style="position: relative; flex: 1; display: flex; flex-direction: column; gap: 6px">
-        <span style="font-size: 15px; font-weight: 700">4 in a row!</span>
-        <div role="img" aria-label="Streak: 4 of 5 moments done" style="display: flex; gap: 6px">
-          <span style="flex: 1; height: 6px; border-radius: 3px; background: #FFB340"></span>
-          <span style="flex: 1; height: 6px; border-radius: 3px; background: #FFB340"></span>
-          <span style="flex: 1; height: 6px; border-radius: 3px; background: #FFB340"></span>
-          <span style="flex: 1; height: 6px; border-radius: 3px; background: #FFB340"></span>
-          <span style="flex: 1; height: 6px; border-radius: 3px; background: rgba(255,255,255,.14); outline: 1px dashed rgba(255,255,255,.4)"></span>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 15px; font-weight: 800">4 in a row!</span>
+        <div role="img" aria-label="Streak: 4 of 5 moments done" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; height: 8px">
+          <span style="border-radius: 4px; background: #A6F23C"></span><span style="border-radius: 4px; background: #A6F23C"></span><span style="border-radius: 4px; background: #A6F23C"></span><span style="border-radius: 4px; background: #A6F23C"></span><span style="border-radius: 4px; background: repeating-linear-gradient(135deg, #5E6369 0 2px, #2A2D31 2px 5px)"></span>
         </div>
-        <span style="font-size: 12px; color: #D1D1D6">One more unlocks 1.5× points for a week</span>
+        <span style="font-size: 12px; color: #C9CDD2; font-weight: 600">One more unlocks 1.5× points for a week</span>
       </div>
     </section>
 
-    <section class="rise3 glass" style="border-radius: 24px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+    <section class="rise3" style="background: #FFFFFF; border-radius: 24px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
       <div style="display: flex; justify-content: space-between; align-items: baseline">
-        <span style="font-size: 14px; font-weight: 700">Level 3 · Sun Shifter</span>
-        <span style="font-size: 12px; color: #3A3A3C; font-variant-numeric: tabular-nums">2,340 / 2,600</span>
+        <span style="font-size: 14px; font-weight: 800">Level 3 · Sun Shifter</span>
+        <span style="font-size: 12px; color: #5E6369; font-weight: 600; font-variant-numeric: tabular-nums">2,340 / 2,600</span>
       </div>
-      <div role="img" aria-label="Level progress 90 percent" style="height: 8px; border-radius: 4px; background: rgba(120,120,128,.16); overflow: hidden">
-        <div style="width: 90%; height: 8px; border-radius: 4px; background: #1D1D1F"></div>
+      <div role="img" aria-label="Level progress 90 percent" style="height: 10px; border-radius: 5px; background: repeating-linear-gradient(135deg, #D5D8DC 0 2px, #F2F3F5 2px 6px); overflow: hidden">
+        <div style="width: 90%; height: 10px; border-radius: 5px; background: #111315"></div>
       </div>
-      <span style="font-size: 12px; color: #3A3A3C">260 points to Level 4 · Grid Guardian</span>
+      <span style="font-size: 12px; color: #5E6369; font-weight: 600">260 points to Level 4 · Grid Guardian</span>
     </section>
   </div>
 
-  <div class="glass-hi" style="position: absolute; left: 12px; right: 12px; bottom: 20px; padding: 8px 8px 4px; border-radius: 34px; display: flex; flex-direction: column">
-    <a href="Wallet.dc.html" style="height: 56px; border-radius: 28px; background: #1D1D1F; color: #FFFFFF; font-size: 17px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-decoration: none">Open my wallet</a>
-    <a href="Main.dc.html" style="height: 44px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: #3A3A3C; text-decoration: none">Back to home</a>
+  <div style="position: absolute; left: 20px; right: 20px; bottom: 24px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px">
+    <a href="Main.dc.html" style="height: 56px; border-radius: 28px; background: #FFFFFF; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-decoration: none">Home</a>
+    <a href="Wallet.dc.html" style="height: 56px; border-radius: 28px; background: #A6F23C; color: #111315; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Open wallet</a>
   </div>
 </div>
 </x-dc>
@@ -127,21 +99,29 @@ class Component extends DCLogic {
     this.state = { count: 0 };
   }
   componentDidMount() {
+    this.tries = 0; this.mount3d();
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) { this.setState({ count: 120 }); return; }
     const start = Date.now() + 300, dur = 1200;
     this.timer = setInterval(() => {
       const t = Math.min(1, Math.max(0, (Date.now() - start) / dur));
-      const eased = 1 - Math.pow(1 - t, 3);
-      this.setState({ count: Math.round(120 * eased) });
+      this.setState({ count: Math.round(120 * (1 - Math.pow(1 - t, 3))) });
       if (t >= 1) clearInterval(this.timer);
     }, 30);
   }
-  componentWillUnmount() {
-    clearInterval(this.timer);
+  componentDidUpdate() { if (!this.view) this.mount3d(); }
+  componentWillUnmount() { clearInterval(this.timer); clearTimeout(this.retry); if (this.view) this.view.dispose(); }
+  mount3d() {
+    if (this.view || !this.canvas) return;
+    if (!window.Lumo3D) {
+      if (this.tries++ < 40) this.retry = setTimeout(() => this.mount3d(), 150);
+      return;
+    }
+    this.view = window.Lumo3D.mount(this.canvas, { scene: 'coin', shift: [0, 0.04] });
   }
   renderVals() {
-    return { count: this.state.count };
+    if (!this.refFn) this.refFn = (el) => { if (el) this.canvas = el; };
+    return { canvasRef: this.refFn, count: this.state.count };
   }
 }
 </script>
