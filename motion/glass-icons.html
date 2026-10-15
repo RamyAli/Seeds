@@ -1,0 +1,375 @@
+<title>Glass Icon Motion</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a quiet specimen sheet. Short header with playback controls, then a grid of tiles,
+   each one a 160x140 stage holding one glass icon and the note that describes its motion. */
+:root {
+  --bg: #F7F8FD;
+  --tile: #FFFFFF;
+  --tile-edge: #E6E9F7;
+  --fg: #1A1D33;
+  --muted: #61678A;
+  --accent: #4B5BF0;
+  --grad: linear-gradient(140deg, #2D58FF 0%, #6F8EFF 52%, #8A2BE2 100%);
+  --grad-a: #2D58FF;
+  --grad-b: #6F8EFF;
+  --grad-c: #8A2BE2;
+  --glass: rgba(196, 208, 248, 0.58);
+  --glass-edge: rgba(255, 255, 255, 0.55);
+  --knob: #FFFFFF;
+  --dot: #FFFFFF;
+
+  --font-display: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+  --smooth: cubic-bezier(.65, 0, .35, 1);
+  --speed: 1;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C0E1B; --tile: #141729; --tile-edge: #23284A; --fg: #ECEEFF; --muted: #9AA0C8; --accent: #8E9BFF;
+    --glass: rgba(150, 165, 255, 0.17); --glass-edge: rgba(255, 255, 255, 0.16); --knob: #EEF1FF; --dot: #FFFFFF;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C0E1B; --tile: #141729; --tile-edge: #23284A; --fg: #ECEEFF; --muted: #9AA0C8; --accent: #8E9BFF;
+  --glass: rgba(150, 165, 255, 0.17); --glass-edge: rgba(255, 255, 255, 0.16); --knob: #EEF1FF; --dot: #FFFFFF;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 28px; }
+
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 20px; }
+.intro { min-width: 0; max-width: 60ch; display: grid; gap: 6px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 5vw, 40px); line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
+.lede { margin: 0; color: var(--muted); }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn, .seg button {
+  font: 600 13px/1 var(--font-body);
+  color: var(--fg);
+  background: var(--tile);
+  border: 1px solid var(--tile-edge);
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+.btn:hover, .seg button:hover { border-color: var(--accent); }
+.seg { display: inline-flex; border: 1px solid var(--tile-edge); border-radius: 999px; background: var(--tile); padding: 3px; gap: 2px; }
+.seg button { border: 0; padding: 7px 12px; font-family: var(--font-mono); font-weight: 500; background: transparent; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--tile); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (min-width: 900px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .grid { gap: 10px; } }
+
+.tile {
+  appearance: none; font: inherit; color: inherit; text-align: left; cursor: pointer;
+  background: var(--tile);
+  border: 1px solid var(--tile-edge);
+  border-radius: 22px;
+  padding: 20px 18px 16px;
+  display: grid; gap: 14px; justify-items: center;
+  min-width: 0;
+}
+.tile:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--tile-edge)); }
+.cap { width: 100%; display: grid; gap: 2px; min-width: 0; }
+.cap b { font-weight: 600; font-size: 15px; }
+.cap span { color: var(--muted); font-size: 13px; line-height: 1.4; }
+.cap code { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: .02em; margin-top: 4px; }
+
+.stage { position: relative; width: 160px; height: 140px; flex: none; }
+@media (max-width: 400px) { .stage { transform: scale(.82); margin: -12px 0; } }
+
+.g, .gl { position: absolute; }
+.g { background: var(--grad); }
+.gl {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  backdrop-filter: blur(10px) saturate(150%);
+  box-shadow: inset 0 0 0 1px var(--glass-edge);
+}
+svg.g { background: none; overflow: visible; }
+
+/* Animations only run on tiles with .run; the root .paused class freezes them all */
+.paused .stage * { animation-play-state: paused !important; }
+.run .stage * { animation-iteration-count: infinite !important; animation-fill-mode: both !important; }
+
+/* 1 Folder */
+.folder .paper { left: 30px; top: 20px; width: 100px; height: 72px; border-radius: 12px; }
+.folder .front { left: 12px; top: 42px; width: 136px; height: 86px; transform-origin: 50% 100%;
+  clip-path: path("M16 0 H50 Q57 0 61 6 L66 14 H120 Q136 14 136 30 V70 Q136 86 120 86 H16 Q0 86 0 70 V16 Q0 0 16 0 Z"); }
+.run .folder .paper { animation: paperLift calc(2.8s / var(--speed)) var(--spring); }
+.run .folder .front { animation: flapOpen calc(2.8s / var(--speed)) var(--smooth); }
+@keyframes paperLift { 0%, 15% { transform: translateY(0) } 40%, 65% { transform: translateY(-18px) } 88%, 100% { transform: translateY(0) } }
+@keyframes flapOpen { 0%, 15% { transform: perspective(320px) rotateX(0) } 40%, 65% { transform: perspective(320px) rotateX(22deg) } 88%, 100% { transform: perspective(320px) rotateX(0) } }
+
+/* 2 Toggle */
+.toggle .orb { left: 92px; top: 22px; width: 60px; height: 60px; border-radius: 50%; }
+.toggle .track { left: 8px; top: 46px; width: 112px; height: 54px; border-radius: 27px; }
+.toggle .knob { position: absolute; left: 15px; top: 53px; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--knob); box-shadow: 0 2px 8px rgba(45, 88, 255, .22), inset 0 0 0 2px rgba(111, 142, 255, .35); }
+.run .toggle .knob { animation: knobSlide calc(3s / var(--speed)) var(--spring); }
+.run .toggle .orb { animation: orbPulse calc(3s / var(--speed)) var(--spring); }
+@keyframes knobSlide { 0%, 20% { transform: translateX(0) } 40%, 70% { transform: translateX(58px) } 90%, 100% { transform: translateX(0) } }
+@keyframes orbPulse { 0%, 26% { transform: scale(1) } 40%, 70% { transform: translate(-6px, 2px) scale(1.12) } 90%, 100% { transform: scale(1) } }
+
+/* 3 Play */
+.play .back { left: 12px; top: 22px; width: 72px; height: 96px;
+  clip-path: path("M0 12 Q0 0 11 6 L64 40 Q72 48 64 56 L11 90 Q0 96 0 84 Z"); }
+.play .front { left: 42px; top: 14px; width: 106px; height: 112px;
+  clip-path: path("M0 16 Q0 0 15 7 L98 48 Q106 56 98 64 L15 105 Q0 112 0 96 Z"); }
+.run .play .front { animation: nudgeFront calc(2.4s / var(--speed)) var(--spring); }
+.run .play .back { animation: nudgeBack calc(2.4s / var(--speed)) var(--spring); }
+@keyframes nudgeFront { 0%, 12% { transform: translateX(0) } 34% { transform: translateX(14px) } 52%, 100% { transform: translateX(0) } }
+@keyframes nudgeBack { 0%, 20% { transform: translateX(0) } 42% { transform: translateX(14px) } 60%, 100% { transform: translateX(0) } }
+
+/* 4 Location */
+.pinmap .land { left: 18px; top: 84px; width: 124px; height: 46px; transform-origin: 50% 100%;
+  clip-path: path("M18 0 H106 Q114 0 116 8 L124 38 Q124 46 116 46 H8 Q0 46 0 38 L8 8 Q10 0 18 0 Z"); }
+.pinmap .pin { left: 50px; top: 8px; width: 60px; height: 86px;
+  clip-path: path("M30 0 A30 30 0 0 1 60 30 C60 50 42 64 30 86 C18 64 0 50 0 30 A30 30 0 0 1 30 0 Z"); }
+.pinmap .hole { position: absolute; left: 19px; top: 19px; width: 22px; height: 22px; border-radius: 50%; background: rgba(255, 255, 255, .88); }
+.run .pinmap .pin { animation: pinDrop calc(2.8s / var(--speed)) ease-in-out; }
+.run .pinmap .land { animation: landSquash calc(2.8s / var(--speed)) ease-out; }
+@keyframes pinDrop {
+  0% { transform: translateY(-46px); opacity: 0; animation-timing-function: cubic-bezier(.5, 0, .9, .5); }
+  22% { transform: translateY(0); opacity: 1; animation-timing-function: ease-out; }
+  30% { transform: translateY(-12px); animation-timing-function: ease-in; }
+  38%, 78% { transform: translateY(0); opacity: 1; }
+  94%, 100% { transform: translateY(-46px); opacity: 0; }
+}
+@keyframes landSquash { 0%, 21% { transform: scale(1) } 25% { transform: scale(1.04, .9) } 33%, 37% { transform: scale(1) } 40% { transform: scale(1.02, .96) } 46%, 100% { transform: scale(1) } }
+
+/* 5 Search */
+.search .mag { left: 78px; top: 26px; width: 70px; height: 70px; }
+.search .bar { left: 6px; top: 56px; width: 104px; height: 34px; border-radius: 12px;
+  display: flex; align-items: center; gap: 7px; padding-left: 16px; }
+.search .bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--dot); display: block; }
+.run .search .mag { animation: magScan calc(3.2s / var(--speed)) var(--smooth); }
+.run .search .bar i { animation: dotPing calc(3.2s / var(--speed)) ease-out; }
+.run .search .bar i:nth-child(4) { animation-delay: calc(0s / var(--speed)); }
+.run .search .bar i:nth-child(3) { animation-delay: calc(.1s / var(--speed)); }
+.run .search .bar i:nth-child(2) { animation-delay: calc(.2s / var(--speed)); }
+.run .search .bar i:nth-child(1) { animation-delay: calc(.3s / var(--speed)); }
+@keyframes magScan { 0%, 10% { transform: translateX(0) } 45%, 58% { transform: translateX(-62px) } 92%, 100% { transform: translateX(0) } }
+@keyframes dotPing { 0%, 24% { transform: scale(1) } 32% { transform: scale(1.7) } 42%, 100% { transform: scale(1) } }
+
+/* 6 Chat */
+.chat .b1 { left: 10px; top: 10px; width: 100px; height: 92px;
+  clip-path: path("M14 0 H86 Q100 0 100 14 V60 Q100 74 86 74 H22 L5 91 Q0 94 0 88 V14 Q0 0 14 0 Z"); }
+.chat .b2 { left: 52px; top: 40px; width: 98px; height: 92px;
+  clip-path: path("M14 0 H84 Q98 0 98 14 V88 Q98 94 93 91 L76 74 H14 Q0 74 0 60 V14 Q0 0 14 0 Z"); }
+.chat .typing { position: absolute; left: 0; top: 0; width: 98px; height: 74px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.chat .typing i { width: 12px; height: 12px; border-radius: 50%; background: var(--dot); display: block; }
+.run .chat .typing i { animation: typing calc(1.2s / var(--speed)) ease-in-out; }
+.run .chat .typing i:nth-child(2) { animation-delay: calc(.15s / var(--speed)); }
+.run .chat .typing i:nth-child(3) { animation-delay: calc(.3s / var(--speed)); }
+.run .chat .b1 { animation: floatA calc(3.6s / var(--speed)) ease-in-out; }
+.run .chat .b2 { animation: floatB calc(3.6s / var(--speed)) ease-in-out; }
+@keyframes typing { 0%, 60%, 100% { transform: translateY(0); opacity: .75 } 30% { transform: translateY(-7px); opacity: 1 } }
+@keyframes floatA { 0%, 100% { transform: translate(0, 0) } 50% { transform: translate(-3px, -4px) } }
+@keyframes floatB { 0%, 100% { transform: translate(0, 0) } 50% { transform: translate(3px, 3px) } }
+
+/* 7 Cloud download */
+.cloud .arrow { left: 62px; top: 56px; width: 36px; height: 76px; }
+.cloud .puff { left: 10px; top: 8px; width: 142px; height: 90px;
+  clip-path: path("M50 90 A45 45 0 1 1 93.8 34.7 A30 30 0 1 1 110 90 Z"); }
+.run .cloud .arrow { animation: arrowDrop calc(2s / var(--speed)) cubic-bezier(.45, 0, .55, 1); }
+.run .cloud .puff { animation: floatA calc(4s / var(--speed)) ease-in-out; }
+@keyframes arrowDrop {
+  0% { transform: translateY(-30px); opacity: 0; }
+  15% { opacity: 1; }
+  42% { transform: translateY(2px); }
+  52% { transform: translateY(-3px); }
+  60%, 84% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(14px); opacity: 0; }
+}
+
+/* 8 Windows */
+.cards .c1 { left: 54px; top: 18px; width: 96px; height: 70px; border-radius: 10px; }
+.cards .c2 { left: 10px; top: 52px; width: 96px; height: 70px; border-radius: 10px; }
+.run .cards .c2 { animation: cardFront calc(3.2s / var(--speed)) var(--spring); }
+.run .cards .c1 { animation: cardBack calc(3.2s / var(--speed)) var(--spring); }
+@keyframes cardFront { 0%, 15% { transform: translate(0, 0) } 42%, 62% { transform: translate(30px, -22px) } 88%, 100% { transform: translate(0, 0) } }
+@keyframes cardBack { 0%, 15% { transform: translate(0, 0) scale(1) } 42%, 62% { transform: translate(6px, 4px) scale(.94) } 88%, 100% { transform: translate(0, 0) scale(1) } }
+
+/* 9 Lock */
+.lock .shackle { left: 42px; top: 6px; width: 76px; height: 66px; transform-origin: 87% 97%; }
+.lock .body { left: 32px; top: 56px; width: 96px; height: 78px; border-radius: 16px; }
+.lock .key { position: absolute; left: 41px; top: 32px; width: 14px; height: 14px; border-radius: 50%; background: var(--dot); }
+.run .lock .shackle { animation: unlock calc(2.8s / var(--speed)) var(--smooth); }
+.run .lock .body { animation: thud calc(2.8s / var(--speed)) ease-out; }
+.run .lock .key { animation: keyGlow calc(2.8s / var(--speed)) ease-out; }
+@keyframes unlock {
+  0%, 15% { transform: translateY(0) rotate(0) }
+  32% { transform: translateY(-16px) rotate(0) }
+  42%, 58% { transform: translateY(-16px) rotate(-22deg) }
+  68% { transform: translateY(-16px) rotate(0) }
+  76% { transform: translateY(2px) rotate(0) }
+  82%, 100% { transform: translateY(0) rotate(0) }
+}
+@keyframes thud { 0%, 75% { transform: translateY(0) } 79% { transform: translateY(3px) } 86%, 100% { transform: translateY(0) } }
+@keyframes keyGlow { 0%, 30% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0) } 42%, 58% { transform: scale(1.25); box-shadow: 0 0 0 6px rgba(255, 255, 255, .35) } 70%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0) } }
+
+/* 10 People */
+.people .h2 { left: 78px; top: 10px; width: 50px; height: 50px; border-radius: 50%; }
+.people .t2 { left: 64px; top: 62px; width: 92px; height: 54px; border-radius: 46px 46px 14px 14px; }
+.people .h1 { left: 40px; top: 22px; width: 50px; height: 50px; border-radius: 50%; }
+.people .t1 { left: 12px; top: 74px; width: 106px; height: 58px; border-radius: 53px 53px 14px 14px; }
+.run .people .h2, .run .people .t2 { animation: peek calc(3s / var(--speed)) var(--spring); }
+.run .people .h2 { animation-delay: calc(.06s / var(--speed)); }
+.run .people .h1 { animation: nod calc(3s / var(--speed)) var(--spring); }
+@keyframes peek { 0%, 18% { transform: translateX(0) } 40%, 64% { transform: translateX(12px) } 88%, 100% { transform: translateX(0) } }
+@keyframes nod { 0%, 30% { transform: translateY(0) } 40% { transform: translateY(-6px) } 50%, 100% { transform: translateY(0) } }
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not(.force-play) .stage * { animation-play-state: paused !important; }
+}
+</style>
+
+<div class="wrap" id="root">
+  <header>
+    <div class="intro">
+      <div class="eyebrow">Frosted glass · 10 icons · CSS only</div>
+      <h1>Glass Icon Motion</h1>
+      <p class="lede">Each icon has one small motion that says what it does. The frosted front layer blurs the gradient shape behind it, so the movement shows through the glass. Click any icon to restart it.</p>
+    </div>
+    <div class="controls">
+      <button class="btn" id="toggle" type="button" aria-pressed="false">Pause</button>
+      <div class="seg" role="group" aria-label="Playback speed">
+        <button type="button" id="speed-05" data-speed="0.5" aria-pressed="false">0.5×</button>
+        <button type="button" id="speed-1" data-speed="1" aria-pressed="true">1×</button>
+        <button type="button" id="speed-2" data-speed="2" aria-pressed="false">2×</button>
+      </div>
+    </div>
+  </header>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#2D58FF"/><stop offset=".52" stop-color="#6F8EFF"/><stop offset="1" stop-color="#8A2BE2"/>
+      </linearGradient>
+      <linearGradient id="gv" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8A2BE2"/><stop offset=".55" stop-color="#6F8EFF"/><stop offset="1" stop-color="#2D58FF"/>
+      </linearGradient>
+      <linearGradient id="gh" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2D58FF"/><stop offset=".5" stop-color="#6F8EFF"/><stop offset="1" stop-color="#8A2BE2"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="grid">
+    <button class="tile run" type="button" id="t-folder" aria-label="Folder, restart animation">
+      <div class="stage folder" aria-hidden="true"><div class="g paper"></div><div class="gl front"></div></div>
+      <div class="cap"><b>Folder</b><span>A sheet lifts out as the front flap tilts open.</span><code>2.8s · spring lift</code></div>
+    </button>
+
+    <button class="tile run" type="button" id="t-toggle" aria-label="Toggle, restart animation">
+      <div class="stage toggle" aria-hidden="true"><div class="g orb"></div><div class="gl track"></div><div class="knob"></div></div>
+      <div class="cap"><b>Toggle</b><span>The knob slides on and the orb swells to meet it.</span><code>3.0s · spring slide</code></div>
+    </button>
+
+    <button class="tile run" type="button" id="t-play" aria-label="Play, restart animation">
+      <div class="stage play" aria-hidden="true"><div class="g back"></div><div class="gl front"></div></div>
+      <div class="cap"><b>Play</b><span>The glass triangle pushes forward and the gradient follows.</span><code>2.4s · staggered nudge</code></div>
+    </button>
+
+    <button class="tile run" type="button" id="t-location" aria-label="Location, restart animation">
+      <div class="stage pinmap" aria-hidden="true"><div class="g land"></div><div class="gl pin"><div class="hole"></div></div></div>
+      <div class="cap"><b>Location</b><span>The pin drops, bounces once and presses into the map.</span><code>2.8s · drop and squash</code></div>
+    </button>
+
+    <button class="tile run" type="button" id="t-search" aria-label="Search, restart animation">
+      <div class="stage search" aria-hidden="true">
+        <svg class="g mag" viewBox="0 0 70 70"><circle cx="26" cy="26" r="18" fill="none" stroke="url(#gd)" stroke-width="7"/><path d="M40 40 L60 60" stroke="url(#gd)" stroke-width="7" stroke-linecap="round" fill="none"/></svg>
+        <div class="gl bar"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="cap"><b>Search</b><span>The lens sweeps the field and each character lights as it passes.</span><code>3.2s · scan</code></div>
+    </button>
+
+    <button class="tile run" type="button" id="t-chat" aria-label="Chat, restart animation">
+      <div class="stage chat" aria-hidden="true"><div class="g b1"></div><div class="gl b2"><div class="typing"><i></i><i></i><i></i></div></div></div>
+      <div class="cap"><b>Chat</b><span>Typing dots bounce in turn while the bubbles drift.</span><code>1.2s · typing loop</code></div>
+    </button>
+
+    <button class="tile run" type="button" id="t-download" aria-label="Download, restart animation">
+      <div class="stage cloud" aria-hidden="true">
+        <svg class="g arrow" viewBox="0 0 36 76"><path d="M18 4 V50" stroke="url(#gv)" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M5 50 L18 66 L31 50 Z" fill="#2D58FF" stroke="#2D58FF" stroke-width="6" stroke-linejoin="round"/></svg>
+        <div class="gl puff"></div>
+      </div>
+      <div class="cap"><b>Download</b><span>The arrow falls through the cloud and settles below it.</span><code>2.0s · drop through</code></div>
+    </button>
+
+    <button class="tile run" type="button" id="t-windows" aria-label="Windows, restart animation">
+      <div class="stage cards" aria-hidden="true"><div class="g c1"></div><div class="gl c2"></div></div>
+      <div class="cap"><b>Windows</b><span>The glass pane slides over the one behind, then returns.</span><code>3.2s · spring stack</code></div>
+    </button>
+
+    <button class="tile run" type="button" id="t-lock" aria-label="Lock, restart animation">
+      <div class="stage lock" aria-hidden="true">
+        <svg class="g shackle" viewBox="0 0 76 66"><path d="M10 64 V36 A28 28 0 0 1 66 36 V64" fill="none" stroke="url(#gh)" stroke-width="9" stroke-linecap="round"/></svg>
+        <div class="gl body"><div class="key"></div></div>
+      </div>
+      <div class="cap"><b>Lock</b><span>The shackle lifts and swings open, then clicks shut.</span><code>2.8s · unlock and close</code></div>
+    </button>
+
+    <button class="tile run" type="button" id="t-people" aria-label="People, restart animation">
+      <div class="stage people" aria-hidden="true"><div class="g h2"></div><div class="g t2"></div><div class="gl h1"></div><div class="gl t1"></div></div>
+      <div class="cap"><b>People</b><span>The second person steps out from behind and the first one nods.</span><code>3.0s · peek</code></div>
+    </button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var toggle = document.getElementById('toggle');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var paused = false;
+
+  function setPaused(p) {
+    paused = p;
+    root.classList.toggle('paused', p);
+    root.classList.toggle('force-play', !p);
+    toggle.textContent = p ? 'Play' : 'Pause';
+    toggle.setAttribute('aria-pressed', String(p));
+  }
+  setPaused(reduce);
+  toggle.addEventListener('click', function () { setPaused(!paused); });
+
+  document.querySelectorAll('.seg button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      root.style.setProperty('--speed', b.dataset.speed);
+      document.querySelectorAll('.seg button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+    });
+  });
+
+  document.querySelectorAll('.tile').forEach(function (t) {
+    t.addEventListener('click', function () {
+      t.classList.remove('run');
+      void t.offsetWidth;
+      t.classList.add('run');
+      if (paused) setPaused(false);
+    });
+  });
+})();
+</script>
