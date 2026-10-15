@@ -6,17 +6,17 @@
 /* Layout: a quiet specimen sheet. Short header with playback controls, then a grid of tiles,
    each one a 160x140 stage holding one glass icon and the note that describes its motion. */
 :root {
-  --bg: #F7F8FD;
+  --bg: #FDF9F6;
   --tile: #FFFFFF;
-  --tile-edge: #E6E9F7;
-  --fg: #1A1D33;
-  --muted: #61678A;
-  --accent: #4B5BF0;
-  --grad: linear-gradient(140deg, #2D58FF 0%, #6F8EFF 52%, #8A2BE2 100%);
-  --grad-a: #2D58FF;
-  --grad-b: #6F8EFF;
-  --grad-c: #8A2BE2;
-  --glass: rgba(196, 208, 248, 0.58);
+  --tile-edge: #F2E4DA;
+  --fg: #2A1C14;
+  --muted: #86685A;
+  --accent: #D9480F;
+  --grad: linear-gradient(140deg, #FF6A1A 0%, #FFAE6B 52%, #D9361E 100%);
+  --grad-a: #FF6A1A;
+  --grad-b: #FFAE6B;
+  --grad-c: #D9361E;
+  --glass: rgba(255, 214, 190, 0.58);
   --glass-edge: rgba(255, 255, 255, 0.55);
   --knob: #FFFFFF;
   --dot: #FFFFFF;
@@ -31,14 +31,14 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0C0E1B; --tile: #141729; --tile-edge: #23284A; --fg: #ECEEFF; --muted: #9AA0C8; --accent: #8E9BFF;
-    --glass: rgba(150, 165, 255, 0.17); --glass-edge: rgba(255, 255, 255, 0.16); --knob: #EEF1FF; --dot: #FFFFFF;
+    --bg: #170F0B; --tile: #22170F; --tile-edge: #3D2A1D; --fg: #FFF1E8; --muted: #C9A893; --accent: #FF9A5A;
+    --glass: rgba(255, 170, 120, 0.17); --glass-edge: rgba(255, 255, 255, 0.16); --knob: #FFF3EB; --dot: #FFFFFF;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0C0E1B; --tile: #141729; --tile-edge: #23284A; --fg: #ECEEFF; --muted: #9AA0C8; --accent: #8E9BFF;
-  --glass: rgba(150, 165, 255, 0.17); --glass-edge: rgba(255, 255, 255, 0.16); --knob: #EEF1FF; --dot: #FFFFFF;
+  --bg: #170F0B; --tile: #22170F; --tile-edge: #3D2A1D; --fg: #FFF1E8; --muted: #C9A893; --accent: #FF9A5A;
+  --glass: rgba(255, 170, 120, 0.17); --glass-edge: rgba(255, 255, 255, 0.16); --knob: #FFF3EB; --dot: #FFFFFF;
   color-scheme: dark;
 }
 
@@ -126,7 +126,7 @@ svg.g { background: none; overflow: visible; }
 .toggle .orb { left: 92px; top: 22px; width: 60px; height: 60px; border-radius: 50%; }
 .toggle .track { left: 8px; top: 46px; width: 112px; height: 54px; border-radius: 27px; }
 .toggle .knob { position: absolute; left: 15px; top: 53px; width: 40px; height: 40px; border-radius: 50%;
-  background: var(--knob); box-shadow: 0 2px 8px rgba(45, 88, 255, .22), inset 0 0 0 2px rgba(111, 142, 255, .35); }
+  background: var(--knob); box-shadow: 0 2px 8px rgba(255, 106, 26, .25), inset 0 0 0 2px rgba(255, 174, 107, .4); }
 .run .toggle .knob { animation: knobSlide calc(3s / var(--speed)) var(--spring); }
 .run .toggle .orb { animation: orbPulse calc(3s / var(--speed)) var(--spring); }
 @keyframes knobSlide { 0%, 20% { transform: translateX(0) } 40%, 70% { transform: translateX(58px) } 90%, 100% { transform: translateX(0) } }
@@ -266,13 +266,13 @@ svg.g { background: none; overflow: visible; }
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#2D58FF"/><stop offset=".52" stop-color="#6F8EFF"/><stop offset="1" stop-color="#8A2BE2"/>
+        <stop offset="0" stop-color="#FF6A1A"/><stop offset=".52" stop-color="#FFAE6B"/><stop offset="1" stop-color="#D9361E"/>
       </linearGradient>
       <linearGradient id="gv" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#8A2BE2"/><stop offset=".55" stop-color="#6F8EFF"/><stop offset="1" stop-color="#2D58FF"/>
+        <stop offset="0" stop-color="#D9361E"/><stop offset=".55" stop-color="#FFAE6B"/><stop offset="1" stop-color="#FF6A1A"/>
       </linearGradient>
       <linearGradient id="gh" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#2D58FF"/><stop offset=".5" stop-color="#6F8EFF"/><stop offset="1" stop-color="#8A2BE2"/>
+        <stop offset="0" stop-color="#FF6A1A"/><stop offset=".5" stop-color="#FFAE6B"/><stop offset="1" stop-color="#D9361E"/>
       </linearGradient>
     </defs>
   </svg>
@@ -313,7 +313,7 @@ svg.g { background: none; overflow: visible; }
 
     <button class="tile run" type="button" id="t-download" aria-label="Download, restart animation">
       <div class="stage cloud" aria-hidden="true">
-        <svg class="g arrow" viewBox="0 0 36 76"><path d="M18 4 V50" stroke="url(#gv)" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M5 50 L18 66 L31 50 Z" fill="#2D58FF" stroke="#2D58FF" stroke-width="6" stroke-linejoin="round"/></svg>
+        <svg class="g arrow" viewBox="0 0 36 76"><path d="M18 4 V50" stroke="url(#gv)" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M5 50 L18 66 L31 50 Z" fill="#FF6A1A" stroke="#FF6A1A" stroke-width="6" stroke-linejoin="round"/></svg>
         <div class="gl puff"></div>
       </div>
       <div class="cap"><b>Download</b><span>The arrow falls through the cloud and settles below it.</span><code>2.0s · drop through</code></div>
