@@ -19,3 +19,7 @@ Tips
 - Choose **Glass: Dark bg** when the section behind the icon is dark.
 - **On hover** plays the animation only while the pointer is over the icon, which suits nav items and cards.
 - Turn **Follow slider** off on an icon to keep its own color even when a slider is on the page.
+
+## Lottie alternative
+
+Framer can also play Lottie files natively: Insert → Media → Lottie, then upload a file from `lottie/json/` (or a .lottie from `lottie/dotlottie/`). That route has no live color control; pick the color before exporting on the Glass Icon Lottie page.

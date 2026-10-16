@@ -1,0 +1,269 @@
+<title>Glass Icon Lottie</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an export sheet. Header with the base color and glass controls plus the one bulk download,
+   then a grid of Lottie previews, each with its own JSON download. */
+:root {
+  --h: 227;
+  --bg: hsl(var(--h) 60% 98%);
+  --tile: #FFFFFF;
+  --tile-edge: hsl(var(--h) 50% 93%);
+  --fg: hsl(var(--h) 32% 15%);
+  --muted: hsl(var(--h) 16% 46%);
+  --accent: hsl(var(--h) 75% 50%);
+  --swatch: hsl(var(--h) 100% 59%);
+  --stage-light: #FFFFFF;
+  --stage-dark: hsl(var(--h) 33% 12%);
+  --ok: hsl(150 60% 34%);
+  --err: hsl(0 70% 46%);
+
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: hsl(var(--h) 38% 8%); --tile: hsl(var(--h) 33% 12%); --tile-edge: hsl(var(--h) 35% 21%);
+    --fg: hsl(var(--h) 100% 96%); --muted: hsl(var(--h) 25% 70%); --accent: hsl(var(--h) 100% 78%);
+    --stage-dark: hsl(var(--h) 38% 8%); --ok: hsl(150 60% 60%); --err: hsl(0 85% 70%);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: hsl(var(--h) 38% 8%); --tile: hsl(var(--h) 33% 12%); --tile-edge: hsl(var(--h) 35% 21%);
+  --fg: hsl(var(--h) 100% 96%); --muted: hsl(var(--h) 25% 70%); --accent: hsl(var(--h) 100% 78%);
+  --stage-dark: hsl(var(--h) 38% 8%); --ok: hsl(150 60% 60%); --err: hsl(0 85% 70%);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+  padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 24px; }
+
+.intro { display: grid; gap: 6px; max-width: 64ch; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 0; font-weight: 700; font-size: clamp(28px, 5vw, 40px); line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
+.lede { margin: 0; color: var(--muted); }
+
+.bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.bar .spacer { flex: 1; }
+.pill { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--tile-edge); border-radius: 999px; background: var(--tile); padding: 6px 8px 6px 14px; }
+.pill label, .pill .lbl { font: 600 13px/1 var(--font-body); }
+.pill output { font: 500 12px/1 var(--font-mono); color: var(--muted); min-width: 4ch; text-align: right; font-variant-numeric: tabular-nums; }
+input[type="range"] {
+  -webkit-appearance: none; appearance: none; width: 160px; max-width: 38vw; height: 12px; border-radius: 999px; margin: 0; cursor: pointer;
+  background: linear-gradient(90deg, hsl(0 100% 62%), hsl(60 100% 55%), hsl(120 85% 50%), hsl(180 100% 45%), hsl(240 100% 62%), hsl(300 100% 60%), hsl(360 100% 62%));
+}
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--swatch); border: 3px solid #FFFFFF; box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
+input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--swatch); border: 3px solid #FFFFFF; box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
+.swatches { display: inline-flex; gap: 6px; }
+.swatches button { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--tile); box-shadow: 0 0 0 1px var(--tile-edge); cursor: pointer; padding: 0; }
+.swatches button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--fg); }
+.seg { display: inline-flex; border: 1px solid var(--tile-edge); border-radius: 999px; background: var(--tile); padding: 3px; gap: 2px; align-items: center; }
+.seg .lbl { font: 600 13px/1 var(--font-body); padding: 0 8px 0 11px; }
+.seg button { border: 0; border-radius: 999px; padding: 7px 12px; font: 500 12px/1 var(--font-mono); color: var(--fg); background: transparent; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 18%, var(--tile)); box-shadow: inset 0 0 0 1px var(--accent); }
+
+.btn {
+  font: 600 13px/1 var(--font-body); color: var(--fg); background: var(--tile);
+  border: 1px solid var(--tile-edge); border-radius: 999px; padding: 10px 16px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn.primary:hover { background: color-mix(in srgb, var(--fg) 85%, var(--accent)); }
+.btn .ext { font: 500 11px/1 var(--font-mono); opacity: .7; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.status { font-size: 13px; color: var(--muted); min-height: 1.4em; }
+.status[data-tone="ok"] { color: var(--ok); }
+.status[data-tone="err"] { color: var(--err); }
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (min-width: 900px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .grid { gap: 10px; } }
+.tile { background: var(--tile); border: 1px solid var(--tile-edge); border-radius: 22px; padding: 10px 10px 14px; display: grid; gap: 10px; min-width: 0; }
+.stage { aspect-ratio: 160 / 140; max-width: 100%; border-radius: 14px; background: var(--stage-light); }
+:root[data-glass="dark"] .stage { background: var(--stage-dark); }
+.stage svg { display: block; }
+.meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px; min-width: 0; }
+.meta b { font-weight: 600; font-size: 14px; }
+.meta code { font: 400 11px/1.3 var(--font-mono); color: var(--muted); display: block; }
+.meta .btn { padding: 8px 12px; font-size: 12px; }
+
+.notes { display: grid; gap: 6px; color: var(--muted); font-size: 13px; max-width: 72ch; border-top: 1px solid var(--tile-edge); padding-top: 16px; }
+.notes p { margin: 0; }
+.notes code { font-family: var(--font-mono); font-size: 12px; }
+</style>
+
+<div class="wrap">
+  <div class="intro">
+    <div class="eyebrow">Lottie export · 10 icons · 60 fps</div>
+    <h1>Glass Icon Lottie</h1>
+    <p class="lede">These previews play the Lottie files themselves. Pick a base color and glass style, then download one icon as JSON or every icon at once as JSON and .lottie files.</p>
+  </div>
+
+  <div class="bar">
+    <div class="pill">
+      <label for="hue">Base color</label>
+      <input type="range" id="hue" min="0" max="359" step="1" value="227">
+      <output id="hue-out" for="hue">227°</output>
+    </div>
+    <div class="swatches" role="group" aria-label="Preset colors">
+      <button type="button" id="sw-blue" data-h="227" aria-label="Blue, 227°" style="background: hsl(227 100% 59%)"></button>
+      <button type="button" id="sw-orange" data-h="20" aria-label="Orange, 20°" style="background: hsl(20 100% 59%)"></button>
+      <button type="button" id="sw-green" data-h="150" aria-label="Green, 150°" style="background: hsl(150 100% 59%)"></button>
+      <button type="button" id="sw-pink" data-h="330" aria-label="Pink, 330°" style="background: hsl(330 100% 59%)"></button>
+    </div>
+    <div class="seg" role="group" aria-label="Glass style">
+      <span class="lbl">Glass</span>
+      <button type="button" id="glass-light" data-glass="light" aria-pressed="true">Light bg</button>
+      <button type="button" id="glass-dark" data-glass="dark" aria-pressed="false">Dark bg</button>
+    </div>
+    <span class="spacer"></span>
+    <button class="btn primary dl" type="button" id="dl-all">Download all <span class="ext">.zip</span></button>
+  </div>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="notes">
+    <p>The zip holds <code>json/</code> with one Lottie JSON per icon, and <code>lottie/</code> with one .lottie per icon plus <code>glass-icons-all.lottie</code> containing all ten. This page can save .json and .zip files but not .lottie files directly, which is why the .lottie files come inside the zip.</p>
+    <p>Each glass shape is a translucent layer over a blurred copy of the gradient, masked to the glass shape. Players that support the Gaussian Blur effect, such as lottie-web, show the frosted look; players without it show the colors sharp through the glass.</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+<script src="glass-lottie.js"></script>
+<script>
+(function () {
+  var GL = window.GlassLottie;
+  var root = document.documentElement;
+  var grid = document.getElementById('grid');
+  var statusEl = document.getElementById('status');
+  var hueInput = document.getElementById('hue');
+  var hueOut = document.getElementById('hue-out');
+  var swatches = document.querySelectorAll('.swatches button');
+  var glassBtns = document.querySelectorAll('.seg button[data-glass]');
+  var state = { hue: 227, glass: 'light' };
+  var players = {};
+  // Inside the Claude viewer saves go through the downloads capability; a plain browser uses a normal download
+  var inViewer = !!(window.claude && typeof window.claude.use === 'function');
+  var downloadsP = inViewer ? window.claude.use('downloads').catch(function () { return null; }) : Promise.resolve(undefined);
+
+  function setStatus(msg, tone) { statusEl.textContent = msg || ''; statusEl.dataset.tone = tone || ''; }
+
+  if (!GL || !window.lottie) {
+    setStatus('The Lottie player did not load. Reload the page to try again.', 'err');
+    return;
+  }
+
+  // Tiles
+  GL.ICONS.forEach(function (icon) {
+    var tile = document.createElement('div');
+    tile.className = 'tile';
+    tile.innerHTML =
+      '<div class="stage" role="img" aria-label="' + GL.TITLES[icon] + ' animation"></div>' +
+      '<div class="meta"><div><b>' + GL.TITLES[icon] + '</b><code class="dur"></code></div>' +
+      '<button class="btn dl" type="button" id="dl-' + icon + '">JSON</button></div>';
+    grid.appendChild(tile);
+    tile.querySelector('.dl').addEventListener('click', function () { saveOne(icon); });
+    players[icon] = { stage: tile.querySelector('.stage'), dur: tile.querySelector('.dur'), anim: null };
+  });
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function render() {
+    GL.ICONS.forEach(function (icon) {
+      var p = players[icon];
+      if (p.anim) p.anim.destroy();
+      var json = GL.build(icon, state);
+      p.dur.textContent = (json.op / json.fr).toFixed(1) + 's loop';
+      p.anim = lottie.loadAnimation({ container: p.stage, renderer: 'svg', loop: true, autoplay: !reduce, animationData: json });
+      if (reduce) p.anim.addEventListener('DOMLoaded', function () { p.anim.goToAndStop(Math.round(json.op * 0.4), true); });
+    });
+  }
+
+  var timer = null;
+  function setHue(h, immediate) {
+    h = Math.round(Number(h)) % 360;
+    state.hue = h;
+    root.style.setProperty('--h', h);
+    hueInput.value = h;
+    hueOut.textContent = h + '°';
+    swatches.forEach(function (b) { b.setAttribute('aria-pressed', String(Number(b.dataset.h) === h)); });
+    try { localStorage.setItem('glass-hue', String(h)); } catch (e) {}
+    clearTimeout(timer);
+    if (immediate) render(); else timer = setTimeout(render, 140);
+  }
+  function setGlass(g) {
+    state.glass = g;
+    root.dataset.glass = g;
+    glassBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.glass === g)); });
+    render();
+  }
+  hueInput.addEventListener('input', function () { setHue(hueInput.value); });
+  swatches.forEach(function (b) { b.addEventListener('click', function () { setHue(b.dataset.h, true); }); });
+  glassBtns.forEach(function (b) { b.addEventListener('click', function () { setGlass(b.dataset.glass); }); });
+
+  var saved = null;
+  try { saved = localStorage.getItem('glass-hue'); } catch (e) {}
+  setHue(saved !== null && !isNaN(saved) ? saved : 227, true);
+
+  // Downloads
+  function suffix() { return state.hue + (state.glass === 'dark' ? '-dark' : ''); }
+  function blobSave(filename, data) {
+    // Outside the Claude viewer (opened as a plain file), fall back to a normal browser download
+    var url = URL.createObjectURL(new Blob([data]));
+    var a = document.createElement('a');
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    return Promise.resolve({ status: 'saved' });
+  }
+  function save(filename, data) {
+    return downloadsP.then(function (d) {
+      if (d) return d.save({ filename: filename, data: data });
+      if (d === undefined) return blobSave(filename, data);
+      throw { code: 'unavailable', message: 'Downloads are not available in this view.' };
+    });
+  }
+  function report(filename, p) {
+    setStatus('Preparing ' + filename + '…');
+    p.then(function () { setStatus('Saved ' + filename + '.', 'ok'); }, function (err) {
+      var code = err && err.code;
+      if (code === 'declined') setStatus('Download cancelled.');
+      else if (code === 'rate_limited') setStatus('A download prompt is already open. Finish it, then try again.', 'err');
+      else setStatus('Could not save ' + filename + '. ' + ((err && err.message) || ''), 'err');
+    });
+  }
+  function saveOne(icon) {
+    var name = 'glass-' + icon + '-' + suffix() + '.json';
+    report(name, save(name, JSON.stringify(GL.build(icon, state))));
+  }
+  document.getElementById('dl-all').addEventListener('click', function () {
+    var files = [], all = [];
+    GL.ICONS.forEach(function (icon) {
+      var json = GL.build(icon, state), id = 'glass-' + icon;
+      files.push({ name: 'json/' + id + '.json', data: JSON.stringify(json) });
+      files.push({ name: 'lottie/' + id + '.lottie', data: GL.dotLottie([{ id: id, json: json }]) });
+      all.push({ id: id, json: json });
+    });
+    files.push({ name: 'lottie/glass-icons-all.lottie', data: GL.dotLottie(all) });
+    var name = 'glass-icons-' + suffix() + '.zip';
+    report(name, save(name, new Blob([GL.zip(files)])));
+  });
+
+  downloadsP.then(function (d) {
+    if (d === null) {
+      document.querySelectorAll('.dl').forEach(function (b) { b.hidden = true; });
+      setStatus('Downloads are not available in this view. Open the page in claude.ai to download.');
+    }
+  });
+})();
+</script>
