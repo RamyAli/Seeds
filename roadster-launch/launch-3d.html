@@ -608,7 +608,7 @@ function drawScreen(st) {
 }
 
 // ------------------------------------------------------------------ floodlight towers, camera rail
-for (const [x, z] of [[-22, -4], [-22, 44], [18, -8], [18, 46]]) {
+for (const [x, z] of [[-22, -14], [-22, 44], [18, -8], [18, 46]]) {
   boxAt(mat.clay, x - .3, x + .3, GY, 14, z - .3, z + .3);
   const head = boxAt(mat.clay, x - 1.6, x + 1.6, 14, 15.6, z - .4, z + .4, .12);
   head.lookAt(3, 14, 10);
@@ -664,7 +664,8 @@ function building(x, z, w, d, h) {
   if (rnd() > .5) boxAt(mat.clay2, x - w/4, x + w/4, GY + h, GY + h + 1, z - d/4, z + d/4, .15);
   if (rnd() > .7) { const g = boxAt(mat.glass, x - w/2 + .4, x + w/2 - .4, GY + h, GY + h + 2.4, z - d/2 + .4, z + d/2 - .4); g.castShadow = false; }
 }
-for (let z = -36; z <= 24; z += 9) { building(-43 - rnd()*4, z, 7 + rnd()*4, 6 + rnd()*2, 8 + rnd()*22); building(52 + rnd()*4, z, 7 + rnd()*4, 6 + rnd()*2, 8 + rnd()*22); }
+for (let z = -36; z <= 24; z += 9) { if (Math.abs(z) > 13) building(-43 - rnd()*4, z, 7 + rnd()*4, 6 + rnd()*2, 8 + rnd()*22);   // gap keeps the broadcast side view clear
+  else rnd(), rnd(), rnd(), rnd(); building(52 + rnd()*4, z, 7 + rnd()*4, 6 + rnd()*2, 8 + rnd()*22); }
 for (let x = -24; x <= 34; x += 10) building(x, -48 - rnd()*3, 8 + rnd()*2, 7, 10 + rnd()*26);
 
 // ------------------------------------------------------------------ glass decor, sign and pins
@@ -769,7 +770,7 @@ function gasLayer(max, color) {
 const puffTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
   const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.6, 'rgba(255,255,255,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
   g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
-const JETS = gasLayer(7000, 0xb9cdf0), CLOUD = gasLayer(2500, 0xd3dae6);
+const JETS = gasLayer(9000, 0xc6d6f3), CLOUD = gasLayer(2500, 0xd3dae6);
 const jitter = k => new THREE.Vector3(rnd() - .5, rnd() - .5, rnd() - .5).multiplyScalar(k);
 const floorAt = p => Math.abs(p.x - 3) < 4 && p.z > 0 && p.z < 45 ? 0 : GY;
 let simT = null, emitAcc = 0, cloudAcc = 0;
@@ -782,13 +783,13 @@ function stepGas(t0, t1) {
   for (let s = 1; s <= n; s++) {
     const st = state(t0 + dt*s);
     if (st.throttle > .01) {
-      emitAcc += 260 * dt;
+      emitAcc += 600 * dt;
       const noz = nozzleFrames(st).filter(z => z.thr > .02);
       while (emitAcc >= 1) { emitAcc -= 1;
         for (const z of noz) if (JETS.list.length < JETS.max && rnd() < .35 + .65*z.thr) JETS.list.push({
           p: z.o.clone().addScaledVector(z.dir, .1 + rnd()*.25),
           v: z.dir.clone().multiplyScalar(26*(.45 + .55*z.thr)*(.85 + .3*rnd())).add(jitter(1.2)).add(st.vel),
-          age: rnd()*dt, life: .4 + rnd()*.2 });
+          age: rnd()*dt, life: .32 + rnd()*.16 });
       }
       // below ~14 m the downward jets reach the ground and pile up into the dense white cloud seen in the video
       const h = st.C.y, under = st.thr.corner * Math.max(0, 1 - h / 14) * (st.up.y > .5 ? 1 : 0);
@@ -829,7 +830,7 @@ function syncGas(t) {
   if (simT === null || t < simT || t - simT > .25) { JETS.list = []; CLOUD.list = []; emitAcc = cloudAcc = 0; simT = Math.max(0, t - 2.5); }
   if (t > simT) stepGas(simT, t);
   simT = t;
-  upload(JETS, (q, k) => .2 + 1.1*k, (q, k) => .2 * (1 - k) * Math.min(1, k*8 + .35));
+  upload(JETS, (q, k) => .16 + .95*k, (q, k) => .085 * (1 - k*k));
   upload(CLOUD, (q, k) => q.s0 + 5.5*Math.sqrt(k), (q, k) => .3 * Math.pow(1 - k, 1.3) * Math.min(1, k*6 + .25));
 }
 
