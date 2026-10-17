@@ -22,6 +22,10 @@
   .hud .row { display:flex; justify-content:space-between; gap:16px; padding:3px 0; }
   .hud .row span:first-child { color:var(--mute); }
   .hud .row span:last-child { font-variant-numeric:tabular-nums; font-weight:500; }
+  .thr { display:flex; align-items:center; gap:12px; margin-top:10px; padding-top:10px; border-top:1px solid var(--line); color:var(--mute); font-size:11px; }
+  .thr svg { color:#b8c4d8; flex:none; }
+  .thr circle { fill:var(--accent); transform-box:fill-box; transform-origin:center; transition:opacity .1s; }
+  .thr small { color:#a3adc0; letter-spacing:.04em; }
   .count { left:50%; top:40%; transform:translate(-50%,-50%); font-size:110px; font-weight:200; color:var(--accent);
     pointer-events:none; text-shadow:0 6px 30px rgba(47,107,255,.25); }
   .bar { left:50%; bottom:20px; transform:translateX(-50%); width:min(980px, calc(100% - 24px));
@@ -56,13 +60,24 @@
 </script>
 </head>
 <body>
-<div class="ui title"><h1>ROADSTER LAUNCH</h1><p>3D launch show · physics-based timing</p></div>
+<div class="ui title"><h1>ROADSTER LAUNCH</h1><p>3D launch show · timed to the broadcast telemetry</p></div>
 <div class="ui hud">
   <div class="phase" id="phase">Countdown</div>
   <div class="row"><span>Speed</span><span id="hSpeed">0 km/h</span></div>
-  <div class="row"><span>Height</span><span id="hHeight">0.0 m</span></div>
-  <div class="row"><span id="hLoadLbl">G-load</span><span id="hLoad">1.00 g</span></div>
-  <div class="row"><span>Roll</span><span id="hRoll">0°</span></div>
+  <div class="row"><span>Altitude</span><span id="hAlt">0.0 ft</span></div>
+  <div class="row"><span>G-force</span><span id="hG">1.0 g</span></div>
+  <div class="row"><span id="hAttLbl">Pitch</span><span id="hAtt">0°</span></div>
+  <div class="thr">
+    <svg id="thrusters" viewBox="0 0 60 100" width="42" height="70" aria-label="Thrusters firing">
+      <rect x="14" y="8" width="32" height="84" rx="12" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle data-g="corner" cx="14" cy="22" r="4"/><circle data-g="corner" cx="46" cy="22" r="4"/>
+      <circle data-g="corner" cx="14" cy="78" r="4"/><circle data-g="corner" cx="46" cy="78" r="4"/>
+      <circle data-g="counter" cx="8" cy="34" r="3.5"/><circle data-g="side" cx="52" cy="34" r="3.5"/>
+      <circle data-g="brake" cx="21" cy="94" r="3"/><circle data-g="brake" cx="27" cy="95" r="3"/>
+      <circle data-g="brake" cx="33" cy="95" r="3"/><circle data-g="brake" cx="39" cy="94" r="3"/>
+    </svg>
+    <span>Thrusters<br><small>corner · fender · brake</small></span>
+  </div>
 </div>
 <div class="ui count" id="count"></div>
 <div class="ui bar">
@@ -256,108 +271,136 @@ function buildRoadster() {
   return { car, wheels, LEN };
 }
 
-// ================================================================== ramp + physics (as in simulation.html)
+// ================================================================== ramp + motion (fitted to the launch video)
 const bez = (p0, p1, p2, p3, t) => { const u = 1 - t;
   return p0.map((_, i) => u*u*u*p0[i] + 3*u*u*t*p1[i] + 3*u*t*t*p2[i] + t*t*t*p3[i]); };
 const curve = (segs, n) => { const pts = [];
   segs.forEach((s, j) => { for (let i = j ? 1 : 0; i <= n; i++) pts.push(bez(...s, i / n)); }); return pts; };
-const INNER_SEGS = [[[0,0],[5.5,0],[10,4.5],[10,10]], [[10,10],[10,18],[3.5,23.5],[-6,23.5]]];
-const OUTER_SEGS = [[[1,0],[6.25,0.4],[11,4.5],[11,10]], [[11,10],[11,18.75],[4,24.5],[-6,24.5]]];
-const INNER = curve(INNER_SEGS, 60), OUTER = curve(OUTER_SEGS, 60);
-const MAST_U = [12, 15], MAST_X = [-0.5, 6.5], MAST_H = 26;
-const W = (x, u, z) => S(x, -u, z);                            // ramp-local -> three
-function profileNormal(prof, i) {
+function profileNormal(prof, i) {                              // toward the riding (concave) side, in (u, z)
   const a = prof[Math.max(i - 1, 0)], b = prof[Math.min(i + 1, prof.length - 1)];
   const du = b[0] - a[0], dz = b[1] - a[1], l = Math.hypot(du, dz);
   return [-dz / l, du / l];
 }
+// Riding surface (u = metres past the ramp foot, z = height). In the video the ramp is tall and slim:
+// a short transition, a wall that leans slightly back, then a tight curl ending upside-down at ~21 m.
+const INNER_SEGS = [[[0,0],[2.8,0],[5,2.2],[5,5]], [[5,5],[5.25,8.5],[5.85,12],[6.2,15]], [[6.2,15],[6.6,19.6],[4.8,20.8],[2,20.8]]];
+const INNER = curve(INNER_SEGS, 40);
+const OUTER = INNER.map((p, i) => { const [nu, nz] = profileNormal(INNER, i); return [p[0] - nu, p[1] - nz]; });
+const LIP_U = INNER.at(-1)[0], LIP_Z = INNER.at(-1)[1];
+const MAST_U = [8.5, 11.5], MAST_X = [-0.5, 6.5], BEAM_Z = [LIP_Z + 1.25, LIP_Z + 2.6], MAST_H = LIP_Z + 2.6;
+const W = (x, u, z) => S(x, -u, z);                            // ramp-local -> three
 
 const BODY_C = 0.5;                                            // body centre above the contact point
-const DENSE = curve(INNER_SEGS, 400), ramp = [];
+const DENSE = curve(INNER_SEGS, 300), ramp = [];
 { let s = 0;
   for (let i = 0; i < DENSE.length; i++) {
     const [u, z] = DENSE[i];
     if (i) s += Math.hypot(u - DENSE[i-1][0], z - DENSE[i-1][1]);
-    const a = DENSE[Math.max(i-1, 0)], b = DENSE[Math.min(i+1, DENSE.length-1)];
-    const du = b[0]-a[0], dz = b[1]-a[1], l = Math.hypot(du, dz);
-    ramp.push({ s, u, z, t: [du/l, dz/l], n: [-dz/l, du/l], ang: Math.atan2(dz, du) });
-  }
-  for (let i = 0; i < ramp.length; i++) {
-    const a = ramp[Math.max(i-3, 0)], b = ramp[Math.min(i+3, ramp.length-1)];
-    let d = b.ang - a.ang; while (d > Math.PI) d -= 2*Math.PI; while (d < -Math.PI) d += 2*Math.PI;
-    ramp[i].k = Math.abs(d) / Math.max(b.s - a.s, 1e-6);
+    const [nu, nz] = profileNormal(DENSE, i);
+    ramp.push({ s, u, z, t: [nz, -nu], n: [nu, nz] });
   }
 }
 const RAMP_LEN = ramp.at(-1).s;
-let VE2 = 0;                                                   // deck must push on the car with >= 0.3 g everywhere
-for (const p of ramp) if (p.k > 1e-3) VE2 = Math.max(VE2, (0.3*G - G*p.n[1]) / p.k + 2*G*p.z);
-const VE = Math.sqrt(VE2), RUN_A = Math.max(1.2*G, VE2 / 80), RUN_LEN = VE2 / (2*RUN_A);
 function rampAt(s) {
+  s = Math.min(Math.max(s, 0), RAMP_LEN);
   let lo = 0, hi = ramp.length - 1;
   while (hi - lo > 1) { const m = (lo + hi) >> 1; if (ramp[m].s < s) lo = m; else hi = m; }
-  const a = ramp[lo], b = ramp[hi], t = Math.min(1, Math.max(0, (s - a.s) / ((b.s - a.s) || 1)));
-  const tu = lerp(a.t[0], b.t[0], t), tz = lerp(a.t[1], b.t[1], t), nu = lerp(a.n[0], b.n[0], t), nz = lerp(a.n[1], b.n[1], t);
-  return { u: lerp(a.u, b.u, t), z: lerp(a.z, b.z, t), f: S(0, -tu, tz).normalize(), up: S(0, -nu, nz).normalize(), nz, k: lerp(a.k, b.k, t) };
+  const a = ramp[lo], b = ramp[hi], k = (s - a.s) / ((b.s - a.s) || 1);
+  return { u: lerp(a.u, b.u, k), z: lerp(a.z, b.z, k),
+    f: S(0, -lerp(a.t[0], b.t[0], k), lerp(a.t[1], b.t[1], k)).normalize(),
+    up: S(0, -lerp(a.n[0], b.n[0], k), lerp(a.n[1], b.n[1], k)).normalize() };
 }
-const rampT = [{ t: 0, s: 0 }];
-{ let s = 0, t = 0; const dt = 1/600;
-  while (s < RAMP_LEN) { const v = Math.sqrt(Math.max(VE2 - 2*G*rampAt(s).z, 1)); s += v*dt; t += dt; rampT.push({ t, s: Math.min(s, RAMP_LEN) }); } }
-const lip = rampAt(RAMP_LEN), V_LIP = Math.sqrt(VE2 - 2*G*lip.z);
-const C_LIP = S(3, -lip.u, lip.z).addScaledVector(lip.up, BODY_C);
-const F_AIR = lip.f.clone(), TAU = 0.55;
-const PH = [['Countdown', 3.0], ['Launch', VE / RUN_A], ['Climb', rampT.at(-1).t], ['Stop in the air', 2.2],
-  ['Hang upside-down', 1.4], ['Flip', 1.8], ['Hover', 1.4], ['Descent', 3.6], ['Landed', 2.4]];
-let acc = 0; const T = PH.map(([name, d]) => { const s = acc; acc += d; return { name, start: s, end: acc }; });
-const END = acc;
-const STOPPED = C_LIP.clone().addScaledVector(F_AIR, V_LIP*TAU*(1 - Math.exp(-PH[3][1]/TAU)));
-function airC(t) {
-  const lt = t - T[3].start;
-  if (lt < 0) return C_LIP.clone().addScaledVector(F_AIR, V_LIP*lt);
-  if (t < T[3].end) return C_LIP.clone().addScaledVector(F_AIR, V_LIP*TAU*(1 - Math.exp(-lt/TAU)));
-  if (t < T[6].end) return STOPPED.clone();
-  const k = smooth((t - T[7].start) / PH[7][1]);
-  return new THREE.Vector3(STOPPED.x, lerp(STOPPED.y, BODY_C, k), STOPPED.z);
+function sAtZ(z) {                                             // height rises all the way to the lip
+  if (z <= 0) return 0;
+  let lo = 0, hi = ramp.length - 1;
+  while (hi - lo > 1) { const m = (lo + hi) >> 1; if (ramp[m].z < z) lo = m; else hi = m; }
+  const a = ramp[lo], b = ramp[hi]; return lerp(a.s, b.s, (z - a.z) / ((b.z - a.z) || 1));
 }
-function airUp(t) {
-  const down = new THREE.Vector3(0, -1, 0);
-  if (t < T[5].start) return down;
-  return down.applyAxisAngle(F_AIR, Math.PI * smooth((t - T[5].start) / PH[5][1]));
+
+// Tesla's broadcast telemetry, read off the video: [video seconds, altitude ft] and [video seconds, G].
+const FT = 0.3048;
+const ALT = [[4.5,0],[5,.2],[5.5,1],[6,4.3],[6.5,11.5],[7,21.1],[7.5,30.8],[8,40.3],[8.5,48.1],[9,55],[9.5,58.7],[9.7,60.2],
+  [9.9,61.4],[10.1,63],[10.3,63.9],[10.5,65.3],[10.7,66.2],[10.9,67.1],[11.1,68],[11.3,67.8],[11.5,66.5],[11.7,65.5],[11.9,63.6],
+  [12.1,58.3],[12.3,51.2],[12.5,41],[12.7,31.4],[12.9,24.4],[13.1,16.5],[13.3,13.1],[13.5,9],[14,6.4],[14.5,2.4],[15,.5],[15.3,0]];
+const GF = [[4,1],[4.5,1.1],[5,1.3],[5.5,1.5],[6,1.5],[6.5,1.3],[7,1],[7.5,.9],[8,1],[8.5,.9],[9,.8],[9.5,1],[10,1.1],[10.5,1],
+  [11,.4],[11.5,.4],[12,.5],[12.5,3.1],[13,2.4],[13.5,1.1],[14,.8],[14.5,1.9],[15,1.2],[15.5,1.1],[16,1],[16.5,.9],[17,1]];
+function curveAt(tbl, x) {                                     // Catmull-Rom through the telemetry samples
+  if (x <= tbl[0][0]) return tbl[0][1];
+  if (x >= tbl.at(-1)[0]) return tbl.at(-1)[1];
+  let i = 1; while (tbl[i][0] < x) i++;
+  const p0 = tbl[Math.max(i - 2, 0)], p1 = tbl[i - 1], p2 = tbl[i], p3 = tbl[Math.min(i + 1, tbl.length - 1)];
+  const h = p2[0] - p1[0], k = (x - p1[0]) / h;
+  const m1 = (p2[1] - p0[1]) / (p2[0] - p0[0]) * h, m2 = (p3[1] - p1[1]) / (p3[0] - p1[0]) * h;
+  const k2 = k*k, k3 = k2*k;
+  return (2*k3 - 3*k2 + 1)*p1[1] + (k3 - 2*k2 + k)*m1 + (-2*k3 + 3*k2)*p2[1] + (k3 - k2)*m2;
 }
-function throttle(t) {
-  const i = T.findIndex(p => t < p.end), lt = t - (T[i]?.start ?? END);
-  switch (i) {
-    case 3: return smooth(lt / 0.12) * (1 + 0.35*Math.exp(-lt / 0.25));
-    case 4: return 0.75;
-    case 5: return lerp(0.75, 1, smooth(lt / PH[5][1]));
-    case 6: return 1;
-    case 7: return lerp(1, 0.75, lt / PH[7][1]) * Math.min(1, (T[7].end - t) / 0.35);
-    default: return 0;
+const altM = vt => Math.max(0, curveAt(ALT, vt)) / 68 * LIP_Z;   // peak telemetry altitude = the lip
+
+// Timeline in video seconds (simulation time = video time - VT0).
+const VT0 = 1.5, VT_START = 4.5, VT_EXIT = 11.1, VT_LAND = 15.2;
+const PH = [['Countdown', 0, 4.5], ['Climb', 4.5, 9.4], ['Upside-down', 9.4, 11.1], ['Roll off the lip', 11.1, 12.0],
+  ['Drop', 12.0, 12.4], ['Thruster braking', 12.4, 13.5], ['Touchdown', 13.5, VT_LAND], ['Drive away', VT_LAND, 18.6]];
+const T = PH.map(([name, a, b]) => ({ name, start: Math.max(0, a - VT0), end: b - VT0 }));
+const END = T.at(-1).end;
+
+// On the deck: position follows the telemetry height; near the top, where height stops changing,
+// the car eases over the curl at constant acceleration so it reaches the lip exactly at VT_EXIT.
+let VT_BLEND = VT_START; while (altM(VT_BLEND) < 18) VT_BLEND += 0.005;
+const S_BLEND = sAtZ(altM(VT_BLEND));
+const V_BLEND = (sAtZ(altM(VT_BLEND)) - sAtZ(altM(VT_BLEND - .05))) / .05;
+const DT_CURL = VT_EXIT - VT_BLEND, A_CURL = 2 * (RAMP_LEN - S_BLEND - V_BLEND*DT_CURL) / (DT_CURL*DT_CURL);
+const V_EXIT = Math.max(.5, V_BLEND + A_CURL*DT_CURL);
+// Height hardly changes across the flat start, so the first 0.8 s use a plain launch from rest instead.
+const VT_ROLL = VT_START + .8, A_START = 2 * sAtZ(altM(VT_ROLL)) / (.8 * .8);
+const deckS = vt => vt <= VT_START ? 0 : vt < VT_ROLL ? .5*A_START*(vt - VT_START)**2 : vt < VT_BLEND ? sAtZ(altM(vt))
+  : Math.min(RAMP_LEN, S_BLEND + V_BLEND*(vt - VT_BLEND) + .5*A_CURL*(vt - VT_BLEND)**2);
+
+// In the air: horizontal drift away from the ramp is braked by the forward jets; height follows telemetry;
+// the 180° barrel roll happens in the first ~0.9 s after the lip.
+const LIP = rampAt(RAMP_LEN), F_AIR = LIP.f.clone();
+const AIR_DT = VT_LAND - VT_EXIT;
+const DRIFT = Math.min(8, .85 * V_EXIT * AIR_DT);
+let TAU_D = 20; { let lo = .05, hi = 50; for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2;
+  (V_EXIT*m*(1 - Math.exp(-AIR_DT/m)) < DRIFT ? lo = m : hi = m); } TAU_D = (lo + hi) / 2; }
+const U_LAND = LIP_U - DRIFT;
+const rollAngle = vt => Math.PI * smooth((vt - VT_EXIT - .05) / .85);
+const pulse = (vt, a, b, r = .08) => smooth((vt - a) / r) * (1 - smooth((vt - b + r) / r));
+const THR = {                                                  // 0..1 per nozzle group, by video time
+  corner: vt => Math.min(1, Math.max(.15, curveAt(GF, vt) / 3.1)) * pulse(vt, 10.95, VT_LAND + .15, .12),
+  side:   vt => pulse(vt, 11.05, 11.75),
+  counter: vt => .7 * pulse(vt, 11.7, 12.05),
+  brake:  vt => pulse(vt, 11.9, 14.6, .2) * (.35 + .65*Math.exp(-(vt - 11.9) / 1.2)),
+};
+function poseAt(vt) {
+  if (vt < VT_EXIT) {
+    const r = rampAt(deckS(vt)), c = W(3, r.u, r.z);
+    return { c, f: r.f, up: r.up, C: c.clone().addScaledVector(r.up, BODY_C), deck: true };
   }
+  const f = F_AIR.clone();
+  if (vt < VT_LAND + .3) {
+    const tt = Math.min(vt, VT_LAND) - VT_EXIT;
+    const up = new THREE.Vector3(0, -1, 0).applyAxisAngle(f, rollAngle(vt));
+    const u = LIP_U - V_EXIT*TAU_D*(1 - Math.exp(-tt/TAU_D));
+    const C = W(3, u, Math.max(0, altM(Math.min(vt, VT_LAND))) + BODY_C*up.y);
+    if (C.y < BODY_C*up.y) C.y = BODY_C*up.y;
+    return { c: C.clone().addScaledVector(up, -BODY_C), f, up, C };
+  }
+  const tt = vt - VT_LAND - .3, z = -U_LAND + 1.5*tt*tt;          // rolls away down the runway
+  const c = new THREE.Vector3(3, 0, Math.min(z, 42)), up = new THREE.Vector3(0, 1, 0);
+  return { c, f, up, C: c.clone().addScaledVector(up, BODY_C) };
 }
 function state(t) {
   t = Math.min(Math.max(t, 0), END);
-  const ph = T.findIndex(p => t < p.end), i = ph < 0 ? T.length - 1 : ph, lt = t - T[i].start;
-  const st = { t, phase: i, name: T[i].name, throttle: 0, dist: 0 };
-  if (i <= 1) {
-    const tt = i === 0 ? 0 : lt, s = 0.5*RUN_A*tt*tt;
-    st.c = S(3, RUN_LEN - s, 0); st.f = new THREE.Vector3(0, 0, -1); st.up = new THREE.Vector3(0, 1, 0);
-    st.v = RUN_A*tt; st.dist = s; st.loadLbl = 'G-load'; st.loadTxt = (i ? Math.hypot(1, RUN_A/G) : 1).toFixed(2) + ' g';
-  } else if (i === 2) {
-    let lo = 0, hi = rampT.length - 1;
-    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (rampT[m].t < lt) lo = m; else hi = m; }
-    const s = rampT[lo].s, r = rampAt(s);
-    st.c = W(3, r.u, r.z); st.f = r.f; st.up = r.up; st.v = Math.sqrt(Math.max(VE2 - 2*G*r.z, 0));
-    st.dist = RUN_LEN + s; st.loadLbl = 'Deck load'; st.loadTxt = ((st.v*st.v*r.k + G*r.nz) / G).toFixed(2) + ' g';
-  } else {
-    st.f = F_AIR; st.up = airUp(t); const C = airC(t);
-    st.c = C.clone().addScaledVector(st.up, -BODY_C);
-    st.vel = airC(t + 1/120).sub(airC(t - 1/120)).multiplyScalar(60); st.v = st.vel.length();
-    st.throttle = throttle(t); st.loadLbl = 'Thrusters'; st.loadTxt = Math.round(st.throttle*100) + '%';
-    st.dist = RUN_LEN + RAMP_LEN;
-  }
-  if (!st.vel) st.vel = st.f.clone().multiplyScalar(st.v);
-  st.C = st.c.clone().addScaledVector(st.up, BODY_C);
-  st.roll = Math.round(Math.acos(Math.max(-1, Math.min(1, st.up.y))) * 180 / Math.PI);
+  const vt = t + VT0, ph = T.findIndex(p => t < p.end), i = ph < 0 ? T.length - 1 : ph;
+  const st = { t, vt, phase: i, name: T[i].name, ...poseAt(vt) };
+  const h = 1/60, a = poseAt(vt - h).C, b = poseAt(vt + h).C;
+  st.vel = b.clone().sub(a).multiplyScalar(1 / (2*h)); st.v = st.vel.length();
+  st.altFt = vt > VT_START && vt < 15.3 ? Math.max(0, curveAt(ALT, vt)) : 0;
+  st.g = vt >= 4 && vt <= 17 ? curveAt(GF, vt) : 1;
+  st.thr = { corner: THR.corner(vt), side: THR.side(vt), counter: THR.counter(vt), brake: THR.brake(vt) };
+  st.throttle = Math.max(st.thr.corner, st.thr.side, st.thr.brake);
+  if (st.deck) { st.attLbl = 'Pitch'; st.att = Math.round(THREE.MathUtils.radToDeg(Math.atan2(st.f.y, -st.f.z))); }
+  else { st.attLbl = 'Roll'; st.att = Math.round(180 - THREE.MathUtils.radToDeg(rollAngle(vt))); }
   return st;
 }
 
@@ -393,6 +436,7 @@ const mat = {
   accent: new THREE.MeshStandardMaterial({ color: C.accent, roughness: .45, metalness: .05 }),
   glow: new THREE.MeshStandardMaterial({ color: C.accent, emissive: C.accent, emissiveIntensity: 1.4, roughness: .4 }),
   soft: new THREE.MeshStandardMaterial({ color: C.accentSoft, roughness: .6 }),
+  red: new THREE.MeshStandardMaterial({ color: 0xff3b3b, emissive: 0xff2020, emissiveIntensity: 1.3, roughness: .4 }),
   mint: new THREE.MeshStandardMaterial({ color: C.mint, roughness: .75 }),
   glass: new THREE.MeshPhysicalMaterial({ color: C.glass, roughness: .08, metalness: 0, transparent: true, opacity: .32,
     clearcoat: 1, depthWrite: false, side: THREE.DoubleSide }),
@@ -425,11 +469,11 @@ road(-34, -27, -42, 66); road(37, 44, -42, 66); road(-27, 37, -42, -35); road(-2
 for (const [x, z] of [[-30.5, -31], [40.5, -31], [-30.5, 55], [40.5, 55]])
   for (let k = -3; k <= 3; k++) { const s = boxAt(mat.line, x - 3.2, x + 3.2, GY + .04, GY + .065, z + k*1.1 - .35, z + k*1.1 + .35); s.castShadow = false; }
 
-// runway slab with glowing blue edge strips and a start line
+// runway / landing apron with red LED edge strips (as at the event) and a start line at the ramp foot
 boxAt(mat.clay, -1, 7, GY, 0, 0, 45);
-for (const x of [-.75, 6.75]) { const g = boxAt(mat.glow, x - .07, x + .07, 0, .03, .3, 44.7); g.castShadow = false; }
-for (let z = 2; z < 44; z += 4) { const d = boxAt(mat.line, 2.88, 3.12, 0, .012, z, z + 2); d.castShadow = false; d.material = mat.clay2; }
-boxAt(mat.accent, -.9, 6.9, 0, .02, RUN_LEN + 2.4, RUN_LEN + 2.7).castShadow = false;
+for (const x of [-.75, 6.75]) { const g = boxAt(mat.red, x - .07, x + .07, 0, .03, .3, 44.7); g.castShadow = false; }
+for (let z = 2; z < 44; z += 4) { const d = boxAt(mat.clay2, 2.88, 3.12, 0, .012, z, z + 2); d.castShadow = false; }
+boxAt(mat.accent, -.9, 6.9, 0, .02, 2.4, 2.7).castShadow = false;
 
 // ------------------------------------------------------------------ ramp deck
 function strip(prof, x0, x1, flipNormals) {
@@ -441,14 +485,15 @@ function strip(prof, x0, x1, flipNormals) {
   }
   let g = new THREE.BufferGeometry().setFromPoints(v); g = mergeVertices(g, 1e-5); g.computeVertexNormals(); return g;
 }
+const DECK_X = [.5, 5.5];                                      // ~2.4 car widths, as in the video
 const deckMat = new THREE.MeshStandardMaterial({ color: 0xfbfcfe, roughness: .7, side: THREE.DoubleSide });
-add(strip(INNER, 0, 6, true), deckMat, new THREE.Vector3());
-add(strip(OUTER, 0, 6, false), mat.clay2.clone(), new THREE.Vector3()).material.side = THREE.DoubleSide;
+add(strip(INNER, ...DECK_X, true), deckMat, new THREE.Vector3());
+add(strip(OUTER, ...DECK_X, false), mat.clay2.clone(), new THREE.Vector3()).material.side = THREE.DoubleSide;
 { const v = [];
-  for (const x of [0, 6]) for (let i = 0; i < INNER.length - 1; i++)
+  for (const x of DECK_X) for (let i = 0; i < INNER.length - 1; i++)
     v.push(W(x, ...INNER[i]), W(x, ...INNER[i+1]), W(x, ...OUTER[i+1]), W(x, ...INNER[i]), W(x, ...OUTER[i+1]), W(x, ...OUTER[i]));
-  for (const [a, b] of [[INNER.at(-1), OUTER.at(-1)], [INNER[0], OUTER[0]]])
-    v.push(W(0, ...a), W(6, ...a), W(6, ...b), W(0, ...a), W(6, ...b), W(0, ...b));
+  const a = INNER.at(-1), b = OUTER.at(-1);
+  v.push(W(DECK_X[0], ...a), W(DECK_X[1], ...a), W(DECK_X[1], ...b), W(DECK_X[0], ...a), W(DECK_X[1], ...b), W(DECK_X[0], ...b));
   const g = new THREE.BufferGeometry().setFromPoints(v); g.computeVertexNormals();
   add(g, new THREE.MeshStandardMaterial({ color: 0xe4eaf5, roughness: .85, side: THREE.DoubleSide }), new THREE.Vector3());
 }
@@ -462,8 +507,8 @@ function ribbon(x, w, off, m) {                                // thin band laid
   const g = new THREE.BufferGeometry().setFromPoints(v); g.computeVertexNormals();
   const mesh = new THREE.Mesh(g, m); mesh.material.side = THREE.DoubleSide; scene.add(mesh); return mesh;
 }
-ribbon(.18, .07, .02, mat.glow); ribbon(5.82, .07, .02, mat.glow);
-ribbon(2, .05, .015, mat.soft.clone()); ribbon(4, .05, .015, mat.soft.clone());
+ribbon(DECK_X[0] + .12, .06, .02, mat.red); ribbon(DECK_X[1] - .12, .06, .02, mat.red);   // red LED edges
+ribbon(3, .07, .015, new THREE.MeshStandardMaterial({ color: 0xc3cddd, roughness: .7 }));  // single centre line
 
 // ------------------------------------------------------------------ truss tower (instanced members)
 const members = { chord: [], brace: [] };
@@ -487,16 +532,18 @@ function lattice(x0, x1, u0, u1, z0, z1, axis, step) {
         if (k < n) { const [ua, ub] = k % 2 ? [u, u+step] : [u+step, u]; seg(W(xa,ua,za), W(xb,ub,zb), 'brace'); } } }
   }
 }
-const outerAtZ = z => OUTER.filter(p => Math.abs(p[1] - z) < 0.4).reduce((m, p) => p[0] > m[0] ? p : m);
-const outerAtUTop = u => OUTER.filter(p => p[1] > 15).reduce((m, p) => Math.abs(p[0]-u) < Math.abs(m[0]-u) ? p : m);
+const nearest = (pts, pick) => pts.reduce((m, p) => pick(p) < pick(m) ? p : m);
+const outerAtZ = z => { const near = OUTER.filter(p => Math.abs(p[1] - z) < .7);
+  return near.length ? near.reduce((m, p) => p[0] > m[0] ? p : m) : nearest(OUTER, p => Math.abs(p[1] - z)); };
+const outerAtUTop = u => nearest(OUTER.filter(p => p[1] > 15), p => Math.abs(p[0] - u));
 lattice(...MAST_X, ...MAST_U, 0, MAST_H, 'z', 2);
-for (const x0 of [MAST_X[0], 5.5]) lattice(x0, x0 + 1, -6, MAST_U[1], 24.6, MAST_H, 'u', 1.5);
-for (let u = -5; u < 15; u += 3) seg(W(.5, u, MAST_H), W(5.5, u, MAST_H), 'brace');
-for (const x of [0, 6]) {
-  for (const u of [-4, -1, 2, 5, 8]) { const [pu, pz] = outerAtUTop(u); seg(W(x,pu,pz), W(x,pu,24.6)); }
-  for (const z of [3, 7, 11, 15, 19]) { const [pu, pz] = outerAtZ(z); seg(W(x,pu,pz), W(x,MAST_U[0],pz)); }
+for (const x0 of [MAST_X[0], 5.5]) lattice(x0, x0 + 1, LIP_U - .5, MAST_U[1], ...BEAM_Z, 'u', 1.5);
+for (let u = LIP_U; u < MAST_U[1]; u += 3) seg(W(.5, u, MAST_H), W(5.5, u, MAST_H), 'brace');
+for (const x of DECK_X) {
+  for (const u of [2.6, 4.2, 5.8]) { const [pu, pz] = outerAtUTop(u); seg(W(x,pu,pz), W(x,pu,BEAM_Z[0])); }
+  for (const z of [3, 7, 11, 15, 18.5]) { const [pu, pz] = outerAtZ(z); seg(W(x,pu,pz), W(x,MAST_U[0],pz)); }
 }
-const cables = [[W(MAST_X[0], 15, MAST_H), W(-4, 25, GY)], [W(MAST_X[1], 15, MAST_H), W(10, 25, GY)]];
+const cables = [[W(MAST_X[0], MAST_U[1], MAST_H), W(-4, 20, GY)], [W(MAST_X[1], MAST_U[1], MAST_H), W(10, 20, GY)]];
 function instancedMembers(list, r, m) {
   const geo = new THREE.CylinderGeometry(1, 1, 1, 6), mesh = new THREE.InstancedMesh(geo, m, list.length);
   const up = new THREE.Vector3(0, 1, 0), o = new THREE.Object3D();
@@ -512,7 +559,7 @@ instancedMembers(members.brace, .045, new THREE.MeshStandardMaterial({ color: 0x
 instancedMembers(cables, .025, mat.soft);
 for (const [, b] of cables) boxAt(mat.clay, b.x - .6, b.x + .6, GY, GY + .5, b.z - .6, b.z + .6, .1);
 boxAt(mat.clay2, MAST_X[0] - .8, MAST_X[1] + .8, GY, GY + .35, -MAST_U[1] - .8, -MAST_U[0] + .8, .1);
-for (const x of [1.5, 4.5]) { const s = boxAt(mat.glow, x - .5, x + .5, MAST_H + .05, MAST_H + .25, -14, -13); }
+for (const x of [1.5, 4.5]) boxAt(mat.glow, x - .5, x + .5, MAST_H + .05, MAST_H + .25, -MAST_U[0] - 2, -MAST_U[0] - 1);
 
 // ------------------------------------------------------------------ grandstand with spectators (left)
 const STAND = { x0: -17, z0: 4, z1: 38, tiers: 6 };
@@ -553,8 +600,8 @@ function drawScreen(st) {
   g.font = '300 150px Helvetica, Arial, sans-serif'; g.fillText(String(Math.round(st.v * 3.6)), 60, 360);
   g.font = '400 34px Helvetica, Arial, sans-serif'; g.fillText('km/h', 60, 420);
   g.textAlign = 'right'; g.font = '300 90px Helvetica, Arial, sans-serif';
-  g.fillText((Math.max(0, st.C.y - BODY_C)).toFixed(1) + ' m', w - 60, 360);
-  g.font = '400 34px Helvetica, Arial, sans-serif'; g.fillText('height', w - 60, 420); g.textAlign = 'left';
+  g.fillText(st.altFt.toFixed(1) + ' ft', w - 60, 360);
+  g.font = '400 34px Helvetica, Arial, sans-serif'; g.fillText('altitude', w - 60, 420); g.textAlign = 'left';
   g.fillStyle = 'rgba(255,255,255,.25)'; g.fillRect(60, 460, w - 120, 8);
   g.fillStyle = '#fff'; g.fillRect(60, 460, (w - 120) * Math.min(1, st.t / END), 8);
   screenTex.needsUpdate = true;
@@ -577,7 +624,7 @@ const dolly = new THREE.Group();
   dolly.traverse(o => { o.castShadow = true; }); dolly.position.x = 10.4; scene.add(dolly); }
 
 // data lines from the pavilion to the tower, like the blue service lines in the references
-{ const pts = [[13.8, 15], [10, 15], [10, -2], [8.5, -6], [8.5, -13.5], [7.4, -13.5]].map(([x, z]) => new THREE.Vector3(x, GY + .12, z));
+{ const pts = [[13.8, 15], [10, 15], [10, -2], [8.5, -6], [8.5, -10], [7.4, -10]].map(([x, z]) => new THREE.Vector3(x, GY + .12, z));
   const path = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', .05);
   add(new THREE.TubeGeometry(path, 120, .1, 8), mat.glow, new THREE.Vector3(), { cast: false });
   for (const p of [pts[1], pts[3]]) add(new THREE.TorusGeometry(.35, .07, 8, 24), mat.accent, p, { rot: [Math.PI/2, 0, 0], cast: false }); }
@@ -649,8 +696,8 @@ function pin(label, pos) {
   const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthWrite: false, sizeAttenuation: false, transparent: true })); s.scale.set(.05, .0625, 1); s.position.copy(pos);
   s.userData.y = pos.y; scene.add(s); return s;
 }
-const pins = [pin('LAUNCH', new THREE.Vector3(3, 5.5, RUN_LEN + 3)), pin('LOOP', W(3, 4, 31.5)),
-  pin('HOVER', STOPPED.clone().add(new THREE.Vector3(0, 6, 0)))];
+const pins = [pin('START', new THREE.Vector3(3, 4.5, 2.5)), pin('LIP', W(3, LIP_U + 1, LIP_Z + 4.5)),
+  pin('LANDING', W(3, U_LAND, 5))];
 
 // ------------------------------------------------------------------ planned route (blue line)
 { const pts = []; for (let t = T[1].start; t <= T[7].end; t += .05) pts.push(state(t).C.clone());
@@ -672,84 +719,118 @@ function poseCar(st, dt) {
   const right = st.f.clone().cross(st.up).normalize();
   basis.makeBasis(st.f, st.up, right);
   car.quaternion.setFromRotationMatrix(basis); car.position.copy(st.c);
-  const spin = st.phase <= 2 ? st.v * dt / 0.36 : 0;
+  const rolling = st.deck || st.phase === T.length - 1;
+  const spin = rolling ? st.v * dt / 0.36 : 0;
   wheels.forEach((w, i) => w.rotateY(i % 2 ? spin : -spin));
-  const onGround = st.phase <= 1 || st.phase === 8;
-  ring.visible = st.phase <= 1 || st.phase >= 6;
-  ring.position.set(st.C.x, (onGround ? 0 : GY) + .02, st.C.z);
-  const k = 1 + .08*Math.sin(performance.now() / 180); ring.scale.setScalar(onGround ? k : .6 + .4*smooth(1 - (st.C.y - 1) / 25));
+  const grounded = st.c.y < .3 && st.up.y > .9;
+  ring.visible = grounded;
+  ring.position.set(st.C.x, .02, st.C.z);
+  ring.scale.setScalar(1 + .08*Math.sin(performance.now() / 180));
 }
 
-// ------------------------------------------------------------------ thruster jets (body-fixed, particles)
-const NOZZLES = [[0.9, -0.14], [2.08, 0], [3.3, 0.14]];       // [distance from the tail, fore/aft cant]
-const MAXP = 6000, JET_SPEED = 19, JET_DRAG = 1.8, EMIT = 220;
-const pPos = new Float32Array(MAXP*3), pSize = new Float32Array(MAXP), pAlpha = new Float32Array(MAXP);
-const pGeo = new THREE.BufferGeometry();
-pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-pGeo.setAttribute('size', new THREE.BufferAttribute(pSize, 1));
-pGeo.setAttribute('alpha', new THREE.BufferAttribute(pAlpha, 1));
-const puffTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
-  const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
-  g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
-const pMat = new THREE.ShaderMaterial({
-  uniforms: { map: { value: puffTex }, color: { value: new THREE.Color(0xd2e0f8) }, uScale: { value: 500 } },
-  vertexShader: `attribute float size; attribute float alpha; varying float vA; uniform float uScale;
-    void main(){ vA = alpha; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = size * uScale / -mv.z; gl_Position = projectionMatrix * mv; }`,
-  fragmentShader: `uniform sampler2D map; uniform vec3 color; varying float vA;
-    void main(){ float a = texture2D(map, gl_PointCoord).a * vA; if (a < 0.003) discard; gl_FragColor = vec4(color, a); }`,
-  transparent: true, depthWrite: false,
-});
-const points = new THREE.Points(pGeo, pMat); points.frustumCulled = false; scene.add(points);
-let parts = [], simT = null, emitAcc = 0;
-const tmpM = new THREE.Matrix4();
-function nozzles(st) {
+// ------------------------------------------------------------------ thrusters (10 nozzles) and gas
+// Layout reported for the car and matching the video: one nozzle at each corner firing out of the floor
+// (up while the car is inverted, down once it has rolled), one on each front fender firing sideways
+// (they start and stop the barrel roll), and four rear-fed nozzles firing forward to brake the drift.
+const NOZZLES = [
+  ...[[.55, -.78], [.55, .78], [3.6, -.78], [3.6, .78]].map(([u, lat]) => ({ group: 'corner', u, lat, z: .28, dir: 'down' })),
+  { group: 'side', u: 3.0, lat: 1.0, z: .55, dir: 'right' }, { group: 'counter', u: 3.0, lat: -1.0, z: .55, dir: 'left' },
+  ...[-.6, -.2, .2, .6].map(lat => ({ group: 'brake', u: 4.1, lat, z: .45, dir: 'fwd' })),
+];
+function nozzleFrames(st) {
   const right = st.f.clone().cross(st.up).normalize();
-  return NOZZLES.map(([u, cant]) => ({
-    o: st.c.clone().addScaledVector(st.f, u - CAR_LEN/2).addScaledVector(st.up, .3),
-    dir: st.up.clone().multiplyScalar(-Math.cos(cant)).addScaledVector(st.f, Math.sin(cant)).normalize(),
-  }));
+  return NOZZLES.map(n => {
+    const o = st.c.clone().addScaledVector(st.f, n.u - CAR_LEN/2).addScaledVector(right, n.lat).addScaledVector(st.up, n.z);
+    let dir;
+    if (n.dir === 'down') dir = st.up.clone().negate().addScaledVector(right, .12 * Math.sign(n.lat)).normalize();
+    else if (n.dir === 'right') dir = right.clone().addScaledVector(st.up, .15).normalize();
+    else if (n.dir === 'left') dir = right.clone().negate().addScaledVector(st.up, .15).normalize();
+    else dir = st.f.clone().addScaledVector(right, .15 * Math.sign(n.lat)).normalize();
+    return { ...n, o, dir, thr: st.thr[n.group] };
+  });
 }
+function gasLayer(max, color) {
+  const pos = new Float32Array(max*3), size = new Float32Array(max), alpha = new Float32Array(max);
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('size', new THREE.BufferAttribute(size, 1));
+  geo.setAttribute('alpha', new THREE.BufferAttribute(alpha, 1));
+  const m = new THREE.ShaderMaterial({
+    uniforms: { map: { value: puffTex }, color: { value: new THREE.Color(color) }, uScale: { value: 500 } },
+    vertexShader: `attribute float size; attribute float alpha; varying float vA; uniform float uScale;
+      void main(){ vA = alpha; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = size * uScale / -mv.z; gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: `uniform sampler2D map; uniform vec3 color; varying float vA;
+      void main(){ float a = texture2D(map, gl_PointCoord).a * vA; if (a < 0.003) discard; gl_FragColor = vec4(color, a); }`,
+    transparent: true, depthWrite: false,
+  });
+  const pts = new THREE.Points(geo, m); pts.frustumCulled = false; scene.add(pts);
+  return { max, pos, size, alpha, geo, m, list: [] };
+}
+const puffTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
+  const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.6, 'rgba(255,255,255,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+const JETS = gasLayer(7000, 0xb9cdf0), CLOUD = gasLayer(2500, 0xd3dae6);
 const jitter = k => new THREE.Vector3(rnd() - .5, rnd() - .5, rnd() - .5).multiplyScalar(k);
-function stepJets(t0, t1) {
+const floorAt = p => Math.abs(p.x - 3) < 4 && p.z > 0 && p.z < 45 ? 0 : GY;
+let simT = null, emitAcc = 0, cloudAcc = 0;
+function spawnCloud(at, out, life) {
+  if (CLOUD.list.length >= CLOUD.max) return;
+  CLOUD.list.push({ p: at, v: out, age: 0, life, s0: 1.4 + rnd()*1.2 });
+}
+function stepGas(t0, t1) {
   const n = Math.max(1, Math.ceil((t1 - t0) * 90)), dt = (t1 - t0) / n;
   for (let s = 1; s <= n; s++) {
     const st = state(t0 + dt*s);
     if (st.throttle > .01) {
-      emitAcc += EMIT * dt * Math.max(.35, st.throttle);
-      const noz = nozzles(st);
+      emitAcc += 260 * dt;
+      const noz = nozzleFrames(st).filter(z => z.thr > .02);
       while (emitAcc >= 1) { emitAcc -= 1;
-        for (const { o, dir } of noz) if (parts.length < MAXP) parts.push({
-          p: o.clone().addScaledVector(dir, .15 + rnd()*.3),
-          v: dir.clone().multiplyScalar(JET_SPEED*st.throttle*(.85 + .3*rnd())).add(jitter(1.4)).add(st.vel),
-          age: rnd()*dt, life: .38 + rnd()*.14, ground: false });
+        for (const z of noz) if (JETS.list.length < JETS.max && rnd() < .35 + .65*z.thr) JETS.list.push({
+          p: z.o.clone().addScaledVector(z.dir, .1 + rnd()*.25),
+          v: z.dir.clone().multiplyScalar(26*(.45 + .55*z.thr)*(.85 + .3*rnd())).add(jitter(1.2)).add(st.vel),
+          age: rnd()*dt, life: .4 + rnd()*.2 });
+      }
+      // below ~14 m the downward jets reach the ground and pile up into the dense white cloud seen in the video
+      const h = st.C.y, under = st.thr.corner * Math.max(0, 1 - h / 14) * (st.up.y > .5 ? 1 : 0);
+      cloudAcc += 70 * under * dt;
+      while (cloudAcc >= 1) { cloudAcc -= 1;
+        const a = rnd()*Math.PI*2, sp = 2 + rnd()*4;
+        const at = new THREE.Vector3(st.C.x + (rnd() - .5)*2.5, floorAt(st.C) + .4, st.C.z + (rnd() - .5)*4);
+        spawnCloud(at, new THREE.Vector3(Math.cos(a)*sp, .6 + rnd()*.8, Math.sin(a)*sp), 2.4 + rnd()*1.8);
       }
     }
-    const drag = Math.exp(-JET_DRAG*dt);
-    for (const q of parts) {
+    const drag = Math.exp(-1.7*dt);
+    for (const q of JETS.list) {
       q.age += dt; q.v.multiplyScalar(drag).add(jitter(9*dt)); q.p.addScaledVector(q.v, dt);
-      const floor = Math.abs(q.p.x - 3) < 4 && q.p.z > 0 && q.p.z < 45 ? 0 : GY;
-      if (!q.ground && q.p.y < floor + .05) {
-        q.ground = true; q.p.y = floor + .05;
-        const hv = Math.hypot(q.v.x, q.v.z) + .6*Math.abs(q.v.y) + 1, a = rnd()*Math.PI*2;
-        q.v.set(Math.cos(a)*hv*.8 + q.v.x*.5, .4, Math.sin(a)*hv*.8 + q.v.z*.5);
-        q.life = q.age + .8 + rnd()*.6;
+      const fl = floorAt(q.p);
+      if (q.p.y < fl + .1) {                                     // jet hits the ground: becomes part of the cloud
+        q.age = q.life;
+        if (rnd() < .08) { const hv = Math.hypot(q.v.x, q.v.z) + .5*Math.abs(q.v.y) + 1, a = rnd()*Math.PI*2;
+          spawnCloud(new THREE.Vector3(q.p.x, fl + .3, q.p.z), new THREE.Vector3(Math.cos(a)*hv*.5, .5, Math.sin(a)*hv*.5), 2 + rnd()*1.5); }
       }
     }
-    parts = parts.filter(q => q.age < q.life);
+    JETS.list = JETS.list.filter(q => q.age < q.life);
+    const cdrag = Math.exp(-1.1*dt);
+    for (const q of CLOUD.list) {
+      q.age += dt; q.v.multiplyScalar(cdrag); q.v.y += .25*dt; q.v.add(jitter(1.5*dt)); q.p.addScaledVector(q.v, dt);
+    }
+    CLOUD.list = CLOUD.list.filter(q => q.age < q.life);
   }
 }
-function syncJets(t) {
-  if (simT === null || t < simT || t - simT > .25) { parts = []; emitAcc = 0; simT = Math.max(0, t - 1); }
-  if (t > simT) stepJets(simT, t);
-  simT = t;
-  parts.forEach((q, i) => {
-    const k = q.age / q.life;
-    pPos[i*3] = q.p.x; pPos[i*3+1] = q.p.y; pPos[i*3+2] = q.p.z;
-    pSize[i] = q.ground ? .8 + 3*k : .22 + 1.0*k;
-    pAlpha[i] = (q.ground ? .06 : .16) * (1 - k) * Math.min(1, k*8 + .3);
+function upload(L, sizeOf, alphaOf) {
+  L.list.forEach((q, i) => {
+    L.pos[i*3] = q.p.x; L.pos[i*3+1] = q.p.y; L.pos[i*3+2] = q.p.z;
+    const k = q.age / q.life; L.size[i] = sizeOf(q, k); L.alpha[i] = alphaOf(q, k);
   });
-  pGeo.setDrawRange(0, parts.length);
-  for (const a of ['position', 'size', 'alpha']) pGeo.attributes[a].needsUpdate = true;
+  L.geo.setDrawRange(0, L.list.length);
+  for (const a of ['position', 'size', 'alpha']) L.geo.attributes[a].needsUpdate = true;
+}
+function syncGas(t) {
+  if (simT === null || t < simT || t - simT > .25) { JETS.list = []; CLOUD.list = []; emitAcc = cloudAcc = 0; simT = Math.max(0, t - 2.5); }
+  if (t > simT) stepGas(simT, t);
+  simT = t;
+  upload(JETS, (q, k) => .2 + 1.1*k, (q, k) => .2 * (1 - k) * Math.min(1, k*8 + .35));
+  upload(CLOUD, (q, k) => q.s0 + 5.5*Math.sqrt(k), (q, k) => .3 * Math.pow(1 - k, 1.3) * Math.min(1, k*6 + .25));
 }
 
 // ================================================================== cameras
@@ -759,18 +840,17 @@ controls.enableDamping = true; controls.maxPolarAngle = Math.PI / 2 - .05; contr
 const look = new THREE.Vector3(3, 6, 8);
 camera.position.set(-74, 66, 96); camera.lookAt(look);
 const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
-function directorShot(st) {                                    // one framed shot per phase
+function directorShot(st) {                                    // shots modelled on the broadcast angles
   const P = st.C, lt = st.t - T[st.phase].start;
   switch (st.phase) {
-    case 0: return [V3(-74 + lt*4, 66 - lt*3, 96 - lt*4), V3(4, 5, 6)];
-    case 1: return [V3(P.x - 16, 3.2, P.z + 7), P.clone()];
-    case 2: return [V3(-50, 16, 20), V3(3, 11, -5)];
-    case 3: return [P.clone().add(V3(-15, 4, 13)), P.clone()];
-    case 4: return [P.clone().add(V3(-11, 2.5, 9)), P.clone()];
-    case 5: { const a = -0.7 + lt * 0.55; return [P.clone().add(V3(Math.sin(a)*-12, 2, Math.cos(a)*12)), P.clone()]; }
-    case 6: return [P.clone().add(V3(-12, -3, 11)), P.clone()];
-    case 7: return [V3(P.x + 8, Math.max(6, P.y + 4), P.z + 20), P.clone()];
-    default: return [V3(-58, 44, 74), V3(4, 4, 10)];
+    case 0: return [V3(-74 + lt*4, 66 - lt*3, 96 - lt*4), V3(4, 5, 4)];
+    case 1: return [V3(-62, 11, 0), V3(3, 10, -3)];                       // wide side view of the whole ramp
+    case 2: return [V3(-50, 17, 4), V3(3, 18, -2)];
+    case 3: return [P.clone().add(V3(-18, 1, 10)), P.clone()];            // the roll, from the side
+    case 4: return [P.clone().add(V3(-17, 2, 14)), P.clone()];
+    case 5: return [V3(P.x - 5, Math.max(4, P.y*.5 + 3), P.z + 24), P.clone()];   // ramp behind the car
+    case 6: return [V3(P.x - 4, 3, P.z + 16), V3(P.x, 1.2, P.z)];
+    default: return [V3(P.x - 7, 3, P.z - 10), P.clone()];
   }
 }
 function chaseShot(st) {
@@ -781,7 +861,7 @@ let camMode = 'director';
 function updateCamera(st, dt, snap) {
   if (camMode === 'free') { controls.update(); return; }
   const [pos, tgt] = camMode === 'chase' ? chaseShot(st) : directorShot(st);
-  const k = snap ? 1 : 1 - Math.exp(-dt * (st.phase === 1 ? 4 : 2.2));
+  const k = snap ? 1 : 1 - Math.exp(-dt * 2.4);
   camera.position.lerp(pos, k); look.lerp(tgt, k); camera.lookAt(look);
 }
 
@@ -806,9 +886,11 @@ $('scrub').oninput = e => { t = parseFloat(e.target.value); snap = true; };
 addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); $('play').click(); } });
 function resize() {
   camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight);
-  pMat.uniforms.uScale.value = renderer.getDrawingBufferSize(new THREE.Vector2()).y / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
+  const s = renderer.getDrawingBufferSize(new THREE.Vector2()).y / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
+  JETS.m.uniforms.uScale.value = CLOUD.m.uniforms.uScale.value = s;
 }
 addEventListener('resize', resize); resize();
+const dots = [...document.querySelectorAll('#thrusters [data-g]')];
 
 const clock = new THREE.Clock(); let screenAt = -1;
 renderer.setAnimationLoop(() => {
@@ -816,12 +898,12 @@ renderer.setAnimationLoop(() => {
   if (playing) { t += dt*rate; if (t >= END) { t = END; playing = false; } }
   const st = state(t);
   poseCar(st, playing ? dt*rate : 0);
-  syncJets(t);
-  dolly.position.z = Math.min(44, Math.max(2, st.phase <= 1 ? st.c.z + 6 : 6));
+  syncGas(t);
+  dolly.position.z = 8;
   const now = performance.now() / 1000;
   pins.forEach((p, i) => {
     p.position.y = p.userData.y + Math.sin(now*1.6 + i) * .3;
-    p.material.opacity = smooth((camera.position.distanceTo(p.position) - 30) / 25);   // only in wide shots
+    p.material.opacity = smooth((camera.position.distanceTo(p.position) - 30) / 25);
   });
   floaters.forEach((f, i) => { f.position.y += Math.sin(now*1.2 + i*1.7) * .004; f.rotation.y = now*.2 + i; });
   if (now - screenAt > .2) { drawScreen(st); screenAt = now; }
@@ -831,13 +913,14 @@ renderer.setAnimationLoop(() => {
   $('scrub').value = t; $('time').textContent = t.toFixed(1) + ' s';
   $('phase').textContent = st.name;
   $('hSpeed').textContent = Math.round(st.v * 3.6) + ' km/h';
-  $('hHeight').textContent = Math.max(0, st.C.y - BODY_C).toFixed(1) + ' m';
-  $('hLoadLbl').textContent = st.loadLbl; $('hLoad').textContent = st.loadTxt;
-  $('hRoll').textContent = st.roll + '°';
+  $('hAlt').textContent = st.altFt.toFixed(1) + ' ft';
+  $('hG').textContent = st.g.toFixed(1) + ' g';
+  $('hAttLbl').textContent = st.attLbl; $('hAtt').textContent = st.att + '°';
+  dots.forEach(d => { const v = st.thr[d.dataset.g]; d.style.opacity = .18 + .82*v; d.style.transform = `scale(${1 + .5*v})`; });
   [...$('steps').children].forEach((s, i) => s.classList.toggle('on', i === st.phase));
   $('count').textContent = st.phase === 0 && t > .6 ? String(Math.max(1, 3 - Math.floor((t - .6) / .8))) : '';
 });
-window.launch = { T, END, VE, RUN_LEN, V_LIP, state };
+window.launch = { T, END, V_EXIT, U_LAND, RAMP_LEN, state };
 </script>
 </body>
 </html>
