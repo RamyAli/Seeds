@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadster 3D Model</title>
+<style>
+  :root { --ink:#3d3f44; --mute:#8d9097; --line:#d9dbe0; --bg:#eef0f3; --panel:rgba(255,255,255,.82); }
+  * { box-sizing:border-box; }
+  html, body { margin:0; height:100%; overflow:hidden; background:var(--bg); color:var(--ink);
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; }
+  canvas { display:block; position:fixed; inset:0; width:100%; height:100%; z-index:0; }
+  .title, .spec, .bar { z-index:2; }
+  .title { position:fixed; left:24px; top:22px; pointer-events:none; }
+  .title h1 { margin:0; font-weight:400; font-size:18px; letter-spacing:.42em; }
+  .title p { margin:7px 0 0; font-size:11px; letter-spacing:.16em; color:var(--mute); text-transform:uppercase; }
+  .bar { position:fixed; left:50%; bottom:22px; transform:translateX(-50%); display:flex; gap:6px; flex-wrap:wrap;
+    justify-content:center; background:var(--panel); border:1px solid var(--line); padding:6px;
+    backdrop-filter:blur(8px); max-width:calc(100% - 24px); }
+  .sep { width:1px; background:var(--line); margin:2px 4px; }
+  button { font:inherit; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink);
+    background:transparent; border:1px solid transparent; padding:8px 12px; cursor:pointer; min-height:34px; }
+  button:hover { border-color:var(--line); }
+  button.on { background:#fff; border-color:#b9bcc3; }
+  .spec { position:fixed; right:24px; top:22px; font-size:11px; letter-spacing:.08em; color:var(--mute);
+    text-align:right; line-height:1.7; pointer-events:none; }
+  .spec b { color:var(--ink); font-weight:500; }
+  body.night { --ink:#d7dae0; --mute:#80848c; --line:#2b2f37; --bg:#07090d; --panel:rgba(12,14,19,.8); }
+  body.night button.on { background:#1a1e26; border-color:#4a505c; }
+  @media (max-width:640px) { .spec { display:none; } .title h1 { font-size:14px; } }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div class="title"><h1>ROADSTER</h1><p>3D model · built from the official photos</p></div>
+<div class="spec">
+  <div>Length <b>≈ 4.16 m</b></div>
+  <div>Wheelbase <b>≈ 2.66 m</b></div>
+  <div>Height <b>≈ 1.06 m</b></div>
+  <div>Width <b>≈ 2.04 m</b></div>
+</div>
+<div class="bar">
+  <button data-view="front" class="on">Front ¾</button>
+  <button data-view="side">Side</button>
+  <button data-view="rear">Rear ¾</button>
+  <button data-view="top">Top</button>
+  <span class="sep"></span>
+  <button id="spin" class="on">Turntable</button>
+  <button id="rings">Sensor rings</button>
+  <button id="night">Night</button>
+  <span class="sep"></span>
+  <button id="glb">Download .glb</button>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+
+// ------------------------------------------------------------------ body shape
+// Car axes: x = length from the tail (0) to the nose, y = across, z = up (metres).
+// Profiles were traced from the official side view (wheel Ø 0.72 m sets the scale).
+const LEN = 4.16, WR = 0.36, AR = 0.43;
+const WHEELS_X = [0.63, 3.29], WHEEL_Y = 0.84;
+const tbl = (t, x) => {
+  if (x <= t[0][0]) return t[0][1];
+  for (let i = 1; i < t.length; i++) if (x <= t[i][0]) {
+    const [x0, y0] = t[i-1], [x1, y1] = t[i], k = (x - x0) / (x1 - x0);
+    return y0 + (y1 - y0) * (k*k*(3 - 2*k) * 0.5 + k * 0.5);   // eased so the surfaces stay smooth
+  }
+  return t.at(-1)[1];
+};
+const HALF_W  = [[0,.93],[.3,1.0],[.7,1.02],[1.2,1.0],[2.0,.96],[2.8,.97],[3.3,1.0],[3.8,.94],[4.16,.78]];
+const BOTTOM  = [[0,.24],[.3,.13],[3.9,.12],[4.16,.2]];
+const CREASE  = [[0,.46],[.9,.44],[2.0,.32],[3.0,.22],[3.9,.22],[4.16,.24]];
+const SHOULDER= [[0,.64],[.35,.8],[.8,.9],[1.15,.93],[2.0,.84],[2.85,.73],[3.3,.81],[3.75,.66],[4.16,.47]];
+const CENTER  = [[0,.64],[.3,.75],[1.06,.95],[1.57,1.06],[2.28,1.05],[3.04,.71],[3.3,.64],[3.7,.56],[4.16,.47]];
+const smooth01 = (a, b, x) => { const k = Math.min(1, Math.max(0, (x - a) / (b - a))); return k*k*(3 - 2*k); };
+const cabin = x => smooth01(0.9, 1.25, x) * (1 - smooth01(2.85, 3.1, x));   // 1 where there is glass
+
+function section(x) {                         // seven points, bottom centre -> roof centre (right half)
+  const W = tbl(HALF_W, x), zb = tbl(BOTTOM, x), zc = tbl(CREASE, x), zs = tbl(SHOULDER, x), zt = tbl(CENTER, x);
+  const g = cabin(x);
+  const p = [
+    [0, zb], [W - .07, zb + .02], [W, zc], [W - .07, zs], [W - .17, zs + .025],
+    [THREE.MathUtils.lerp((W - .17) * .5, .56, g), THREE.MathUtils.lerp((zs + zt) / 2, zt - .05, g)],
+    [0, zt],
+  ];
+  for (const wx of WHEELS_X) {                // wheel arch: lift the lower edge over the tyre
+    const dx = x - wx;
+    if (Math.abs(dx) < AR) {
+      const za = Math.min(WR + Math.sqrt(AR*AR - dx*dx), zs - .07);
+      p[1] = [W - .12, Math.max(p[1][1], za)];
+      if (za > p[2][1]) p[2] = [W, za];
+    }
+  }
+  return p;
+}
+const STRIP_MAT = x => [                      // material for each of the six strips
+  'trim', 'trim', 'body', 'body',
+  cabin(x) > .5 ? 'glass' : 'body',
+  x > .45 && x < 3.04 ? 'roof' : 'body',
+];
+
+// ------------------------------------------------------------------ materials
+const M = {
+  body:  new THREE.MeshPhysicalMaterial({ color: 0xf1f1ee, roughness: .42, clearcoat: .35, clearcoatRoughness: .3 }),
+  trim:  new THREE.MeshStandardMaterial({ color: 0x1d1e21, roughness: .62 }),
+  glass: new THREE.MeshPhysicalMaterial({ color: 0x4a3a2c, roughness: .06, metalness: .15, clearcoat: 1, envMapIntensity: 1.3 }),
+  roof:  new THREE.MeshPhysicalMaterial({ color: 0x141518, roughness: .08, metalness: .2, clearcoat: 1 }),
+  carbon:new THREE.MeshStandardMaterial({ color: 0x26272b, roughness: .5, metalness: .2 }),
+  tyre:  new THREE.MeshStandardMaterial({ color: 0x18191b, roughness: .85 }),
+  rim:   new THREE.MeshStandardMaterial({ color: 0xe9e9e6, roughness: .35, metalness: .1 }),
+  spoke: new THREE.MeshStandardMaterial({ color: 0x141416, roughness: .3, metalness: .5 }),
+  red:   new THREE.MeshStandardMaterial({ color: 0x600000, emissive: 0xff1208, emissiveIntensity: 2.6 }),
+  white: new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 1.6 }),
+  amber: new THREE.MeshStandardMaterial({ color: 0x402000, emissive: 0xff9a2a, emissiveIntensity: 1.8 }),
+  warm:  new THREE.MeshStandardMaterial({ color: 0x3a3020, emissive: 0xffe6a8, emissiveIntensity: 1.4 }),
+};
+for (const m of Object.values(M)) m.side = THREE.DoubleSide;
+
+// ------------------------------------------------------------------ build the car
+const car = new THREE.Group(); car.name = 'Roadster';
+const V = (x, y, z) => new THREE.Vector3(x - LEN/2, z, y);       // car axes -> three (y up)
+const pieces = {};
+const quad = (key, a, b, c, d) => { (pieces[key] ||= []).push(a, c, b, a, d, c); };
+
+const STEP = 0.04, xs = [];
+for (let x = 0; x < LEN - 1e-6; x += STEP) xs.push(x); xs.push(LEN);
+const secs = xs.map(section);
+for (let i = 0; i < xs.length - 1; i++) {
+  const x0 = xs[i], x1 = xs[i + 1], mats = STRIP_MAT((x0 + x1) / 2);
+  for (let k = 0; k < 6; k++) for (const s of [1, -1]) {
+    const a = V(x0, s*secs[i][k][0], secs[i][k][1]), b = V(x1, s*secs[i+1][k][0], secs[i+1][k][1]);
+    const c = V(x1, s*secs[i+1][k+1][0], secs[i+1][k+1][1]), d = V(x0, s*secs[i][k+1][0], secs[i][k+1][1]);
+    const key = k + ':' + mats[k];
+    s > 0 ? quad(key, a, b, c, d) : quad(key, a, d, c, b);
+  }
+}
+function capVerts(sec, x) {                   // closed outline of a section, both halves
+  const right = sec.map(([y, z]) => V(x, y, z)), left = sec.slice(1, -1).reverse().map(([y, z]) => V(x, -y, z));
+  return right.concat(left);
+}
+for (const [x, key] of [[0, 'cap:carbon'], [LEN, 'cap:trim']]) {
+  const ring = capVerts(section(x), x), c = ring.reduce((m, v) => m.add(v), new THREE.Vector3()).divideScalar(ring.length);
+  for (let i = 0; i < ring.length; i++) (pieces[key] ||= []).push(c, ring[i], ring[(i + 1) % ring.length]);
+}
+for (const [key, verts] of Object.entries(pieces)) {
+  let geo = new THREE.BufferGeometry().setFromPoints(verts);
+  geo = mergeVertices(geo, 1e-5); geo.computeVertexNormals();
+  const mesh = new THREE.Mesh(geo, M[key.split(':')[1]]);
+  mesh.castShadow = mesh.receiveShadow = true; mesh.name = 'body-' + key.replace(':', '-');
+  car.add(mesh);
+}
+
+const box = (mat, [sx, sy, sz], [x, y, z], rot = [0, 0, 0], name) => {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sz, sy), mat);   // size given in car axes
+  m.position.copy(V(x, y, z)); m.rotation.set(rot[0], rot[1], rot[2]);
+  m.castShadow = true; m.name = name || ''; car.add(m); return m;
+};
+// rear wing: swan-neck struts, main plane, angled end plates
+for (const y of [-.36, .36]) box(M.carbon, [.43, .03, .05], [.17, y, .9], [0, 0, -.6], 'wing-strut');
+box(M.body, [.52, 1.9, .035], [-.04, 0, 1.04], [0, 0, .14], 'wing');
+for (const y of [-.95, .95]) box(M.body, [.56, .02, .2], [-.06, y, .99], [0, 0, .14], 'wing-endplate');
+// side blades, lights and details
+for (const s of [-1, 1]) {
+  box(M.carbon, [1.85, .06, .022], [1.98, s*.92, .125], [0, 0, 0], 'side-blade');
+  box(M.amber, [.09, .012, .025], [3.0, s*(tbl(HALF_W, 3) - .045), .66], [0, 0, 0], 'side-marker');
+  box(M.red, [.05, .012, .02], [.12, s*(tbl(HALF_W, .12) - .01), .5], [0, 0, 0], 'rear-marker');
+}
+// panel seams on the body side (door cut and the vertical cut ahead of the door)
+function seam(x0, x1, s) {
+  const pa = section(x0)[2], pb = section(x1)[3];
+  const a = V(x0, s*(pa[0] + .004), pa[1] + .02), b = V(x1, s*(pb[0] + .004), pb[1] - .01);
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(.004, .004, a.distanceTo(b), 6), M.trim);
+  m.position.copy(a).add(b).multiplyScalar(.5);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+  m.name = 'seam'; car.add(m);
+}
+for (const s of [1, -1]) { seam(1.72, 1.56, s); seam(2.94, 2.98, s); }
+box(M.red, [.02, 1.62, .03], [-.008, 0, .6], [0, 0, 0], 'tail-light-bar');
+box(M.white, [.02, 1.22, .014], [LEN + .006, 0, .42], [0, 0, 0], 'head-light-bar');
+box(M.carbon, [.36, .56, .012], [3.55, 0, .6], [0, 0, .2], 'hood-vent');
+box(M.carbon, [.34, 1.5, .02], [.17, 0, .17], [0, 0, -.25], 'diffuser');
+for (const y of [-.6, -.36, 0, .36, .6]) box(M.carbon, [.3, .015, .1], [.14, y, .2], [0, 0, -.25], 'diffuser-fin');
+for (const y of [-.54, -.18, .18, .54]) {     // the four round lights / nozzles in the rear
+  const g = new THREE.CylinderGeometry(.055, .055, .06, 28); g.rotateZ(Math.PI / 2);
+  const m = new THREE.Mesh(g, M.warm); m.position.copy(V(-.01, y, .34)); m.name = 'rear-nozzle'; car.add(m);
+  const r = new THREE.Mesh(new THREE.TorusGeometry(.065, .012, 10, 28), M.carbon);
+  r.rotation.y = Math.PI / 2; r.position.copy(V(-.04, y, .34)); car.add(r);
+}
+
+// wheels: rounded tyre, white disc, six black spokes in a star
+function wheel() {
+  const w = new THREE.Group(); w.name = 'wheel';
+  const prof = [[.255,-.15],[.33,-.152],[.355,-.13],[.36,-.09],[.36,.09],[.355,.13],[.33,.152],[.255,.15]]
+    .map(([r, h]) => new THREE.Vector2(r, h));
+  const tyre = new THREE.Mesh(new THREE.LatheGeometry(prof, 56), M.tyre); tyre.castShadow = true; w.add(tyre);
+  const disc = new THREE.Mesh(new THREE.CylinderGeometry(.256, .256, .28, 48), M.rim); w.add(disc);
+  const star = new THREE.Shape();                  // six long points reaching the rim, like the photos
+  for (let i = 0; i < 12; i++) {
+    const a = i * Math.PI / 6 + (i % 2 ? .06 : 0), r = i % 2 ? .062 : .248;
+    i ? star.lineTo(Math.cos(a) * r, Math.sin(a) * r) : star.moveTo(r, 0);
+  }
+  const sg = new THREE.ExtrudeGeometry(star, { depth: .03, bevelEnabled: true, bevelSize: .006, bevelThickness: .006, bevelSegments: 1 });
+  sg.rotateX(-Math.PI / 2);
+  const sm = new THREE.Mesh(sg, M.spoke); sm.position.y = .138; w.add(sm);
+  const hub = new THREE.Mesh(new THREE.CylinderGeometry(.045, .045, .03, 24), M.spoke); hub.position.y = .15; w.add(hub);
+  w.rotation.x = Math.PI / 2;                  // lathe axis -> across the car
+  return w;
+}
+const wheels = [];
+for (const x of WHEELS_X) for (const s of [1, -1]) {
+  const w = wheel(); w.position.copy(V(x, s*WHEEL_Y, WR)); if (s < 0) w.rotation.x = -Math.PI / 2;
+  car.add(w); wheels.push(w);
+}
+
+// ------------------------------------------------------------------ scene
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), .04).texture;
+scene.add(car);
+
+const camera = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, .1, 200);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.target.set(0, .45, 0);
+controls.minDistance = 3; controls.maxDistance = 18; controls.maxPolarAngle = Math.PI / 2 - .03;
+controls.autoRotateSpeed = .8;
+
+// floor with a soft baked contact shadow, like the white studio renders
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshStandardMaterial({ color: 0xeef0f3, roughness: .95 }));
+floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+function radialTex(stops, size = 512) {
+  const c = document.createElement('canvas'); c.width = c.height = size;
+  const g = c.getContext('2d'), gr = g.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+  for (const [o, col] of stops) gr.addColorStop(o, col);
+  g.fillStyle = gr; g.fillRect(0, 0, size, size);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+const ao = new THREE.Mesh(new THREE.PlaneGeometry(6.2, 3.4),
+  new THREE.MeshBasicMaterial({ map: radialTex([[0, 'rgba(0,0,0,.42)'], [.45, 'rgba(0,0,0,.16)'], [1, 'rgba(0,0,0,0)']]), transparent: true, depthWrite: false }));
+ao.rotation.x = -Math.PI / 2; ao.position.y = .002; scene.add(ao);
+// sensor rings (red near, blue far), as in the Autopilot illustrations
+const rings = new THREE.Mesh(new THREE.PlaneGeometry(11, 11), new THREE.MeshBasicMaterial({
+  map: radialTex([[0, 'rgba(0,0,0,0)'], [.36, 'rgba(0,0,0,0)'], [.4, 'rgba(255,70,80,.55)'], [.5, 'rgba(255,120,140,.22)'],
+    [.62, 'rgba(110,140,255,.35)'], [.8, 'rgba(110,140,255,.12)'], [1, 'rgba(110,140,255,0)']]),
+  transparent: true, depthWrite: false }));
+rings.rotation.x = -Math.PI / 2; rings.scale.set(1, .62, 1); rings.position.y = .004; rings.visible = false; scene.add(rings);
+
+// lights: soft white studio, or the dark orange/blue look of the official photos
+const hemi = new THREE.HemisphereLight(0xffffff, 0xdfe3ea, .9); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+sun.position.set(-3, 9, 5); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5, near: 1, far: 25 });
+sun.shadow.radius = 6; sun.shadow.bias = -.0004; scene.add(sun);
+const warmKey = new THREE.SpotLight(0xff8a4a, 0, 30, .55, .6); warmKey.position.set(-7, 3.5, 2); scene.add(warmKey);
+const coolKey = new THREE.SpotLight(0x5a7dff, 0, 30, .55, .6); coolKey.position.set(7, 3, -3); scene.add(coolKey);
+const topKey = new THREE.SpotLight(0xffffff, 0, 30, .5, .7); topKey.position.set(0, 9, 3); topKey.castShadow = true; scene.add(topKey);
+
+function setNight(on) {
+  document.body.classList.toggle('night', on);
+  scene.background = new THREE.Color(on ? 0x07090d : 0xeef0f3);
+  scene.fog = on ? new THREE.Fog(0x07090d, 12, 30) : new THREE.Fog(0xeef0f3, 14, 40);
+  floor.material.color.set(on ? 0x0d0f14 : 0xeef0f3);
+  hemi.intensity = on ? .05 : .9; sun.intensity = on ? 0 : 2.2;
+  warmKey.intensity = on ? 160 : 0; coolKey.intensity = on ? 140 : 0; topKey.intensity = on ? 90 : 0;
+  scene.environmentIntensity = on ? .35 : 1;
+  renderer.toneMappingExposure = on ? 1.1 : 1.0;
+}
+setNight(false);
+
+// ------------------------------------------------------------------ views + UI
+const VIEWS = {
+  front: [5.2, 1.5, 4.6], side: [0, .9, 7.6], rear: [-5.2, 1.7, 4.6], top: [.01, 8.5, .01],
+};
+let camFrom = null, camTo = null, camT = 1;
+function go(view) {
+  camFrom = camera.position.clone(); camTo = new THREE.Vector3(...VIEWS[view]); camT = 0;
+  document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === view));
+}
+camera.position.set(...VIEWS.front);
+document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => { go(b.dataset.view); spin(false); });
+const spin = on => { controls.autoRotate = on; document.getElementById('spin').classList.toggle('on', on); };
+document.getElementById('spin').onclick = () => spin(!controls.autoRotate);
+document.getElementById('rings').onclick = e => { rings.visible = !rings.visible; e.target.classList.toggle('on', rings.visible); };
+document.getElementById('night').onclick = e => { const on = !document.body.classList.contains('night'); setNight(on); e.target.classList.toggle('on', on); };
+document.getElementById('glb').onclick = () => new GLTFExporter().parse(car, buf => {
+  const a = document.createElement('a'), url = URL.createObjectURL(new Blob([buf], { type: 'model/gltf-binary' }));
+  a.href = url; a.download = 'roadster.glb'; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}, console.error, { binary: true });
+controls.addEventListener('start', () => { camT = 1; });
+
+const q = new URLSearchParams(location.search);
+if (q.get('view')) { camera.position.set(...VIEWS[q.get('view')]); document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === q.get('view'))); }
+if (q.get('night') === '1') document.getElementById('night').click();
+if (q.get('rings') === '1') document.getElementById('rings').click();
+spin(q.get('spin') !== '0');
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight);
+});
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => {
+  const dt = clock.getDelta();
+  if (camT < 1) {
+    camT = Math.min(1, camT + dt / 1.1); const k = camT*camT*(3 - 2*camT);
+    camera.position.lerpVectors(camFrom, camTo, k);
+  }
+  controls.update(); renderer.render(scene, camera);
+});
+window.roadster = { car, scene };
+</script>
+</body>
+</html>
