@@ -1,0 +1,340 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1720 1180" width="1720" height="1180" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+<defs>
+<pattern id="g1" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#1d3a5f" stroke-width="0.5"/></pattern>
+<pattern id="g5" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M100 0H0V100" fill="none" stroke="#28507f" stroke-width="0.8"/></pattern>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9fc3ea"/></marker>
+<marker id="tr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffb547"/></marker>
+<style>
+.ln{fill:none;stroke:#cfe3ff;stroke-width:1.6}
+.thin{fill:none;stroke:#9fc3ea;stroke-width:0.9}
+.truss{fill:none;stroke:#7fa6d4;stroke-width:1}
+.dim{fill:none;stroke:#9fc3ea;stroke-width:0.8}
+.led{fill:none;stroke:#ff3b3b;stroke-width:3}
+.traj{fill:none;stroke:#ffb547;stroke-width:2;stroke-dasharray:8 6}
+.t{fill:#cfe3ff;font-size:13px}
+.s{fill:#8fb2db;font-size:11px}
+.h{fill:#ffffff;font-size:15px;font-weight:700;letter-spacing:2px}
+.n{fill:#0b1a2e;font-size:12px;font-weight:700}
+</style></defs>
+<rect width="1720" height="1180" fill="#0b1a2e"/>
+<rect x="40" y="40" width="1640" height="620" fill="url(#g1)"/><rect x="40" y="40" width="1640" height="620" fill="url(#g5)"/>
+<rect x="20" y="20" width="1680" height="1140" fill="none" stroke="#3d6797" stroke-width="1.5"/>
+<text x="60" y="80" class="h">TESLA ROADSTER LAUNCH — STAGE WIREFRAME</text>
+<text x="60" y="102" class="s">SIDE ELEVATION + PLAN · 1 small grid square = 1 m · all dimensions estimated from reference photos</text>
+<line x1="40" y1="620" x2="1680" y2="620" class="ln" stroke-width="2"/>
+<line x1="40" y1="621" x2="32" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="54" y1="621" x2="46" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="68" y1="621" x2="60" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="82" y1="621" x2="74" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="96" y1="621" x2="88" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="110" y1="621" x2="102" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="124" y1="621" x2="116" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="138" y1="621" x2="130" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="152" y1="621" x2="144" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="166" y1="621" x2="158" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="180" y1="621" x2="172" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="194" y1="621" x2="186" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="208" y1="621" x2="200" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="222" y1="621" x2="214" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="236" y1="621" x2="228" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="250" y1="621" x2="242" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="264" y1="621" x2="256" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="278" y1="621" x2="270" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="292" y1="621" x2="284" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="306" y1="621" x2="298" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="320" y1="621" x2="312" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="334" y1="621" x2="326" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="348" y1="621" x2="340" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="362" y1="621" x2="354" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="376" y1="621" x2="368" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="390" y1="621" x2="382" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="404" y1="621" x2="396" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="418" y1="621" x2="410" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="432" y1="621" x2="424" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="446" y1="621" x2="438" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="460" y1="621" x2="452" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="474" y1="621" x2="466" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="488" y1="621" x2="480" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="502" y1="621" x2="494" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="516" y1="621" x2="508" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="530" y1="621" x2="522" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="544" y1="621" x2="536" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="558" y1="621" x2="550" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="572" y1="621" x2="564" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="586" y1="621" x2="578" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="600" y1="621" x2="592" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="614" y1="621" x2="606" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="628" y1="621" x2="620" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="642" y1="621" x2="634" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="656" y1="621" x2="648" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="670" y1="621" x2="662" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="684" y1="621" x2="676" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="698" y1="621" x2="690" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="712" y1="621" x2="704" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="726" y1="621" x2="718" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="740" y1="621" x2="732" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="754" y1="621" x2="746" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="768" y1="621" x2="760" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="782" y1="621" x2="774" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="796" y1="621" x2="788" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="810" y1="621" x2="802" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="824" y1="621" x2="816" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="838" y1="621" x2="830" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="852" y1="621" x2="844" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="866" y1="621" x2="858" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="880" y1="621" x2="872" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="894" y1="621" x2="886" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="908" y1="621" x2="900" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="922" y1="621" x2="914" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="936" y1="621" x2="928" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="950" y1="621" x2="942" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="964" y1="621" x2="956" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="978" y1="621" x2="970" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="992" y1="621" x2="984" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1006" y1="621" x2="998" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1020" y1="621" x2="1012" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1034" y1="621" x2="1026" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1048" y1="621" x2="1040" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1062" y1="621" x2="1054" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1076" y1="621" x2="1068" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1090" y1="621" x2="1082" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1104" y1="621" x2="1096" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1118" y1="621" x2="1110" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1132" y1="621" x2="1124" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1146" y1="621" x2="1138" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1160" y1="621" x2="1152" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1174" y1="621" x2="1166" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1188" y1="621" x2="1180" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1202" y1="621" x2="1194" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1216" y1="621" x2="1208" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1230" y1="621" x2="1222" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1244" y1="621" x2="1236" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1258" y1="621" x2="1250" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1272" y1="621" x2="1264" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1286" y1="621" x2="1278" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1300" y1="621" x2="1292" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1314" y1="621" x2="1306" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1328" y1="621" x2="1320" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1342" y1="621" x2="1334" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1356" y1="621" x2="1348" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1370" y1="621" x2="1362" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1384" y1="621" x2="1376" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1398" y1="621" x2="1390" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1412" y1="621" x2="1404" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1426" y1="621" x2="1418" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1440" y1="621" x2="1432" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1454" y1="621" x2="1446" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1468" y1="621" x2="1460" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1482" y1="621" x2="1474" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1496" y1="621" x2="1488" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1510" y1="621" x2="1502" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1524" y1="621" x2="1516" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1538" y1="621" x2="1530" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1552" y1="621" x2="1544" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1566" y1="621" x2="1558" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1580" y1="621" x2="1572" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1594" y1="621" x2="1586" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1608" y1="621" x2="1600" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1622" y1="621" x2="1614" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1636" y1="621" x2="1628" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1650" y1="621" x2="1642" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1664" y1="621" x2="1656" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="1678" y1="621" x2="1670" y2="629" class="thin" stroke-opacity=".4"/>
+<line x1="100" y1="618" x2="1100" y2="618" class="led"/>
+<path class="ln" stroke-width="2.2" fill="#12345a" fill-opacity=".55" d="M1100 620 C1210 620 1300 530 1300 420 C1300 260 1170 150 980 150 L980 130 C1180 130 1320 245 1320 420 C1320 530 1225 612 1120 620 Z"/>
+<path class="led" stroke-width="2" d="M1100 618 C1208 618 1298 530 1298 420 C1298 262 1170 152 982 152"/>
+<rect x="1340" y="98" width="60" height="522" class="ln"/>
+<line x1="1340" y1="620" x2="1400" y2="620" class="truss"/>
+<line x1="1400" y1="620" x2="1340" y2="590" class="truss"/>
+<line x1="1340" y1="590" x2="1400" y2="590" class="truss"/>
+<line x1="1340" y1="590" x2="1400" y2="560" class="truss"/>
+<line x1="1340" y1="560" x2="1400" y2="560" class="truss"/>
+<line x1="1400" y1="560" x2="1340" y2="530" class="truss"/>
+<line x1="1340" y1="530" x2="1400" y2="530" class="truss"/>
+<line x1="1340" y1="530" x2="1400" y2="500" class="truss"/>
+<line x1="1340" y1="500" x2="1400" y2="500" class="truss"/>
+<line x1="1400" y1="500" x2="1340" y2="470" class="truss"/>
+<line x1="1340" y1="470" x2="1400" y2="470" class="truss"/>
+<line x1="1340" y1="470" x2="1400" y2="440" class="truss"/>
+<line x1="1340" y1="440" x2="1400" y2="440" class="truss"/>
+<line x1="1400" y1="440" x2="1340" y2="410" class="truss"/>
+<line x1="1340" y1="410" x2="1400" y2="410" class="truss"/>
+<line x1="1340" y1="410" x2="1400" y2="380" class="truss"/>
+<line x1="1340" y1="380" x2="1400" y2="380" class="truss"/>
+<line x1="1400" y1="380" x2="1340" y2="350" class="truss"/>
+<line x1="1340" y1="350" x2="1400" y2="350" class="truss"/>
+<line x1="1340" y1="350" x2="1400" y2="320" class="truss"/>
+<line x1="1340" y1="320" x2="1400" y2="320" class="truss"/>
+<line x1="1400" y1="320" x2="1340" y2="290" class="truss"/>
+<line x1="1340" y1="290" x2="1400" y2="290" class="truss"/>
+<line x1="1340" y1="290" x2="1400" y2="260" class="truss"/>
+<line x1="1340" y1="260" x2="1400" y2="260" class="truss"/>
+<line x1="1400" y1="260" x2="1340" y2="230" class="truss"/>
+<line x1="1340" y1="230" x2="1400" y2="230" class="truss"/>
+<line x1="1340" y1="230" x2="1400" y2="200" class="truss"/>
+<line x1="1340" y1="200" x2="1400" y2="200" class="truss"/>
+<line x1="1400" y1="200" x2="1340" y2="170" class="truss"/>
+<line x1="1340" y1="170" x2="1400" y2="170" class="truss"/>
+<line x1="1340" y1="170" x2="1400" y2="140" class="truss"/>
+<line x1="1340" y1="140" x2="1400" y2="140" class="truss"/>
+<line x1="1400" y1="140" x2="1340" y2="110" class="truss"/>
+<rect x="1000" y="98" width="400" height="30" class="ln"/>
+<line x1="1000" y1="98" x2="1000" y2="128" class="truss"/>
+<line x1="1000" y1="128" x2="1030" y2="98" class="truss"/>
+<line x1="1030" y1="98" x2="1030" y2="128" class="truss"/>
+<line x1="1030" y1="98" x2="1060" y2="128" class="truss"/>
+<line x1="1060" y1="98" x2="1060" y2="128" class="truss"/>
+<line x1="1060" y1="128" x2="1090" y2="98" class="truss"/>
+<line x1="1090" y1="98" x2="1090" y2="128" class="truss"/>
+<line x1="1090" y1="98" x2="1120" y2="128" class="truss"/>
+<line x1="1120" y1="98" x2="1120" y2="128" class="truss"/>
+<line x1="1120" y1="128" x2="1150" y2="98" class="truss"/>
+<line x1="1150" y1="98" x2="1150" y2="128" class="truss"/>
+<line x1="1150" y1="98" x2="1180" y2="128" class="truss"/>
+<line x1="1180" y1="98" x2="1180" y2="128" class="truss"/>
+<line x1="1180" y1="128" x2="1210" y2="98" class="truss"/>
+<line x1="1210" y1="98" x2="1210" y2="128" class="truss"/>
+<line x1="1210" y1="98" x2="1240" y2="128" class="truss"/>
+<line x1="1240" y1="98" x2="1240" y2="128" class="truss"/>
+<line x1="1240" y1="128" x2="1270" y2="98" class="truss"/>
+<line x1="1270" y1="98" x2="1270" y2="128" class="truss"/>
+<line x1="1270" y1="98" x2="1300" y2="128" class="truss"/>
+<line x1="1300" y1="98" x2="1300" y2="128" class="truss"/>
+<line x1="1300" y1="128" x2="1330" y2="98" class="truss"/>
+<line x1="1330" y1="98" x2="1330" y2="128" class="truss"/>
+<line x1="1330" y1="98" x2="1360" y2="128" class="truss"/>
+<line x1="1257.7" y1="560" x2="1340" y2="560" class="truss"/>
+<line x1="1301.9" y1="500" x2="1340" y2="500" class="truss"/>
+<line x1="1318.9" y1="440" x2="1340" y2="440" class="truss"/>
+<line x1="1317.5" y1="380" x2="1340" y2="380" class="truss"/>
+<line x1="1303.0" y1="320" x2="1340" y2="320" class="truss"/>
+<line x1="1271.3" y1="260" x2="1340" y2="260" class="truss"/>
+<line x1="1213.0" y1="200" x2="1340" y2="200" class="truss"/>
+<line x1="1257.7" y1="560" x2="1340" y2="500" class="truss"/>
+<line x1="1318.9" y1="440" x2="1340" y2="380" class="truss"/>
+<line x1="1303.0" y1="320" x2="1340" y2="260" class="truss"/>
+<line x1="1030" y1="128" x2="1030" y2="132.5" class="truss"/>
+<line x1="1090" y1="128" x2="1090" y2="142.7" class="truss"/>
+<line x1="1150" y1="128" x2="1150" y2="163.0" class="truss"/>
+<line x1="1210" y1="128" x2="1210" y2="197.6" class="truss"/>
+<line x1="1260" y1="128" x2="1260" y2="245.0" class="truss"/>
+<line x1="1400" y1="470" x2="1460" y2="620" class="truss"/><line x1="1400" y1="620" x2="1460" y2="620" class="truss"/>
+<line x1="1400" y1="98" x2="1520" y2="620" class="thin" stroke-dasharray="3 3"/>
+<rect x="1512" y="614" width="16" height="6" class="ln"/>
+<rect x="1034" y="88" width="12" height="10" class="thin"/>
+<rect x="1114" y="88" width="12" height="10" class="thin"/>
+<rect x="1194" y="88" width="12" height="10" class="thin"/>
+<circle cx="560" cy="610" r="6" fill="#fff" fill-opacity=".9"/>
+<line x1="560" y1="610" x2="614.4" y2="564.6" class="thin" stroke-opacity=".5"/>
+<line x1="560" y1="610" x2="619.1" y2="579.6" class="thin" stroke-opacity=".5"/>
+<line x1="560" y1="610" x2="619.8" y2="595.2" class="thin" stroke-opacity=".5"/>
+<circle cx="1180" cy="610" r="6" fill="#fff" fill-opacity=".9"/>
+<line x1="1180" y1="610" x2="1125.6" y2="564.6" class="thin" stroke-opacity=".5"/>
+<line x1="1180" y1="610" x2="1120.9" y2="579.6" class="thin" stroke-opacity=".5"/>
+<line x1="1180" y1="610" x2="1120.2" y2="595.2" class="thin" stroke-opacity=".5"/>
+<circle cx="70" cy="608" r="6" fill="#fff" fill-opacity=".9"/>
+<line x1="70" y1="608" x2="124.4" y2="562.6" class="thin" stroke-opacity=".5"/>
+<line x1="70" y1="608" x2="129.1" y2="577.6" class="thin" stroke-opacity=".5"/>
+<line x1="70" y1="608" x2="129.8" y2="593.2" class="thin" stroke-opacity=".5"/>
+<rect x="590" y="606" width="30" height="10" class="ln"/><circle cx="596" cy="617" r="3" class="ln"/><circle cx="614" cy="617" r="3" class="ln"/><line x1="605" y1="606" x2="605" y2="590" class="ln"/><rect x="598" y="582" width="14" height="8" class="ln"/>
+<path class="traj" d="M200 606 L1100 606 C1202 606 1286 530 1286 420 C1286 270 1168 164 980 164 C860 164 760 210 700 290" marker-end="url(#tr)"/>
+<g transform="translate(300 614) rotate(0)"><path d="M-43 0 L-43 -8 Q-40 -13 -30 -14 L-12 -15 Q-2 -24 10 -23 Q25 -20 35 -12 Q43 -10 43 -6 L43 0 Z" fill="#0b1a2e" stroke="#ffffff" stroke-width="1.6"/><circle cx="-27" cy="0" r="6" fill="#0b1a2e" stroke="#fff" stroke-width="1.4"/><circle cx="27" cy="0" r="6" fill="#0b1a2e" stroke="#fff" stroke-width="1.4"/></g>
+<g transform="translate(1294 440) rotate(-90)"><path d="M-43 0 L-43 -8 Q-40 -13 -30 -14 L-12 -15 Q-2 -24 10 -23 Q25 -20 35 -12 Q43 -10 43 -6 L43 0 Z" fill="#0b1a2e" stroke="#ffffff" stroke-width="1.6"/><circle cx="-27" cy="0" r="6" fill="#0b1a2e" stroke="#fff" stroke-width="1.4"/><circle cx="27" cy="0" r="6" fill="#0b1a2e" stroke="#fff" stroke-width="1.4"/></g>
+<g transform="translate(1080 156) rotate(180)"><path d="M-43 0 L-43 -8 Q-40 -13 -30 -14 L-12 -15 Q-2 -24 10 -23 Q25 -20 35 -12 Q43 -10 43 -6 L43 0 Z" fill="#0b1a2e" stroke="#ffffff" stroke-width="1.6"/><circle cx="-27" cy="0" r="6" fill="#0b1a2e" stroke="#fff" stroke-width="1.4"/><circle cx="27" cy="0" r="6" fill="#0b1a2e" stroke="#fff" stroke-width="1.4"/></g>
+<g transform="translate(640 330) rotate(0)"><path d="M-33 2 L-23 2 L-19 70 L-37 70 Z" fill="#9fc3ea" fill-opacity=".25" stroke="#9fc3ea" stroke-width=".8" stroke-dasharray="2 3"/><path d="M-5 2 L5 2 L9 70 L-9 70 Z" fill="#9fc3ea" fill-opacity=".25" stroke="#9fc3ea" stroke-width=".8" stroke-dasharray="2 3"/><path d="M23 2 L33 2 L37 70 L19 70 Z" fill="#9fc3ea" fill-opacity=".25" stroke="#9fc3ea" stroke-width=".8" stroke-dasharray="2 3"/><path d="M-43 0 L-43 -8 Q-40 -13 -30 -14 L-12 -15 Q-2 -24 10 -23 Q25 -20 35 -12 Q43 -10 43 -6 L43 0 Z" fill="#0b1a2e" stroke="#ffffff" stroke-width="1.6"/><circle cx="-27" cy="0" r="6" fill="#0b1a2e" stroke="#fff" stroke-width="1.4"/><circle cx="27" cy="0" r="6" fill="#0b1a2e" stroke="#fff" stroke-width="1.4"/></g>
+<circle cx="300" cy="560" r="10" fill="#ffb547"/><text x="300" y="564" text-anchor="middle" class="n">1</text>
+<text x="314" y="564" text-anchor="start" class="t">Accelerate on approach runway</text>
+<circle cx="1150" cy="560" r="10" fill="#ffb547"/><text x="1150" y="564" text-anchor="middle" class="n">2</text>
+<text x="1136" y="564" text-anchor="end" class="t">Transition</text>
+<circle cx="1250" cy="330" r="10" fill="#ffb547"/><text x="1250" y="334" text-anchor="middle" class="n">3</text>
+<text x="1236" y="334" text-anchor="end" class="t">Vertical climb</text>
+<circle cx="1010" cy="235" r="10" fill="#ffb547"/><text x="1010" y="239" text-anchor="middle" class="n">4</text>
+<text x="996" y="239" text-anchor="end" class="t">Inverted · exit lip</text>
+<circle cx="600" cy="430" r="10" fill="#ffb547"/><text x="600" y="434" text-anchor="middle" class="n">5</text>
+<text x="614" y="434" text-anchor="start" class="t">Thrusters fire · controlled hover</text>
+<line x1="1370" y1="98" x2="1420" y2="60" class="dim"/><circle cx="1370" cy="98" r="2.5" fill="#9fc3ea"/>
+<text x="1426" y="64" text-anchor="start" class="t">Top gantry truss</text>
+<text x="1426" y="79" text-anchor="start" class="s">lights + overhead cameras</text>
+<line x1="1400" y1="180" x2="1450" y2="180" class="dim"/><circle cx="1400" cy="180" r="2.5" fill="#9fc3ea"/>
+<text x="1456" y="184" text-anchor="start" class="t">Steel truss mast</text>
+<text x="1456" y="199" text-anchor="start" class="s">~3 m square section</text>
+<line x1="1460" y1="360" x2="1490" y2="330" class="dim"/><circle cx="1460" cy="360" r="2.5" fill="#9fc3ea"/>
+<text x="1496" y="334" text-anchor="start" class="t">Guy cable / backstay</text>
+<line x1="1323" y1="470" x2="1450" y2="450" class="dim"/><circle cx="1323" cy="470" r="2.5" fill="#9fc3ea"/>
+<text x="1456" y="454" text-anchor="start" class="t">Ramp deck (concrete-look)</text>
+<text x="1456" y="469" text-anchor="start" class="s">two white lane lines</text>
+<line x1="980" y1="140" x2="900" y2="140" class="dim"/><circle cx="980" cy="140" r="2.5" fill="#9fc3ea"/>
+<text x="894" y="144" text-anchor="end" class="t">Launch lip</text>
+<text x="894" y="159" text-anchor="end" class="s">overhangs runway</text>
+<line x1="560" y1="610" x2="520" y2="585" class="dim"/><circle cx="560" cy="610" r="2.5" fill="#9fc3ea"/>
+<text x="514" y="589" text-anchor="end" class="t">Floodlight</text>
+<line x1="612" y1="586" x2="680" y2="572" class="dim"/><circle cx="612" cy="586" r="2.5" fill="#9fc3ea"/>
+<text x="686" y="576" text-anchor="start" class="t">Camera dolly</text>
+<line x1="800" y1="618" x2="800" y2="590" class="dim"/><circle cx="800" cy="618" r="2.5" fill="#9fc3ea"/>
+<text x="806" y="594" text-anchor="start" class="t">Red LED edge strip</text>
+<line x1="940" y1="620" x2="940" y2="150" class="dim" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<text transform="translate(934 385.0) rotate(-90)" text-anchor="middle" class="s">lip ≈ 23.5 m</text>
+<line x1="934" y1="150" x2="980" y2="150" class="dim" stroke-dasharray="2 3"/>
+<line x1="1670" y1="620" x2="1670" y2="98" class="dim" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<text transform="translate(1664 359.0) rotate(-90)" text-anchor="middle" class="s">tower ≈ 26 m</text>
+<line x1="1400" y1="98" x2="1676" y2="98" class="dim" stroke-dasharray="2 3"/>
+<line x1="1230" y1="620" x2="1230" y2="420" class="dim" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<text transform="translate(1224 520.0) rotate(-90)" text-anchor="middle" class="s">≈ 10 m</text>
+<line x1="1224" y1="420" x2="1300" y2="420" class="dim" stroke-dasharray="2 3"/>
+<line x1="980" y1="70" x2="1320" y2="70" class="dim" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<text x="1150.0" y="65" text-anchor="middle" class="s">ramp reach ≈ 17 m</text>
+<line x1="980" y1="64" x2="980" y2="128" class="dim" stroke-dasharray="2 3"/><line x1="1320" y1="64" x2="1320" y2="420" class="dim" stroke-dasharray="2 3"/>
+<line x1="1100" y1="655" x2="1300" y2="655" class="dim" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<text x="1200.0" y="650" text-anchor="middle" class="s">transition ≈ 10 m</text>
+<line x1="100" y1="655" x2="1100" y2="655" class="dim" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<text x="600.0" y="650" text-anchor="middle" class="s">approach runway — 50 m shown (full length TBD)</text>
+<text x="60" y="670" class="h" font-size="13">SIDE ELEVATION</text>
+<text x="60" y="748" class="h" font-size="13">PLAN VIEW</text>
+<rect x="100" y="790" width="1000" height="160" class="ln" fill="#12345a" fill-opacity=".3"/>
+<line x1="100" y1="792" x2="1100" y2="792" class="led"/><line x1="100" y1="948" x2="1100" y2="948" class="led"/>
+<line x1="100" y1="870" x2="1100" y2="870" class="thin" stroke-dasharray="14 10" stroke-opacity=".6"/>
+<rect x="980" y="810" width="340" height="120" class="ln" fill="#12345a" fill-opacity=".6"/>
+<line x1="980" y1="850" x2="1320" y2="850" class="thin"/><line x1="980" y1="890" x2="1320" y2="890" class="thin"/>
+<line x1="1100" y1="810" x2="1100" y2="930" class="thin" stroke-dasharray="4 4"/><line x1="1300" y1="810" x2="1300" y2="930" class="thin" stroke-dasharray="4 4"/>
+<rect x="1340" y="800" width="60" height="140" class="ln"/><line x1="1340" y1="800" x2="1400" y2="940" class="truss"/><line x1="1400" y1="800" x2="1340" y2="940" class="truss"/>
+<line x1="1000" y1="804" x2="1340" y2="804" class="truss" stroke-dasharray="6 4"/>
+<line x1="1000" y1="936" x2="1340" y2="936" class="truss" stroke-dasharray="6 4"/>
+<line x1="1400" y1="870" x2="1520" y2="870" class="thin" stroke-dasharray="3 3"/><rect x="1512" y="862" width="16" height="16" class="ln"/>
+<g transform="translate(300 870)"><rect x="-43" y="-19" width="86" height="38" rx="10" fill="#0b1a2e" stroke="#fff" stroke-width="1.6"/><path d="M-5 -15 Q15 0 -5 15" class="thin"/></g>
+<line x1="350" y1="870" x2="960" y2="870" class="traj" marker-end="url(#tr)"/>
+<line x1="100" y1="975" x2="1100" y2="975" class="thin" stroke-dasharray="10 5"/><rect x="590" y="968" width="30" height="14" class="ln"/>
+<circle cx="70" cy="770" r="6" fill="#fff" fill-opacity=".9"/>
+<circle cx="560" cy="770" r="6" fill="#fff" fill-opacity=".9"/>
+<circle cx="1180" cy="970" r="6" fill="#fff" fill-opacity=".9"/>
+<line x1="980" y1="810" x2="940" y2="760" class="dim"/><circle cx="980" cy="810" r="2.5" fill="#9fc3ea"/>
+<text x="934" y="764" text-anchor="end" class="t">Ramp footprint (lip → back)</text>
+<line x1="1100" y1="930" x2="1100" y2="1000" class="dim"/><circle cx="1100" cy="930" r="2.5" fill="#9fc3ea"/>
+<text x="1106" y="1004" text-anchor="start" class="t">ground entry</text>
+<line x1="1370" y1="800" x2="1420" y2="760" class="dim"/><circle cx="1370" cy="800" r="2.5" fill="#9fc3ea"/>
+<text x="1426" y="764" text-anchor="start" class="t">Mast footprint</text>
+<line x1="1170" y1="804" x2="1210" y2="760" class="dim"/><circle cx="1170" cy="804" r="2.5" fill="#9fc3ea"/>
+<text x="1216" y="764" text-anchor="start" class="t">Gantry truss (overhead)</text>
+<line x1="1520" y1="870" x2="1540" y2="920" class="dim"/><circle cx="1520" cy="870" r="2.5" fill="#9fc3ea"/>
+<text x="1534" y="924" text-anchor="end" class="t">Cable anchor</text>
+<line x1="700" y1="975" x2="720" y2="1000" class="dim"/><circle cx="700" cy="975" r="2.5" fill="#9fc3ea"/>
+<text x="726" y="1004" text-anchor="start" class="t">Camera dolly track</text>
+<line x1="80" y1="790" x2="80" y2="950" class="dim" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<text transform="translate(74 870.0) rotate(-90)" text-anchor="middle" class="s">≈ 8 m</text>
+<line x1="1250" y1="810" x2="1250" y2="930" class="dim" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<text transform="translate(1244 870.0) rotate(-90)" text-anchor="middle" class="s">≈ 6 m</text>
+<line x1="1240" y1="810" x2="1256" y2="810" class="dim"/>
+<line x1="980" y1="775" x2="1100" y2="775" class="dim" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<text x="1040.0" y="770" text-anchor="middle" class="s">overhang ≈ 6 m</text>
+<line x1="40" y1="1010" x2="1680" y2="1010" class="thin" stroke-opacity=".5"/>
+<text x="60" y="1030" class="h" font-size="13">KEY NUMBERS FOR THE SIMULATION (estimates)</text>
+<text x="60" y="1054" class="t">• Car ≈ 4.3 m long · 1.9 m wide · ~2 t with thruster pack</text>
+<text x="60" y="1074" class="t">• Ramp profile: ~10 m quarter-curve into vertical, then curls ~180° to an inverted lip at ≈ 23.5 m</text>
+<text x="60" y="1094" class="t">• Top curl radius ≈ 8 m → needs v_top > √(g·r) ≈ 9 m/s to stay pressed to the deck</text>
+<text x="60" y="1114" class="t">• Energy: v_entry ≳ √(v_top² + 2·g·23.5) ≈ 23 m/s (≈ 85 km/h) frictionless — plan ~110 km/h with losses</text>
+<text x="900" y="1030" class="h" font-size="13">LEGEND</text>
+<g transform="translate(900 1050)"><line x1="0" y1="0" x2="40" y2="0" class="led"/></g><text x="950" y="1054" class="t">Red LED edge lighting</text>
+<g transform="translate(900 1070)"><line x1="0" y1="0" x2="40" y2="0" class="traj"/></g><text x="950" y="1074" class="t">Car path</text>
+<g transform="translate(900 1090)"><line x1="0" y1="0" x2="40" y2="0" class="truss"/></g><text x="950" y="1094" class="t">Steel truss members</text>
+<g transform="translate(900 1110)"><line x1="0" y1="0" x2="40" y2="0" class="thin" stroke-dasharray="3 3"/></g><text x="950" y="1114" class="t">Cable / hidden / reference</text>
+<text x="1660" y="1144" text-anchor="end" class="s">rev A · 2026-10-17 · wireframe for simulation set-up</text>
+</svg>
