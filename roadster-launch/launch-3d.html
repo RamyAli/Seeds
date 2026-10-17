@@ -40,6 +40,15 @@
     border:1px solid var(--line); border-radius:10px; padding:7px 12px; cursor:pointer; min-height:32px; }
   button:hover { border-color:#aebcd6; }
   button.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .drive-btn { font-weight:600; }
+  .pad { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:8px; padding-top:8px; border-top:1px solid var(--line); }
+  .pad[hidden] { display:none; }
+  .key { min-width:96px; touch-action:none; user-select:none; -webkit-user-select:none; }
+  .key b { display:inline-grid; place-items:center; width:20px; height:20px; margin-right:6px; border:1px solid currentColor;
+    border-radius:5px; font-size:11px; }
+  .key.held { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .hint { font-size:11px; color:var(--mute); flex:1; min-width:180px; line-height:1.5; }
+  .hint b { color:var(--ink); }
   .seg { display:flex; gap:0; }
   .seg button { border-radius:0; margin-left:-1px; }
   .seg button:first-child { border-radius:10px 0 0 10px; margin-left:0; }
@@ -86,6 +95,7 @@
     <button id="play">Pause</button>
     <button id="restart">Restart</button>
     <button id="speed">1×</button>
+    <button id="drive" class="drive-btn" aria-pressed="false">Free Drive</button>
     <div class="seg" id="cams">
       <button data-cam="director" class="on">Director</button>
       <button data-cam="chase">Chase</button>
@@ -93,6 +103,12 @@
     </div>
     <input id="scrub" type="range" min="0" max="1" step="0.01" value="0" aria-label="Timeline">
     <span class="time" id="time">0.0 s</span>
+  </div>
+  <div class="pad" id="pad" hidden>
+    <button class="key" id="kS" aria-label="Brake and reverse"><b>S</b> Back</button>
+    <button class="key" id="kW" aria-label="Drive forward"><b>W</b> Forward</button>
+    <button class="key" id="kR" aria-label="Reset to the start"><b>R</b> Reset</button>
+    <span class="hint">Hold <b>W</b> to drive up the ramp. Keep your speed on the wall or you will slide back. Reach the lip to fly.</span>
   </div>
 </div>
 <script type="module">
@@ -897,7 +913,7 @@ const look = new THREE.Vector3(3, 6, 8);
 camera.position.set(-74, 66, 96); camera.lookAt(look);
 const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
 function directorShot(st) {                                    // shots modelled on the broadcast angles
-  const P = st.C, lt = st.t - T[st.phase].start;
+  const P = st.C, lt = st.t - (T[st.phase]?.start ?? 0);
   switch (st.phase) {
     case 0: return [V3(-74 + lt*4, 66 - lt*3, 96 - lt*4), V3(4, 5, 4)];
     case 1: return [V3(-62, 11, 1), V3(3, 10.5, -1)];                       // wide side view of the whole ramp
@@ -910,6 +926,11 @@ function directorShot(st) {                                    // shots modelled
   }
 }
 function chaseShot(st) {
+  // in Free Drive, track the ramp and the flight from the side; a camera behind the car would end up under it
+  if (DRIVE.on && DRIVE.mode === 'deck' && DRIVE.s > 0)
+    return [V3(st.C.x - 28, Math.max(5, st.C.y * .75 + 4), st.C.z + 6), st.C.clone()];
+  if (DRIVE.on && DRIVE.mode === 'air')                        // from down the runway, ramp behind the car
+    return [V3(st.C.x - 5, Math.max(4, st.C.y * .5 + 3), st.C.z + 24), st.C.clone()];
   const flat = st.f.clone(); flat.y = 0; if (flat.lengthSq() < .01) flat.set(0, 0, -1); flat.normalize();
   return [st.C.clone().addScaledVector(flat, -13).add(V3(-3, 4.5, 0)), st.C.clone()];
 }
@@ -927,7 +948,7 @@ const q = new URLSearchParams(location.search);
 let t = parseFloat(q.get('t') || '0'), playing = q.get('paused') !== '1', rate = 1, snap = true;
 const RATES = [1, .5, .25];
 $('scrub').max = END.toFixed(2);
-T.forEach(p => { const s = document.createElement('span'); s.textContent = p.name; s.onclick = () => { t = p.start + .001; snap = true; }; $('steps').appendChild(s); });
+T.forEach(p => { const s = document.createElement('span'); s.textContent = p.name; s.onclick = () => { if (DRIVE.on) return; t = p.start + .001; snap = true; }; $('steps').appendChild(s); });
 $('play').onclick = () => { if (t >= END) t = 0; playing = !playing; };
 $('restart').onclick = () => { t = 0; playing = true; snap = true; };
 $('speed').onclick = () => { rate = RATES[(RATES.indexOf(rate) + 1) % RATES.length]; $('speed').textContent = rate + '×'; };
@@ -939,7 +960,99 @@ function setCam(m) {
 document.querySelectorAll('[data-cam]').forEach(b => b.onclick = () => setCam(b.dataset.cam));
 if (q.get('cam')) setCam(q.get('cam'));
 $('scrub').oninput = e => { t = parseFloat(e.target.value); snap = true; };
-addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); $('play').click(); } });
+addEventListener('keydown', e => {
+  if (DRIVE.on) {
+    const k = KEYMAP[e.code];
+    if (k) { e.preventDefault(); keys.add(k); }
+    if (e.code === 'KeyR') driveReset();
+  } else if (e.code === 'Space') { e.preventDefault(); $('play').click(); }
+});
+addEventListener('keyup', e => { const k = KEYMAP[e.code]; if (k) keys.delete(k); });
+addEventListener('blur', () => keys.clear());
+// ================================================================== Free Drive (W / S)
+// The car moves along the same path as the show: flat runway, then the deck (held on by its suction fans, so
+// gravity only acts along the deck). W drives, S brakes and then reverses. At the lip the real flight plays
+// out (roll, thruster braking, landing), then the car can be driven along the runway.
+const KEYMAP = { KeyW: 'W', ArrowUp: 'W', KeyS: 'S', ArrowDown: 'S' };
+const keys = new Set();
+const A_DRIVE = 12, A_BRAKE = 15, V_MAX = 34, S_MIN = -38;
+const DRIVE = { on: false, mode: 'deck', s: -S0, v: 0, vt: 0, gz: 0, gasT: 0 };
+function driveReset() {
+  Object.assign(DRIVE, { mode: 'deck', s: -S0, v: 0, vt: 0, gz: 0, gasT: 0 });
+  JETS.list = []; CLOUD.list = []; simT = null; snap = true;
+}
+function setDrive(on) {
+  DRIVE.on = on; keys.clear();
+  $('drive').classList.toggle('on', on); $('drive').setAttribute('aria-pressed', String(on));
+  $('pad').hidden = !on;
+  for (const id of ['play', 'restart', 'speed', 'scrub', 'time']) $(id).hidden = on;
+  if (on) { driveReset(); if (camMode === 'director') setCam('chase'); }
+  else { t = 0; playing = false; JETS.list = []; CLOUD.list = []; simT = null; snap = true; }
+}
+$('drive').onclick = () => setDrive(!DRIVE.on);
+for (const [id, k] of [['kW', 'W'], ['kS', 'S']]) {
+  const b = $(id);
+  const down = e => { e.preventDefault(); keys.add(k); b.classList.add('held'); };
+  const up = () => { keys.delete(k); b.classList.remove('held'); };
+  b.addEventListener('pointerdown', down); for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) b.addEventListener(ev, up);
+}
+$('kR').onclick = () => driveReset();
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+function throttleAccel(v) {                                    // W pushes forward, S brakes, then reverses
+  let a = 0;
+  if (keys.has('W')) a += v < -.3 ? A_BRAKE : A_DRIVE;
+  if (keys.has('S')) a -= v > .3 ? A_BRAKE : A_DRIVE * .6;
+  return a - .012 * v * Math.abs(v);                           // air drag
+}
+function stepDrive(dt) {
+  if (DRIVE.mode === 'deck') {
+    const slope = DRIVE.s <= 0 ? 0 : rampAt(DRIVE.s).f.y;      // sine of the deck angle
+    const idle = !keys.size;
+    let a = throttleAccel(DRIVE.v) - G * slope;
+    if (idle && Math.abs(slope) < .02) a -= Math.sign(DRIVE.v) * 2.5;   // rolls to a stop on the flat
+    const v0 = DRIVE.v;
+    DRIVE.v = clamp(DRIVE.v + a*dt, -12, V_MAX);
+    if (idle && Math.abs(slope) < .02 && Math.sign(v0) !== Math.sign(DRIVE.v)) DRIVE.v = 0;
+    DRIVE.s += DRIVE.v * dt;
+    if (DRIVE.s < S_MIN) { DRIVE.s = S_MIN; DRIVE.v = 0; }
+    if (DRIVE.s >= RAMP_LEN) { DRIVE.mode = 'air'; DRIVE.vt = VT_EXIT; }
+  } else if (DRIVE.mode === 'air') {
+    DRIVE.vt += dt;
+    if (DRIVE.vt >= VT_LAND + .3) { DRIVE.mode = 'ground'; DRIVE.gz = poseAt(VT_LAND + .3).c.z; DRIVE.v = 0; }
+  } else {                                                     // after landing, facing down the runway
+    let a = throttleAccel(DRIVE.v);
+    if (!keys.size) a -= Math.sign(DRIVE.v) * 2.5;
+    const v0 = DRIVE.v;
+    DRIVE.v = clamp(DRIVE.v + a*dt, -12, V_MAX);
+    if (!keys.size && Math.sign(v0) !== Math.sign(DRIVE.v)) DRIVE.v = 0;
+    DRIVE.gz += DRIVE.v * dt;
+    if (DRIVE.gz > 42 || DRIVE.gz < 6) { DRIVE.gz = clamp(DRIVE.gz, 6, 42); DRIVE.v = 0; }
+  }
+}
+function driveState() {
+  const none = { corner: 0, side: 0, counter: 0, brake: 0 };
+  let st;
+  if (DRIVE.mode === 'deck') {
+    const p = deckPose(DRIVE.s), onRamp = DRIVE.s > 0;
+    const h = p.C.y - BODY_C * p.up.y;
+    let g = 1;
+    if (onRamp) {                                              // load felt through the seat: v²κ + g·n
+      const f1 = rampAt(DRIVE.s - .4).f, f2 = rampAt(DRIVE.s + .4).f;
+      const k = Math.acos(clamp(f1.dot(f2), -1, 1)) / .8;
+      g = Math.abs(DRIVE.v * DRIVE.v * k + G * p.up.y) / G;
+    }
+    st = { ...p, t: 0, phase: !onRamp ? -1 : h > 17 ? 2 : 1, name: !onRamp ? 'Free drive' : h > 17 ? 'Upside-down' : 'Climb',
+      v: DRIVE.v, vel: p.f.clone().multiplyScalar(DRIVE.v), altFt: Math.max(0, h) / FT, g, thr: none, throttle: 0,
+      attLbl: 'Pitch', att: Math.round(THREE.MathUtils.radToDeg(Math.atan2(p.f.y, -p.f.z))) };
+  } else if (DRIVE.mode === 'air') {
+    st = state(DRIVE.vt - VT0);
+  } else {
+    const c = new THREE.Vector3(3, 0, DRIVE.gz), up = new THREE.Vector3(0, 1, 0), f = F_FLAT.clone();
+    st = { c, f, up, C: c.clone().addScaledVector(up, BODY_C), t: 0, phase: T.length - 1, name: 'Free drive',
+      v: DRIVE.v, vel: f.clone().multiplyScalar(DRIVE.v), altFt: 0, g: 1, thr: none, throttle: 0, attLbl: 'Pitch', att: 0 };
+  }
+  return st;
+}
 function resize() {
   camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight);
   const s = renderer.getDrawingBufferSize(new THREE.Vector2()).y / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
@@ -951,10 +1064,18 @@ const dots = [...document.querySelectorAll('#thrusters [data-g]')];
 const clock = new THREE.Clock(); let screenAt = -1;
 renderer.setAnimationLoop(() => {
   const dt = Math.min(.05, clock.getDelta());
-  if (playing) { t += dt*rate; if (t >= END) { t = END; playing = false; } }
-  const st = state(t);
-  poseCar(st, playing ? dt*rate : 0);
-  syncGas(t);
+  let st;
+  if (DRIVE.on) {
+    stepDrive(dt); st = driveState();
+    poseCar(st, dt);
+    if (DRIVE.mode === 'air') syncGas(DRIVE.vt - VT0);
+    else if (DRIVE.mode === 'ground') { DRIVE.gasT += dt; syncGas(VT_LAND - VT0 + .3 + DRIVE.gasT); }
+  } else {
+    if (playing) { t += dt*rate; if (t >= END) { t = END; playing = false; } }
+    st = state(t);
+    poseCar(st, playing ? dt*rate : 0);
+    syncGas(t);
+  }
   dolly.position.z = 8;
   const now = performance.now() / 1000;
   pins.forEach((p, i) => {
@@ -968,13 +1089,13 @@ renderer.setAnimationLoop(() => {
   $('play').textContent = playing ? 'Pause' : (t >= END ? 'Replay' : 'Play');
   $('scrub').value = t; $('time').textContent = t.toFixed(1) + ' s';
   $('phase').textContent = st.name;
-  $('hSpeed').textContent = Math.round(st.v * 3.6) + ' km/h';
+  $('hSpeed').textContent = Math.round(Math.abs(st.v) * 3.6) + (st.v < -.3 ? ' km/h ◂' : ' km/h');
   $('hAlt').textContent = st.altFt.toFixed(1) + ' ft';
   $('hG').textContent = st.g.toFixed(1) + ' g';
   $('hAttLbl').textContent = st.attLbl; $('hAtt').textContent = st.att + '°';
   dots.forEach(d => { const v = st.thr[d.dataset.g]; d.style.opacity = .18 + .82*v; d.style.transform = `scale(${1 + .5*v})`; });
   [...$('steps').children].forEach((s, i) => s.classList.toggle('on', i === st.phase));
-  $('count').textContent = st.phase === 0 && t > .6 ? String(Math.max(1, 3 - Math.floor((t - .6) / .8))) : '';
+  $('count').textContent = !DRIVE.on && st.phase === 0 && t > .6 ? String(Math.max(1, 3 - Math.floor((t - .6) / .8))) : '';
 });
 // smallest gap between the car's underside and the deck, for checking the placement
 function clearance(st) {
@@ -985,7 +1106,8 @@ function clearance(st) {
   }
   return m;
 }
-window.launch = { T, END, V_EXIT, U_LAND, RAMP_LEN, S0, state, clearance };
+window.launch = { T, END, V_EXIT, U_LAND, RAMP_LEN, S0, state, clearance, DRIVE, keys, stepDrive, setDrive, snapCam: () => { snap = true; } };
+if (q.get('drive') === '1') setDrive(true);
 </script>
 </body>
 </html>

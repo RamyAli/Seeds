@@ -1,6 +1,6 @@
 # Tesla Roadster launch — simulation
 
-**3D launch show:** open [`launch-3d.html`](launch-3d.html). The full launch runs in a white diorama city (C-ramp and truss tower, grandstand, pavilion with a live screen, floodlights, parking, trees, ring roads, glass decor and location pins) using the 3D Roadster and the same physics as `simulation.html`. Cameras: Director (a framed shot per phase), Chase, or Free orbit.
+**3D launch show:** open [`launch-3d.html`](launch-3d.html). The full launch runs in a white diorama city (C-ramp and truss tower, grandstand, pavilion with a live screen, floodlights, parking, trees, ring roads, glass decor and location pins) using the 3D Roadster and the same physics as `simulation.html`. Cameras: Director (a framed shot per phase), Chase, or Free orbit. **Free Drive** turns it into a game: hold W (or ↑) to drive, S (or ↓) to brake and reverse, R to reset. Keep your speed on the wall or you slide back; reach the lip and the car flies, rolls, brakes on its thrusters and lands, then you can drive it down the runway. On touch screens use the on-screen W, S and R buttons.
 
 ![3D launch show](previews/launch3d-overview.png)
 
