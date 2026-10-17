@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadster Launch Simulation</title>
+<style>
+  :root { --ink:#4a4a4a; --mute:#9a9a9a; --line:#dcdcdc; --accent:#e5484d; --bg:#ffffff; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--ink);
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; overflow:hidden; }
+  canvas { position:fixed; inset:0; width:100%; height:100%; display:block; }
+  .title { position:fixed; left:24px; top:20px; pointer-events:none; }
+  .title h1 { margin:0; font-weight:400; font-size:18px; letter-spacing:.45em; color:#6f6f6f; }
+  .title p { margin:6px 0 0; font-size:11px; letter-spacing:.2em; color:var(--mute); text-transform:uppercase; }
+  .hud { position:fixed; right:24px; top:20px; min-width:220px; font-size:12px;
+    background:rgba(255,255,255,.88); border:1px solid var(--line); padding:12px 14px; }
+  .hud .phase { font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .hud .row { display:flex; justify-content:space-between; gap:16px; padding:2px 0; }
+  .hud .row span:first-child { color:var(--mute); letter-spacing:.08em; }
+  .hud .row span:last-child { font-variant-numeric:tabular-nums; }
+  .count { position:fixed; left:50%; top:42%; transform:translate(-50%,-50%); font-size:96px;
+    font-weight:200; color:#bdbdbd; pointer-events:none; letter-spacing:.1em; }
+  .bar { position:fixed; left:0; right:0; bottom:0; padding:10px 24px 14px;
+    background:linear-gradient(rgba(255,255,255,0), #fff 30%); }
+  .steps { display:flex; gap:4px; margin-bottom:8px; flex-wrap:wrap; }
+  .steps span { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#b5b5b5;
+    padding:3px 6px; border:1px solid transparent; cursor:pointer; }
+  .steps span.on { color:var(--ink); border-color:var(--line); }
+  .ctrl { display:flex; align-items:center; gap:10px; }
+  button { font:inherit; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink);
+    background:#fff; border:1px solid #cfcfcf; padding:7px 12px; cursor:pointer; min-height:32px; }
+  button:hover { border-color:#9a9a9a; }
+  button.on { background:#f3f3f3; border-color:#9a9a9a; }
+  input[type=range] { flex:1; accent-color:#7a7a7a; min-width:80px; }
+  .time { font-size:11px; color:var(--mute); font-variant-numeric:tabular-nums; width:72px; text-align:right; }
+  @media (max-width:640px) {
+    .title h1 { font-size:13px; } .title p { display:none; }
+    .hud { right:12px; top:12px; min-width:170px; font-size:11px; padding:8px 10px; }
+    .bar { padding:8px 12px 12px; } .ctrl { flex-wrap:wrap; }
+    .count { font-size:64px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="title"><h1>ROADSTER LAUNCH</h1><p>Isometric simulation · physics-based timing</p></div>
+<div class="hud">
+  <div class="phase" id="phase">Countdown</div>
+  <div class="row"><span>Speed</span><span id="hSpeed">0 km/h</span></div>
+  <div class="row"><span>Height</span><span id="hHeight">0.0 m</span></div>
+  <div class="row"><span id="hLoadLbl">G-load</span><span id="hLoad">1.00 g</span></div>
+  <div class="row"><span>Roll</span><span id="hRoll">0°</span></div>
+</div>
+<div class="count" id="count"></div>
+<div class="bar">
+  <div class="steps" id="steps"></div>
+  <div class="ctrl">
+    <button id="play">Pause</button>
+    <button id="restart">Restart</button>
+    <button id="speed">1×</button>
+    <button id="follow">Follow cam</button>
+    <input id="scrub" type="range" min="0" max="1" step="0.01" value="0" aria-label="Timeline">
+    <span class="time" id="time">0.0 s</span>
+  </div>
+</div>
+<script>
+'use strict';
+// ------------------------------------------------------------------ math
+const COS30 = Math.cos(Math.PI / 6), G = 9.81;
+const dot = (a, b) => a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
+const add = (a, b) => [a[0]+b[0], a[1]+b[1], a[2]+b[2]];
+const sub = (a, b) => [a[0]-b[0], a[1]-b[1], a[2]-b[2]];
+const mul = (a, k) => [a[0]*k, a[1]*k, a[2]*k];
+const cross = (a, b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+const len = a => Math.hypot(a[0], a[1], a[2]);
+const norm = a => { const l = len(a) || 1; return [a[0]/l, a[1]/l, a[2]/l]; };
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = t => { t = Math.min(1, Math.max(0, t)); return t*t*(3 - 2*t); };
+const rotate = (v, k, th) => {               // Rodrigues: rotate v about unit axis k
+  const c = Math.cos(th), s = Math.sin(th);
+  return add(add(mul(v, c), mul(cross(k, v), s)), mul(k, dot(k, v) * (1 - c)));
+};
+const VIEW = [1, 1, 1], LIGHT = norm([-0.35, 0.55, 0.76]);
+const P = p => [(p[0] - p[1]) * COS30, (p[0] + p[1]) * 0.5 - p[2]];   // isometric, metres
+const depth = pts => pts.reduce((s, p) => s + dot(p, VIEW), 0) / pts.length;
+const shade = (n, lo = 0.8, hi = 1) => {
+  const k = 0.5 + 0.5 * dot(norm(n), LIGHT), v = Math.round(255 * (lo + (hi - lo) * k));
+  return `rgb(${v},${v},${v})`;
+};
+const LINE = '#8c8c8c', LINE_SOFT = '#b8b8b8', LED = '#e5484d';
+
+// ------------------------------------------------------------------ geometry (mirrors build_isometric.py)
+const bez = (p0, p1, p2, p3, t) => { const u = 1 - t;
+  return p0.map((_, i) => u*u*u*p0[i] + 3*u*u*t*p1[i] + 3*u*t*t*p2[i] + t*t*t*p3[i]); };
+const curve = (segs, n) => { const pts = [];
+  segs.forEach((s, j) => { for (let i = j ? 1 : 0; i <= n; i++) pts.push(bez(...s, i / n)); }); return pts; };
+const INNER_SEGS = [[[0,0],[5.5,0],[10,4.5],[10,10]], [[10,10],[10,18],[3.5,23.5],[-6,23.5]]];
+const OUTER_SEGS = [[[1,0],[6.25,0.4],[11,4.5],[11,10]], [[11,10],[11,18.75],[4,24.5],[-6,24.5]]];
+const INNER = curve(INNER_SEGS, 40), OUTER = curve(OUTER_SEGS, 40);
+const RAMP_X = [0, 6], MAST_U = [12, 15], MAST_X = [-0.5, 6.5], MAST_H = 26, GZ = -0.25;
+const W = (x, u, z) => [x, -u, z];
+function profileNormal(prof, i) {            // toward the concave (riding) side, in (u, z)
+  const a = prof[Math.max(i - 1, 0)], b = prof[Math.min(i + 1, prof.length - 1)];
+  const du = b[0] - a[0], dz = b[1] - a[1], l = Math.hypot(du, dz);
+  return [-dz / l, du / l];
+}
+
+const stat = [];      // depth-sorted 3D items
+const under = [];     // flat ground layer, drawn in order
+function face(pts, n, o = {}) {
+  n = n || cross(sub(pts[1], pts[0]), sub(pts[2], pts[0]));
+  if (o.cull !== false && dot(n, VIEW) <= 0) return;
+  stat.push({ d: depth(pts) + (o.bias || 0), k: 'p', pts: pts.map(P),
+    fill: o.fill || shade(n, o.lo ?? 0.8), stroke: o.stroke, lw: o.lw || 0.8 });
+}
+function seg(a, b, o = {}) {
+  const step = o.step || 1, n = Math.max(1, Math.floor(Math.hypot(...sub(b, a)) / step));
+  for (let i = 0; i < n; i++) {
+    const p = add(a, mul(sub(b, a), i / n)), q = add(a, mul(sub(b, a), (i + 1) / n));
+    stat.push({ d: depth([p, q]) + (o.bias || 0), k: 'l', pts: [P(p), P(q)],
+      stroke: o.color || LINE, lw: o.lw || 0.8, dash: o.dash });
+  }
+}
+const polyline = (pts, o) => { for (let i = 0; i < pts.length - 1; i++) seg(pts[i], pts[i + 1], { ...o, step: 99 }); };
+function box(x0, x1, y0, y1, z0, z1) {
+  const v = (i, j, k) => [[x0, x1][i], [y0, y1][j], [z0, z1][k]];
+  face([v(1,0,0), v(1,1,0), v(1,1,1), v(1,0,1)], [1,0,0], { stroke: LINE });
+  face([v(0,1,0), v(1,1,0), v(1,1,1), v(0,1,1)], [0,1,0], { stroke: LINE });
+  face([v(0,0,1), v(1,0,1), v(1,1,1), v(0,1,1)], [0,0,1], { stroke: LINE });
+}
+const flat = (pts, fill, stroke, lw = 0.8) => under.push({ k: 'p', pts: pts.map(P), fill, stroke, lw });
+const flatLine = (pts, color, lw = 0.8, dash) => under.push({ k: 'pl', pts: pts.map(P), stroke: color, lw, dash });
+
+// ramp
+[[INNER, 1], [OUTER, -1]].forEach(([prof, sign]) => {
+  for (let i = 0; i < prof.length - 1; i++) {
+    const [u1, z1] = prof[i], [u2, z2] = prof[i + 1], [nu, nz] = profileNormal(prof, i);
+    face([W(0,u1,z1), W(6,u1,z1), W(6,u2,z2), W(0,u2,z2)], [0, -sign*nu, sign*nz], { lo: sign > 0 ? 0.8 : 0.74 });
+  }
+});
+for (let i = 0; i < INNER.length - 1; i++) {
+  const a = INNER[i], b = INNER[i + 1], c = OUTER[i + 1], d = OUTER[i];
+  for (const [x, n] of [[6, [1,0,0]], [0, [-1,0,0]]])
+    face([W(x,...a), W(x,...b), W(x,...c), W(x,...d)], n, { lo: 0.84 });
+}
+{ const a = INNER.at(-1), b = OUTER.at(-1);
+  face([W(0,...a), W(6,...a), W(6,...b), W(0,...b)], [0,1,0], { stroke: LINE }); }
+for (const x of RAMP_X) {
+  polyline(INNER.map(([u, z]) => W(x, u, z)), { bias: x ? 0.6 : 3.2, lw: 1.1 });
+  polyline(OUTER.map(([u, z]) => W(x, u, z)), { bias: 0.6, lw: 1.1 });
+}
+polyline(INNER.map(([u, z]) => W(5.88, u, z)), { color: LED, lw: 1.6, bias: 0.5 });
+polyline(INNER.map(([u, z]) => W(0.12, u, z)), { color: LED, lw: 1.6, bias: 0.5 });
+for (const x of [2, 4])
+  polyline(INNER.map(([u, z], i) => { const [nu, nz] = profileNormal(INNER, i); return W(x, u + .02*nu, z + .02*nz); }),
+    { color: LINE_SOFT, lw: 0.9, bias: 0.4 });
+
+const outerAtZ = z => OUTER.filter(p => Math.abs(p[1] - z) < 0.4).reduce((m, p) => p[0] > m[0] ? p : m);
+const outerAtUTop = u => OUTER.filter(p => p[1] > 15).reduce((m, p) => Math.abs(p[0]-u) < Math.abs(m[0]-u) ? p : m);
+
+// truss
+function lattice(x0, x1, u0, u1, z0, z1, axis, step) {
+  const diag = { color: '#b4b4b4', lw: 0.6 }, rung = { lw: 0.7 };
+  if (axis === 'z') {
+    const c = [[x0,u0],[x1,u0],[x1,u1],[x0,u1]];
+    c.forEach(([x, u]) => seg(W(x,u,z0), W(x,u,z1), { lw: 1 }));
+    const n = Math.floor((z1 - z0) / step);
+    for (let k = 0; k <= n; k++) { const z = z0 + k*step;
+      for (let i = 0; i < 4; i++) { const [xa, ua] = c[i], [xb, ub] = c[(i+1) % 4];
+        seg(W(xa,ua,z), W(xb,ub,z), rung);
+        if (k < n) { const [za, zb] = k % 2 ? [z, z+step] : [z+step, z]; seg(W(xa,ua,za), W(xb,ub,zb), diag); } } }
+  } else {
+    const c = [[x0,z0],[x1,z0],[x1,z1],[x0,z1]];
+    c.forEach(([x, z]) => seg(W(x,u0,z), W(x,u1,z), { lw: 1 }));
+    const n = Math.floor((u1 - u0) / step);
+    for (let k = 0; k <= n; k++) { const u = u0 + k*step;
+      for (let i = 0; i < 4; i++) { const [xa, za] = c[i], [xb, zb] = c[(i+1) % 4];
+        seg(W(xa,u,za), W(xb,u,zb), rung);
+        if (k < n) { const [ua, ub] = k % 2 ? [u, u+step] : [u+step, u]; seg(W(xa,ua,za), W(xb,ub,zb), diag); } } }
+  }
+}
+lattice(...MAST_X, ...MAST_U, 0, MAST_H, 'z', 2);
+for (const x0 of [MAST_X[0], 5.5]) lattice(x0, x0 + 1, -6, MAST_U[1], 24.6, MAST_H, 'u', 1.5);
+for (let u = -5; u < 15; u += 3) seg(W(0.5,u,MAST_H), W(5.5,u,MAST_H), { lw: 0.7 });
+for (const x of RAMP_X) {
+  for (const u of [-4, -1, 2, 5, 8]) { const [pu, pz] = outerAtUTop(u); seg(W(x,pu,pz), W(x,pu,24.6), { lw: 0.7 }); }
+  for (const z of [3, 7, 11, 15, 19]) { const [pu, pz] = outerAtZ(z); seg(W(x,pu,pz), W(x,MAST_U[0],pz), { lw: 0.7 }); }
+  seg(W(x, outerAtZ(3)[0], 3), W(x, MAST_U[0], 7), { color: '#b4b4b4', lw: 0.6 });
+}
+for (const [x, ax] of [[MAST_X[0], -4], [MAST_X[1], 10]]) {
+  seg(W(x, MAST_U[1], MAST_H), W(ax, 25, 0), { color: '#b9b9b9', lw: 0.6, step: 2 });
+  box(ax - .4, ax + .4, -25.4, -24.6, 0, .4);
+}
+for (const [fx, fy] of [[-7,22],[16,12],[-6,-4],[12,41]]) {
+  seg([fx,fy,0], [fx,fy,7], { lw: 1 });
+  box(fx-.6, fx+.6, fy-.25, fy+.25, 7, 7.8);
+  box(fx-.5, fx+.5, fy-.5, fy+.5, 0, .3);
+}
+box(9.6, 11.2, 18, 19.8, .15, .7);
+seg([10.4,18.9,.7], [10.4,18.9,2.2], { lw: 1 });
+box(10.1, 10.7, 18.5, 19.4, 2.2, 2.7);
+
+// ground layer
+const CX = 3, CY = 6;
+for (const r of [11, 21, 33, 46]) {
+  const pts = []; for (let t = 0; t <= 360; t += 3) pts.push([CX + r*Math.cos(t*Math.PI/180), CY + r*Math.sin(t*Math.PI/180), GZ]);
+  flatLine(pts, '#dddddd');
+}
+flatLine([[CX-70,CY,GZ],[CX+70,CY,GZ]], '#dddddd'); flatLine([[CX,CY-70,GZ],[CX,CY+70,GZ]], '#dddddd');
+const sh = p => { const h = p[2] - GZ; return [p[0] + 0.42*h, p[1] - 0.18*h, GZ]; };
+const SH = '#efefef';
+for (let i = 0; i < INNER.length - 1; i++) {
+  for (const x of RAMP_X) flat([sh(W(x,...INNER[i])), sh(W(x,...INNER[i+1])), sh(W(x,...OUTER[i+1])), sh(W(x,...OUTER[i]))], SH, SH, 0.6);
+  flat([sh(W(0,...INNER[i])), sh(W(6,...INNER[i])), sh(W(6,...INNER[i+1])), sh(W(0,...INNER[i+1]))], SH, SH, 0.6);
+}
+flat([[-1,0,GZ],[7,0,GZ],[7,45,GZ],[-1,45,GZ]], '#f1f1f1');
+flat([[7,0,GZ],[7,45,GZ],[7,45,0],[7,0,0]], '#e6e6e6', LINE);
+flat([[-1,45,GZ],[7,45,GZ],[7,45,0],[-1,45,0]], '#ececec', LINE);
+flat([[-1,0,0],[7,0,0],[7,45,0],[-1,45,0]], '#fbfbfb', LINE);
+for (const x of [-0.75, 6.75]) flatLine([[x,0,0],[x,45,0]], LED, 1.6);
+flatLine([[3,1,0],[3,44,0]], '#cfcfcf', 0.8, [10, 8]);
+for (const x of [9.8, 11]) flatLine([[x,2,GZ],[x,44,GZ]], '#c4c4c4');
+
+// ------------------------------------------------------------------ car model
+const K = 1.35;                         // drawn slightly oversize so it reads at this scale
+const CAR = [[0,.32],[0,.72],[.35,.84],[1.55,.94],[2.1,1.17],[2.9,1.14],[3.55,.82],[4.3,.62],[4.3,.32]];
+const GLASS = [[1.75,.97],[2.18,1.12],[2.86,1.1],[3.3,.86]];
+const MID = 2.15, HALF_W = 0.95, BODY_C = 0.6;     // body centre height above the contact point
+
+const wf = z => z > 0.92 ? lerp(1, 0.78, Math.min(1, (z - 0.92) / 0.25)) : 1;   // narrower cabin
+function carPolys(c, f, up) {
+  const r = norm(cross(f, up));
+  const L = (u, lat, z) => add(add(add(c, mul(f, (u - MID)*K)), mul(r, lat*wf(z)*K)), mul(up, z*K));
+  // The body is convex, so back-face culling alone gives the right order;
+  // details (glass, wheels) go on top of their side panel.
+  const body = [], detail = [];
+  const push = (list, pts, n, fill, stroke = LINE) => {
+    if (dot(n, VIEW) <= 0) return;
+    list.push({ pts: pts.map(P), fill: fill || shade(n, 0.86), stroke });
+  };
+  for (let i = 0; i < CAR.length; i++) {
+    const [u1, z1] = CAR[i], [u2, z2] = CAR[(i + 1) % CAR.length];
+    const du = u2 - u1, dz = z2 - z1, l = Math.hypot(du, dz);
+    const n = add(mul(f, -dz / l), mul(up, du / l));
+    push(body, [L(u1,-HALF_W,z1), L(u1,HALF_W,z1), L(u2,HALF_W,z2), L(u2,-HALF_W,z2)], n);
+  }
+  for (const s of [1, -1]) {
+    const n = mul(r, s);
+    push(body, CAR.map(([u, z]) => L(u, s*HALF_W, z)), n, shade(n, 0.9));
+    push(detail, GLASS.map(([u, z]) => L(u, s*(HALF_W + .01), z)), n, '#e2e2e2');
+    for (const wu of [0.8, 3.5]) {
+      const pts = []; for (let t = 0; t < 14; t++) { const a = t / 14 * Math.PI * 2;
+        pts.push(L(wu + .36*Math.cos(a), s*(HALF_W + .03), .36 + .36*Math.sin(a))); }
+      push(detail, pts, n, '#d4d4d4');
+    }
+  }
+  return { polys: body.concat(detail), L, r };
+}
+
+// ------------------------------------------------------------------ physics + timeline
+// Dense ride path along the deck centreline (x = 3).
+const DENSE = curve(INNER_SEGS, 400);
+const ramp = [];
+{ let s = 0;
+  for (let i = 0; i < DENSE.length; i++) {
+    const [u, z] = DENSE[i];
+    if (i) s += Math.hypot(u - DENSE[i-1][0], z - DENSE[i-1][1]);
+    const a = DENSE[Math.max(i-1, 0)], b = DENSE[Math.min(i+1, DENSE.length-1)];
+    const du = b[0]-a[0], dz = b[1]-a[1], l = Math.hypot(du, dz);
+    ramp.push({ s, u, z, t: [du/l, dz/l], n: [-dz/l, du/l], ang: Math.atan2(dz, du) });
+  }
+  for (let i = 0; i < ramp.length; i++) {        // curvature from the change in heading
+    const a = ramp[Math.max(i-3, 0)], b = ramp[Math.min(i+3, ramp.length-1)];
+    let d = b.ang - a.ang; while (d > Math.PI) d -= 2*Math.PI; while (d < -Math.PI) d += 2*Math.PI;
+    ramp[i].k = Math.abs(d) / Math.max(b.s - a.s, 1e-6);
+  }
+}
+const RAMP_LEN = ramp.at(-1).s;
+// Entry speed so the deck keeps pushing on the car with >= 0.3 g everywhere (motor off on the ramp).
+let VE2 = 0;
+for (const p of ramp) if (p.k > 1e-3) VE2 = Math.max(VE2, (0.3*G - G*p.n[1]) / p.k + 2*G*p.z);
+const VE = Math.sqrt(VE2);
+const RUN_A = Math.max(1.2*G, VE2 / (2*40));     // Roadster-class launch, capped by runway length
+const RUN_LEN = VE2 / (2*RUN_A);
+const rampAt = s => {                            // interpolate the dense path
+  let lo = 0, hi = ramp.length - 1;
+  while (hi - lo > 1) { const m = (lo + hi) >> 1; if (ramp[m].s < s) lo = m; else hi = m; }
+  const a = ramp[lo], b = ramp[hi], t = Math.min(1, Math.max(0, (s - a.s) / ((b.s - a.s) || 1)));
+  const tu = lerp(a.t[0], b.t[0], t), tz = lerp(a.t[1], b.t[1], t), nu = lerp(a.n[0], b.n[0], t), nz = lerp(a.n[1], b.n[1], t);
+  return { u: lerp(a.u, b.u, t), z: lerp(a.z, b.z, t), f: norm([0, -tu, tz]), up: norm([0, -nu, nz]), nz, k: lerp(a.k, b.k, t) };
+};
+// Integrate the ramp ride: v^2 = ve^2 - 2 g z.
+const rampT = [{ t: 0, s: 0 }];
+{ let s = 0, t = 0; const dt = 1/600;
+  while (s < RAMP_LEN) { const v = Math.sqrt(Math.max(VE2 - 2*G*rampAt(s).z, 1)); s += v*dt; t += dt; rampT.push({ t, s: Math.min(s, RAMP_LEN) }); } }
+const RAMP_DUR = rampT.at(-1).t;
+const lipState = rampAt(RAMP_LEN);
+const V_LIP = Math.sqrt(VE2 - 2*G*lipState.z);
+const C_LIP = add(add([3, -lipState.u, lipState.z], mul(lipState.up, BODY_C*K)), [0, 0, 0]);
+const F_AIR = lipState.f;                                    // horizontal, heading back over the runway
+const TAU = 0.55;                                            // thruster braking time constant
+const C_STOP = add(C_LIP, mul(F_AIR, V_LIP*TAU));
+const C_LAND = [C_STOP[0], C_STOP[1], BODY_C*K];
+
+const PH = [
+  ['Countdown', 2.0], ['Launch', VE / RUN_A], ['Climb', RAMP_DUR], ['Stop in the air', 2.2],
+  ['Hang upside-down', 1.4], ['Flip', 1.8], ['Hover', 1.0], ['Descent', 3.6], ['Landed', 1.6],
+];
+let acc = 0; const T = PH.map(([name, d]) => { const s = acc; acc += d; return { name, start: s, end: acc }; });
+const END = acc;
+
+function state(t) {
+  t = Math.min(Math.max(t, 0), END);
+  const ph = T.findIndex(p => t < p.end); const i = ph < 0 ? T.length - 1 : ph, lt = t - T[i].start;
+  const st = { phase: i, name: T[i].name, thrust: false };
+  if (i <= 1) {                                               // waiting / accelerating on the runway
+    const tt = i === 0 ? 0 : lt, s = 0.5*RUN_A*tt*tt;
+    st.c = [3, RUN_LEN - s, 0]; st.f = [0, -1, 0]; st.up = [0, 0, 1];
+    st.v = RUN_A*tt; st.load = i ? Math.hypot(1, RUN_A/G) : 1; st.loadLbl = 'G-load';
+    st.C = add(st.c, mul(st.up, BODY_C*K));
+  } else if (i === 2) {                                       // riding the ramp
+    let lo = 0, hi = rampT.length - 1;
+    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (rampT[m].t < lt) lo = m; else hi = m; }
+    const s = rampT[lo].s, r = rampAt(s);
+    st.c = [3, -r.u, r.z]; st.f = r.f; st.up = r.up;
+    st.v = Math.sqrt(Math.max(VE2 - 2*G*r.z, 0));
+    st.load = (st.v*st.v*r.k + G*r.nz) / G; st.loadLbl = 'Deck load';
+    st.C = add(st.c, mul(st.up, BODY_C*K));
+  } else {                                                    // in the air on thrusters
+    st.f = F_AIR; st.thrust = true; st.C = airC(t); st.up = airUp(t);
+    st.c = sub(st.C, mul(st.up, BODY_C*K));
+    const h = 1/120, a = mul(add(sub(airC(t + h), mul(st.C, 2)), airC(t - h)), 1/(h*h));
+    st.v = len(mul(sub(airC(t + h), airC(t - h)), 1/(2*h)));
+    st.T = add(a, [0, 0, G]);                                 // thrust per unit mass
+    st.load = len(st.T) / G; st.loadLbl = 'Thrust';
+    if (i === 8) st.thrust = false;
+    st.fade = i === 7 ? Math.min(1, (T[7].end - t) / 0.5) : 1;
+  }
+  st.roll = Math.round(Math.acos(Math.max(-1, Math.min(1, dot(st.up, [0,0,1])))) * 180 / Math.PI);
+  return st;
+}
+function airC(t) {
+  const lt = t - T[3].start;
+  if (lt < 0) return add(C_LIP, mul(F_AIR, V_LIP*lt));        // used only for finite differences
+  if (t < T[3].end) return add(C_LIP, mul(F_AIR, V_LIP*TAU*(1 - Math.exp(-lt/TAU))));
+  const stopped = add(C_LIP, mul(F_AIR, V_LIP*TAU*(1 - Math.exp(-PH[3][1]/TAU))));
+  if (t < T[6].end) return stopped;
+  const k = smooth((t - T[7].start) / PH[7][1]);
+  return [stopped[0], stopped[1], lerp(stopped[2], C_LAND[2], k)];
+}
+function airUp(t) {
+  if (t < T[5].start) return [0, 0, -1];
+  const th = Math.PI * smooth((t - T[5].start) / PH[5][1]);
+  return norm(rotate([0, 0, -1], F_AIR, th));
+}
+
+// planned path (dashed), at body-centre height
+{ const pts = []; for (let t = T[1].start; t <= T[7].end; t += 0.04) pts.push(state(t).C);
+  for (let i = 0; i < pts.length - 1; i++)
+    stat.push({ d: depth([pts[i], pts[i+1]]) + 0.1, k: 'l', pts: [P(pts[i]), P(pts[i+1])], stroke: '#b0b0b0', lw: 1, dash: [4, 5] });
+  flatLine([[-0.8, RUN_LEN + 2.9*K, 0.01], [6.8, RUN_LEN + 2.9*K, 0.01]], '#bdbdbd', 1.2);   // start line
+}
+stat.sort((a, b) => a.d - b.d);
+
+// ------------------------------------------------------------------ rendering
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+let DPR = 1, VW = 0, VH = 0, baseScale = 1, baseCx = 0, baseCy = 0;
+const cam = { scale: 1, cx: 0, cy: 0 };
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2); VW = innerWidth; VH = innerHeight;
+  cv.width = VW*DPR; cv.height = VH*DPR;
+  const a = P([CX - 34, CY, 0]), b = P([CX + 34, CY, 0]), top = P([3, -14, MAST_H]), bot = P([3, 46, 0]);
+  baseScale = Math.min((VW - 40) / (b[0] - a[0]), (VH - 150) / (bot[1] - top[1]));
+  baseCx = (a[0] + b[0]) / 2; baseCy = (top[1] + bot[1]) / 2 + 2;
+  if (!cam.init) { cam.scale = baseScale; cam.cx = baseCx; cam.cy = baseCy; cam.init = true; }
+}
+addEventListener('resize', resize); resize();
+
+function pathOf(pts) { ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]); }
+function drawItem(it, px) {
+  if (it.k === 'l' || it.k === 'pl') {
+    pathOf(it.pts); ctx.strokeStyle = it.stroke; ctx.lineWidth = it.lw*px;
+    ctx.setLineDash(it.dash ? it.dash.map(v => v*px) : []); ctx.stroke(); ctx.setLineDash([]);
+  } else {
+    pathOf(it.pts); ctx.closePath(); ctx.fillStyle = it.fill; ctx.fill();
+    ctx.strokeStyle = it.stroke || it.fill; ctx.lineWidth = (it.stroke ? it.lw : 0.6)*px; ctx.stroke();
+  }
+}
+function hull(pts) {
+  pts = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cr = (o, a, b) => (a[0]-o[0])*(b[1]-o[1]) - (a[1]-o[1])*(b[0]-o[0]);
+  const lo = [], up = [];
+  for (const p of pts) { while (lo.length >= 2 && cr(lo.at(-2), lo.at(-1), p) <= 0) lo.pop(); lo.push(p); }
+  for (const p of pts.reverse()) { while (up.length >= 2 && cr(up.at(-2), up.at(-1), p) <= 0) up.pop(); up.push(p); }
+  return lo.slice(0, -1).concat(up.slice(0, -1));
+}
+function plumeItems(st, car) {
+  if (!st.thrust || !st.T) return [];
+  const dir = norm(mul(st.T, -1)), mag = len(st.T) / G;
+  const L = Math.min(9, (2 + 3.2*mag)) * (st.fade ?? 1);
+  if (L < 0.05) return [];
+  const flick = 0.92 + 0.08*Math.sin(now*0.05);
+  return [0.9, MID, 3.4].map(u => {
+    const o = car.L(u, 0, 0.55), e = add(o, mul(dir, L*flick));
+    const po = P(o), pe = P(e), dx = pe[0] - po[0], dy = pe[1] - po[1], dl = Math.hypot(dx, dy) || 1;
+    const nx = -dy/dl, ny = dx/dl, w0 = 0.22, w1 = 0.35 + 0.12*L;
+    return { d: depth([o]) + (dot(dir, VIEW) < 0 ? -1.5 : 1.5), plume: true, po, pe,
+      pts: [[po[0]+nx*w0, po[1]+ny*w0], [po[0]-nx*w0, po[1]-ny*w0], [pe[0]-nx*w1, pe[1]-ny*w1], [pe[0]+nx*w1, pe[1]+ny*w1]] };
+  });
+}
+
+let now = 0;
+function render(st) {
+  // camera
+  const target = follow
+    ? { scale: baseScale * 2.2, cx: P(st.C)[0], cy: P(st.C)[1] + 1.5 }
+    : { scale: baseScale, cx: baseCx, cy: baseCy };
+  const k = cam.snap ? 1 : 0.08;
+  cam.scale = lerp(cam.scale, target.scale, k); cam.cx = lerp(cam.cx, target.cx, k); cam.cy = lerp(cam.cy, target.cy, k);
+  cam.snap = false;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, VW, VH);
+  ctx.setTransform(DPR*cam.scale, 0, 0, DPR*cam.scale, DPR*(VW/2 - cam.cx*cam.scale), DPR*(VH/2 - 40 - cam.cy*cam.scale));
+  const px = 1 / cam.scale * Math.min(1.6, Math.sqrt(cam.scale / baseScale));
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  for (const it of under) drawItem(it, px);
+
+  // car shadow on the ground
+  const car = carPolys(st.c, st.f, st.up);
+  { const corners = [];
+    for (const u of [0, 4.3]) for (const lat of [-HALF_W, HALF_W]) for (const z of [0.3, 1.1]) {
+      const p = car.L(u, lat, z), h = Math.max(p[2], 0);
+      corners.push(P([p[0] + 0.42*h, p[1] - 0.18*h, 0]));
+    }
+    const hgt = st.C[2];
+    ctx.globalAlpha = Math.max(0.25, 1 - hgt / 40);
+    pathOf(hull(corners)); ctx.closePath(); ctx.fillStyle = '#e4e4e4'; ctx.fill(); ctx.globalAlpha = 1; }
+
+  // car depth: on the deck it sits in front of (or, upside-down under the curl, behind) the surface
+  let cd = depth([st.C]);
+  if (st.phase <= 2) cd += dot(st.up, VIEW) > 0 ? 2.5 : -3;
+  const dyn = [{ d: cd, car: true }, ...plumeItems(st, car)].sort((a, b) => a.d - b.d);
+
+  let j = 0;
+  const drawDyn = it => {
+    if (it.car) for (const p of car.polys) drawItem({ k: 'p', pts: p.pts, fill: p.fill, stroke: p.stroke, lw: 0.9 }, px);
+    else {
+      const g = ctx.createLinearGradient(it.po[0], it.po[1], it.pe[0], it.pe[1]);
+      g.addColorStop(0, 'rgba(150,175,200,0.75)'); g.addColorStop(0.4, 'rgba(185,205,222,0.45)'); g.addColorStop(1, 'rgba(215,226,236,0)');
+      pathOf(it.pts); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+    }
+  };
+  for (const it of stat) {
+    while (j < dyn.length && dyn[j].d <= it.d) drawDyn(dyn[j++]);
+    drawItem(it, px);
+  }
+  while (j < dyn.length) drawDyn(dyn[j++]);
+}
+
+// ------------------------------------------------------------------ UI + loop
+const $ = id => document.getElementById(id);
+const q = new URLSearchParams(location.search);
+let t = parseFloat(q.get('t') || '0'), playing = q.get('paused') !== '1', follow = q.get('follow') === '1', rate = 1;
+const RATES = [1, 0.5, 0.25];
+$('scrub').max = END.toFixed(2);
+$('follow').classList.toggle('on', follow);
+T.forEach((p, i) => { const s = document.createElement('span'); s.textContent = p.name; s.onclick = () => { t = p.start + 0.001; }; $('steps').appendChild(s); });
+$('play').onclick = () => { if (t >= END) t = 0; playing = !playing; };
+$('restart').onclick = () => { t = 0; playing = true; };
+$('speed').onclick = () => { rate = RATES[(RATES.indexOf(rate) + 1) % RATES.length]; $('speed').textContent = rate + '×'; };
+$('follow').onclick = () => { follow = !follow; $('follow').classList.toggle('on', follow); };
+$('scrub').oninput = e => { t = parseFloat(e.target.value); };
+addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); $('play').click(); } });
+
+let last = performance.now();
+function frame(ms) {
+  const dt = Math.min(0.05, (ms - last) / 1000); last = ms; now = ms;
+  if (playing) { t += dt*rate; if (t >= END) { t = END; playing = false; } }
+  const st = state(t);
+  render(st);
+  $('play').textContent = playing ? 'Pause' : (t >= END ? 'Replay' : 'Play');
+  $('scrub').value = t; $('time').textContent = t.toFixed(1) + ' s';
+  $('phase').textContent = st.name;
+  $('hSpeed').textContent = Math.round(st.v * 3.6) + ' km/h';
+  $('hHeight').textContent = Math.max(0, st.c[2] < 0.05 && st.phase <= 1 ? 0 : st.C[2] - BODY_C*K).toFixed(1) + ' m';
+  $('hLoadLbl').textContent = st.loadLbl; $('hLoad').textContent = st.load.toFixed(2) + ' g';
+  $('hRoll').textContent = st.roll + '°';
+  [...$('steps').children].forEach((s, i) => s.classList.toggle('on', i === st.phase));
+  $('count').textContent = st.phase === 0 ? (t < 0.5 ? '' : String(Math.max(1, 3 - Math.floor((t - 0.5) / 0.5)))) : '';
+  requestAnimationFrame(frame);
+}
+cam.snap = true;
+requestAnimationFrame(frame);
+window.sim = { T, END, VE, RUN_A, RUN_LEN, V_LIP, state };
+</script>
+</body>
+</html>
