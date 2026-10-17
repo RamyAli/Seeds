@@ -65,7 +65,7 @@ Peak altitude 68 ft ≈ 20.7 m.
 
 ## Ramp
 
-- A short steep transition and a wall that bulges about 2.7 m back. A curl over the top then runs into a long upside-down top deck, rising gently (about 13°) to a lip about 8 m out over the ramp foot, at about 21 m. The car starts underneath that overhang. The shape was traced from a side-on photo of the ramp and scaled to the telemetry peak.
+- In the photo: a short steep transition, a wall bulging back, a curl over the top, and a long upside-down top deck rising gently (about 13°) to a lip far out over the ramp foot, at about 21 m. The simulation keeps that layout but uses a 7.5 m foot curve and a 7 m curl, both eased in and out, so all four wheels stay on the deck and the body never touches it. The photo's tighter foot fillet would make a car with a 2.66 m wheelbase scrape or lift a wheel. As a result the wall sits about 9 m behind the foot and the lip about 5 m out past it.
 - The deck is about 2.4 car widths wide (≈ 5 m), with red LED strips along both edges and a single white centre line.
 - Steel truss behind the wall and over the top deck.
 

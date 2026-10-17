@@ -272,28 +272,37 @@ function buildRoadster() {
 }
 
 // ================================================================== ramp + motion (fitted to the launch video)
-const bez = (p0, p1, p2, p3, t) => { const u = 1 - t;
-  return p0.map((_, i) => u*u*u*p0[i] + 3*u*u*t*p1[i] + 3*u*t*t*p2[i] + t*t*t*p3[i]); };
-const curve = (segs, n) => { const pts = [];
-  segs.forEach((s, j) => { for (let i = j ? 1 : 0; i <= n; i++) pts.push(bez(...s, i / n)); }); return pts; };
 function profileNormal(prof, i) {                              // toward the riding (concave) side, in (u, z)
   const a = prof[Math.max(i - 1, 0)], b = prof[Math.min(i + 1, prof.length - 1)];
   const du = b[0] - a[0], dz = b[1] - a[1], l = Math.hypot(du, dz);
   return [-dz / l, du / l];
 }
-// Riding surface (u = metres past the ramp foot, z = height), traced from a side-on photo of the ramp and
-// scaled to the 20.8 m telemetry peak: a short steep transition, a wall bulging ~2.7 m back, a curl over the
-// top, then a long upside-down top deck rising gently (~13°) to a lip 8 m out over the ramp foot.
-const INNER_SEGS = [[[0,0],[.6,0],[1.9,2],[2.2,6]], [[2.2,6],[2.55,9],[2.85,12.5],[2.4,15]],
-  [[2.4,15],[2,17.5],[.2,18.6],[-3,19.5]], [[-3,19.5],[-4.7,19.95],[-6.3,20.4],[-8,20.8]]];
-const INNER = curve(INNER_SEGS, 40);
+// Riding surface (u = metres past the ramp foot, z = height), built from curvature so every bend eases in
+// and out and the car never meets a kink: [length m, curvature at start, curvature at end] in 1/m.
+// Foot curve radius 7.5 m and curl radius 7 m: large enough that both axles stay on the deck without the
+// bumpers touching it (a tighter foot curve makes a real car scrape or lift a wheel). The wall leans back
+// slightly, and the upside-down top deck rises ~12° to the lip at 20.9 m, 5 m out past the foot.
+const CURV = [[3, 0, .1333], [8.222, .1333, .1333], [1.5, .1333, .03], [4.25, .03, .03],
+  [2, .03, .1429], [7.5266, .1429, .1429], [2, .1429, 0], [8, 0, 0]];
+function profile(ds) {
+  let u = 0, z = 0, th = 0; const pts = [[0, 0]];
+  for (const [L, k0, k1] of CURV) {
+    const n = Math.max(1, Math.round(L / ds));
+    for (let i = 0; i < n; i++) {
+      th += (k0 + (k1 - k0)*(i + .5)/n) * L/n;
+      u += Math.cos(th) * L/n; z += Math.sin(th) * L/n; pts.push([u, z]);
+    }
+  }
+  return pts;
+}
+const INNER = profile(.25);
 const OUTER = INNER.map((p, i) => { const [nu, nz] = profileNormal(INNER, i); return [p[0] - nu, p[1] - nz]; });
 const LIP_U = INNER.at(-1)[0], LIP_Z = INNER.at(-1)[1];
-const MAST_U = [4.2, 7.2], MAST_X = [-0.5, 6.5], BEAM_Z = [LIP_Z + 1.25, LIP_Z + 2.6], MAST_H = LIP_Z + 2.6;
+const MAST_U = [10.9, 13.9], MAST_X = [-0.5, 6.5], BEAM_Z = [LIP_Z + 1.25, LIP_Z + 2.6], MAST_H = LIP_Z + 2.6;
 const W = (x, u, z) => S(x, -u, z);                            // ramp-local -> three
 
 const BODY_C = 0.5;                                            // body centre above the contact point
-const DENSE = curve(INNER_SEGS, 300), ramp = [];
+const DENSE = profile(.05), ramp = [];
 { let s = 0;
   for (let i = 0; i < DENSE.length; i++) {
     const [u, z] = DENSE[i];
@@ -346,12 +355,12 @@ const T = PH.map(([name, a, b]) => ({ name, start: Math.max(0, a - VT0), end: b 
 const END = T.at(-1).end;
 
 // On the deck: the car starts from rest on flat ground with its nose just short of the ramp foot, then its
-// distance along the deck passes through the positions implied by the telemetry heights (from 1.2 m up to
-// 18 m) and reaches the lip exactly at VT_EXIT. A monotone cubic through those points keeps the speed
+// distance along the deck passes through the positions implied by the telemetry heights on the wall (1.2 m
+// to 15 m; above that height barely changes) and reaches the lip exactly at VT_EXIT. A monotone cubic through those points keeps the speed
 // smooth and never makes the car roll backwards.
 const S0 = 2.3;
 const KEY = [[VT_START, -S0]];
-for (const [vt] of ALT) if (vt < VT_EXIT - .3 && altM(vt) >= 1.2 && altM(vt) < 18) KEY.push([vt, sAtZ(altM(vt))]);
+for (const [vt] of ALT) if (vt < VT_EXIT - .3 && altM(vt) >= 1.2 && altM(vt) < 15) KEY.push([vt, sAtZ(altM(vt))]);
 KEY.push([VT_EXIT, RAMP_LEN]);
 const KM = (() => {                                            // Fritsch–Carlson tangents
   const n = KEY.length, d = [], m = new Array(n).fill(0);
@@ -415,7 +424,7 @@ function deckPose(s) {
     if (Math.abs(a) <= HALF_LEN) lift = Math.max(lift, q.dot(up) - underAt(a) + .03);
   }
   c.addScaledVector(up, lift);
-  return { c, f, up, C: c.clone().addScaledVector(up, BODY_C), deck: true };
+  return { c, f, up, C: c.clone().addScaledVector(up, BODY_C), deck: true, lift };
 }
 const F_FLAT = new THREE.Vector3(F_AIR.x, 0, F_AIR.z).normalize();
 function poseAt(vt) {
@@ -586,10 +595,10 @@ lattice(...MAST_X, ...MAST_U, 0, MAST_H, 'z', 2);
 for (const x0 of [MAST_X[0], 5.5]) lattice(x0, x0 + 1, LIP_U - .5, MAST_U[1], ...BEAM_Z, 'u', 1.5);
 for (let u = LIP_U; u < MAST_U[1]; u += 3) seg(W(.5, u, MAST_H), W(5.5, u, MAST_H), 'brace');
 for (const x of DECK_X) {
-  for (const u of [-6.5, -4, -1.5, 1]) { const [pu, pz] = outerAtUTop(u); seg(W(x,pu,pz), W(x,pu,BEAM_Z[0])); }
+  for (const u of [-5, -2.5, 0, 2.5]) { const [pu, pz] = outerAtUTop(u); seg(W(x,pu,pz), W(x,pu,BEAM_Z[0])); }
   for (const z of [3, 7, 11, 15, 18.5]) { const [pu, pz] = outerAtZ(z); seg(W(x,pu,pz), W(x,MAST_U[0],pz)); }
 }
-const cables = [[W(MAST_X[0], MAST_U[1], MAST_H), W(-4, 16, GY)], [W(MAST_X[1], MAST_U[1], MAST_H), W(10, 16, GY)]];
+const cables = [[W(MAST_X[0], MAST_U[1], MAST_H), W(-4, 22, GY)], [W(MAST_X[1], MAST_U[1], MAST_H), W(10, 22, GY)]];
 function instancedMembers(list, r, m) {
   const geo = new THREE.CylinderGeometry(1, 1, 1, 6), mesh = new THREE.InstancedMesh(geo, m, list.length);
   const up = new THREE.Vector3(0, 1, 0), o = new THREE.Object3D();
@@ -670,7 +679,7 @@ const dolly = new THREE.Group();
   dolly.traverse(o => { o.castShadow = true; }); dolly.position.x = 10.4; scene.add(dolly); }
 
 // data lines from the pavilion to the tower, like the blue service lines in the references
-{ const pts = [[13.8, 15], [10, 15], [10, 1], [8.5, -3], [8.5, -5.6], [7.4, -5.6]].map(([x, z]) => new THREE.Vector3(x, GY + .12, z));
+{ const pts = [[13.8, 15], [10, 15], [10, 1], [8.5, -3], [8.5, -12.4], [7.4, -12.4]].map(([x, z]) => new THREE.Vector3(x, GY + .12, z));
   const path = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', .05);
   add(new THREE.TubeGeometry(path, 120, .1, 8), mat.glow, new THREE.Vector3(), { cast: false });
   for (const p of [pts[1], pts[3]]) add(new THREE.TorusGeometry(.35, .07, 8, 24), mat.accent, p, { rot: [Math.PI/2, 0, 0], cast: false }); }
@@ -891,7 +900,7 @@ function directorShot(st) {                                    // shots modelled
   const P = st.C, lt = st.t - T[st.phase].start;
   switch (st.phase) {
     case 0: return [V3(-74 + lt*4, 66 - lt*3, 96 - lt*4), V3(4, 5, 4)];
-    case 1: return [V3(-62, 11, 3), V3(3, 10.5, 2)];                       // wide side view of the whole ramp
+    case 1: return [V3(-62, 11, 1), V3(3, 10.5, -1)];                       // wide side view of the whole ramp
     case 2: return [V3(-50, 16, 8), V3(3, 17.5, 4)];
     case 3: return [P.clone().add(V3(-18, 1, 10)), P.clone()];            // the roll, from the side
     case 4: return [P.clone().add(V3(-17, 2, 14)), P.clone()];
