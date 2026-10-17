@@ -281,13 +281,15 @@ function profileNormal(prof, i) {                              // toward the rid
   const du = b[0] - a[0], dz = b[1] - a[1], l = Math.hypot(du, dz);
   return [-dz / l, du / l];
 }
-// Riding surface (u = metres past the ramp foot, z = height). In the video the ramp is tall and slim:
-// a short transition, a wall that leans slightly back, then a tight curl ending upside-down at ~21 m.
-const INNER_SEGS = [[[0,0],[2.8,0],[5,2.2],[5,5]], [[5,5],[5.25,8.5],[5.85,12],[6.2,15]], [[6.2,15],[6.6,19.6],[4.8,20.8],[2,20.8]]];
+// Riding surface (u = metres past the ramp foot, z = height), traced from a side-on photo of the ramp and
+// scaled to the 20.8 m telemetry peak: a short steep transition, a wall bulging ~2.7 m back, a curl over the
+// top, then a long upside-down top deck rising gently (~13°) to a lip 8 m out over the ramp foot.
+const INNER_SEGS = [[[0,0],[.6,0],[1.9,2],[2.2,6]], [[2.2,6],[2.55,9],[2.85,12.5],[2.4,15]],
+  [[2.4,15],[2,17.5],[.2,18.6],[-3,19.5]], [[-3,19.5],[-4.7,19.95],[-6.3,20.4],[-8,20.8]]];
 const INNER = curve(INNER_SEGS, 40);
 const OUTER = INNER.map((p, i) => { const [nu, nz] = profileNormal(INNER, i); return [p[0] - nu, p[1] - nz]; });
 const LIP_U = INNER.at(-1)[0], LIP_Z = INNER.at(-1)[1];
-const MAST_U = [8.5, 11.5], MAST_X = [-0.5, 6.5], BEAM_Z = [LIP_Z + 1.25, LIP_Z + 2.6], MAST_H = LIP_Z + 2.6;
+const MAST_U = [4.2, 7.2], MAST_X = [-0.5, 6.5], BEAM_Z = [LIP_Z + 1.25, LIP_Z + 2.6], MAST_H = LIP_Z + 2.6;
 const W = (x, u, z) => S(x, -u, z);                            // ramp-local -> three
 
 const BODY_C = 0.5;                                            // body centre above the contact point
@@ -540,10 +542,10 @@ lattice(...MAST_X, ...MAST_U, 0, MAST_H, 'z', 2);
 for (const x0 of [MAST_X[0], 5.5]) lattice(x0, x0 + 1, LIP_U - .5, MAST_U[1], ...BEAM_Z, 'u', 1.5);
 for (let u = LIP_U; u < MAST_U[1]; u += 3) seg(W(.5, u, MAST_H), W(5.5, u, MAST_H), 'brace');
 for (const x of DECK_X) {
-  for (const u of [2.6, 4.2, 5.8]) { const [pu, pz] = outerAtUTop(u); seg(W(x,pu,pz), W(x,pu,BEAM_Z[0])); }
+  for (const u of [-6.5, -4, -1.5, 1]) { const [pu, pz] = outerAtUTop(u); seg(W(x,pu,pz), W(x,pu,BEAM_Z[0])); }
   for (const z of [3, 7, 11, 15, 18.5]) { const [pu, pz] = outerAtZ(z); seg(W(x,pu,pz), W(x,MAST_U[0],pz)); }
 }
-const cables = [[W(MAST_X[0], MAST_U[1], MAST_H), W(-4, 20, GY)], [W(MAST_X[1], MAST_U[1], MAST_H), W(10, 20, GY)]];
+const cables = [[W(MAST_X[0], MAST_U[1], MAST_H), W(-4, 16, GY)], [W(MAST_X[1], MAST_U[1], MAST_H), W(10, 16, GY)]];
 function instancedMembers(list, r, m) {
   const geo = new THREE.CylinderGeometry(1, 1, 1, 6), mesh = new THREE.InstancedMesh(geo, m, list.length);
   const up = new THREE.Vector3(0, 1, 0), o = new THREE.Object3D();
@@ -624,7 +626,7 @@ const dolly = new THREE.Group();
   dolly.traverse(o => { o.castShadow = true; }); dolly.position.x = 10.4; scene.add(dolly); }
 
 // data lines from the pavilion to the tower, like the blue service lines in the references
-{ const pts = [[13.8, 15], [10, 15], [10, -2], [8.5, -6], [8.5, -10], [7.4, -10]].map(([x, z]) => new THREE.Vector3(x, GY + .12, z));
+{ const pts = [[13.8, 15], [10, 15], [10, 1], [8.5, -3], [8.5, -5.6], [7.4, -5.6]].map(([x, z]) => new THREE.Vector3(x, GY + .12, z));
   const path = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', .05);
   add(new THREE.TubeGeometry(path, 120, .1, 8), mat.glow, new THREE.Vector3(), { cast: false });
   for (const p of [pts[1], pts[3]]) add(new THREE.TorusGeometry(.35, .07, 8, 24), mat.accent, p, { rot: [Math.PI/2, 0, 0], cast: false }); }
@@ -845,8 +847,8 @@ function directorShot(st) {                                    // shots modelled
   const P = st.C, lt = st.t - T[st.phase].start;
   switch (st.phase) {
     case 0: return [V3(-74 + lt*4, 66 - lt*3, 96 - lt*4), V3(4, 5, 4)];
-    case 1: return [V3(-62, 11, 0), V3(3, 10, -3)];                       // wide side view of the whole ramp
-    case 2: return [V3(-50, 17, 4), V3(3, 18, -2)];
+    case 1: return [V3(-62, 11, 3), V3(3, 10.5, 2)];                       // wide side view of the whole ramp
+    case 2: return [V3(-50, 16, 8), V3(3, 17.5, 4)];
     case 3: return [P.clone().add(V3(-18, 1, 10)), P.clone()];            // the roll, from the side
     case 4: return [P.clone().add(V3(-17, 2, 14)), P.clone()];
     case 5: return [V3(P.x - 5, Math.max(4, P.y*.5 + 3), P.z + 24), P.clone()];   // ramp behind the car

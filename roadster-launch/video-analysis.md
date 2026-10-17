@@ -65,7 +65,7 @@ Peak altitude 68 ft ≈ 20.7 m.
 
 ## Ramp
 
-- Tall and slim: a short transition, a wall that leans slightly back past vertical, then a tight curl ending upside-down at about 21 m with a small overhang.
+- A short steep transition and a wall that bulges about 2.7 m back. A curl over the top then runs into a long upside-down top deck, rising gently (about 13°) to a lip about 8 m out over the ramp foot, at about 21 m. The car starts underneath that overhang. The shape was traced from a side-on photo of the ramp and scaled to the telemetry peak.
 - The deck is about 2.4 car widths wide (≈ 5 m), with red LED strips along both edges and a single white centre line.
 - Steel truss behind the wall and over the top deck.
 
