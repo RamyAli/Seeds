@@ -1,5 +1,9 @@
 # Tesla Roadster launch — simulation
 
+**3D launch show:** open [`launch-3d.html`](launch-3d.html). The full launch runs in a white diorama city (C-ramp and truss tower, grandstand, pavilion with a live screen, floodlights, parking, trees, ring roads, glass decor and location pins) using the 3D Roadster and the same physics as `simulation.html`. Cameras: Director (a framed shot per phase), Chase, or Free orbit.
+
+![3D launch show](previews/launch3d-overview.png)
+
 **3D model:** open [`roadster-3d.html`](roadster-3d.html) for an interactive 3D Roadster built from the official photos (studio white or night lighting, sensor rings, turntable, view presets). **Download .glb** exports the model for Blender, Unity or three.js.
 
 ![Roadster 3D](roadster-3d.png)

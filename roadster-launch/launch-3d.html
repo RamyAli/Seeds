@@ -769,7 +769,7 @@ function directorShot(st) {                                    // one framed sho
     case 4: return [P.clone().add(V3(-11, 2.5, 9)), P.clone()];
     case 5: { const a = -0.7 + lt * 0.55; return [P.clone().add(V3(Math.sin(a)*-12, 2, Math.cos(a)*12)), P.clone()]; }
     case 6: return [P.clone().add(V3(-12, -3, 11)), P.clone()];
-    case 7: return [P.clone().add(V3(-15, 3, 15)), P.clone()];
+    case 7: return [V3(P.x + 8, Math.max(6, P.y + 4), P.z + 20), P.clone()];
     default: return [V3(-58, 44, 74), V3(4, 4, 10)];
   }
 }
