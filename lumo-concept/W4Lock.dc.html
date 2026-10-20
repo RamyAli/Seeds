@@ -5,12 +5,12 @@
 <title>Lumo v4 – Grid moment notification</title>
 <script src="./support.js"></script>
 <script src="/_blob/b182923961479cc4ed198465a486c3a2"></script>
-<script src="/_blob/6473e9ec8cdb05100ed004f812e4e6de"></script>
+<script src="/_blob/2cd7bb501aa419d51c68b2f01f0b7a21"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0}
 *{box-sizing:border-box}
@@ -24,12 +24,12 @@ canvas{display:block}
 @media (prefers-reduced-motion: reduce){.drop,.drop2{animation:none}}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #E7E4DF; color: #1E1C1A; font-family: 'Hanken Grotesk', -apple-system, system-ui, sans-serif; line-height: 1.4">
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #CFCDC9; color: #1D1D1D; font-family: 'Geist', -apple-system, system-ui, sans-serif; line-height: 1.4">
   <canvas ref="{{canvasRef}}" width="390" height="844" role="img" aria-label="Lock screen wallpaper: a 3D model of your villa with warm lit windows." style="position: absolute; left: 0; top: 0; width: 390px; height: 844px"></canvas>
 
   <div style="position: relative; display: flex; flex-direction: column; align-items: center; padding-top: 68px; pointer-events: none">
-    <span style="font-size: 17px; font-weight: 500; color: #3A3632">Wednesday 15 July</span>
-    <span style="font-size: 108px; line-height: 0.95; font-weight: 300; letter-spacing: -0.05em; font-variant-numeric: tabular-nums">3:42</span>
+    <span style="font-size: 17px; font-weight: 400; color: #2E2C29">Wednesday 15 July</span>
+    <span style="font-size: 100px; line-height: 0.95; font-weight: 300; letter-spacing: -0.04em; font-variant-numeric: tabular-nums">3:42</span>
   </div>
 
   <div style="position: absolute; left: 12px; right: 12px; bottom: 120px; display: flex; flex-direction: column; gap: 8px">
@@ -38,12 +38,12 @@ canvas{display:block}
         <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="11" r="5" fill="#DDF57A"></circle><rect x="5" y="17" width="14" height="2.5" rx="1.25" fill="#EE7A3B"></rect></svg>
       </span>
       <span style="display: flex; flex-direction: column; gap: 2px; flex: 1">
-        <span style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 600"><span>Grid moment · 5–7 pm</span><span style="font-size: 12px; font-weight: 400; color: #6B665F">now</span></span>
+        <span style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 500"><span>Grid moment · 5–7 PM</span><span style="font-size: 12px; font-weight: 400; color: #5F5C57">now</span></span>
         <span style="font-size: 14px; line-height: 1.4; color: #3A3632">Earn 120 points tonight. Pre-cool now and pause the EV charge — one tap and Lumo handles it.</span>
       </span>
     </a>
     <div class="drop2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
-      <a href="W4Moment.dc.html" style="height: 54px; border-radius: 27px; background: #1E1C1A; color: #FFFFFF; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; text-decoration: none">Review &amp; accept</a>
+      <a href="W4Moment.dc.html" style="height: 54px; border-radius: 27px; background: #23211F; color: #FFFFFF; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; text-decoration: none">Review &amp; accept</a>
       <button class="frost" style="height: 54px; border-radius: 27px; color: #1E1C1A; font-size: 15px; font-weight: 500; cursor: pointer">Not today</button>
     </div>
   </div>
@@ -69,7 +69,7 @@ class Component extends DCLogic {
       if (this.tries++ < 40) this.retry = setTimeout(() => this.mount3d(), 150);
       return;
     }
-    this.view = window.Lumo3D.mount(this.canvas, { scene: 'home', theme: 'warm', shift: [0, 0.02], zoom: 0.62 });
+    this.view = window.Lumo3D.mount(this.canvas, { scene: 'home', arch: true, theme: 'warm', shift: [0.04, 0.04], zoom: 0.5 });
   }
   renderVals() {
     if (!this.refFn) this.refFn = (el) => { if (el) this.canvas = el; };

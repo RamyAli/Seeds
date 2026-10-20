@@ -4,126 +4,146 @@
 <meta charset="utf-8">
 <title>Lumo v4 – Solar</title>
 <script src="./support.js"></script>
-<script src="/_blob/b182923961479cc4ed198465a486c3a2"></script>
-<script src="/_blob/6473e9ec8cdb05100ed004f812e4e6de"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0}
 *{box-sizing:border-box}
 button,a{font-family:inherit}
-a{color:#1E1C1A}a:hover{color:#6B665F}
-canvas{display:block}
-.mode:focus-visible{outline:2px solid #3F628F;outline-offset:3px}
+a{color:#1D1D1D}a:hover{color:#5F5C57}
+.mode:focus-visible,.sw:focus-visible,.bar:focus-visible{outline:2px solid #3F628F;outline-offset:2px;border-radius:24px}
+.knob{transition:transform .25s cubic-bezier(.3,1.3,.5,1)}
+@media (prefers-reduced-motion: reduce){.knob{transition:none}}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #E7E4DF; color: #1E1C1A; font-family: 'Hanken Grotesk', -apple-system, system-ui, sans-serif; font-size: 15px; line-height: 1.4">
-  <div style="padding: 52px 20px 0; display: flex; flex-direction: column; gap: 12px">
-    <header style="display: flex; justify-content: space-between; align-items: center; height: 48px">
-      <a href="W4Home.dc.html" aria-label="Back to Home" style="width: 48px; height: 48px; border-radius: 24px; background: #F6F4F1; display: flex; align-items: center; justify-content: center">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #EBE8E3; color: #1D1D1D; font-family: 'Geist', -apple-system, system-ui, sans-serif; font-size: 15px; line-height: 1.4">
+  <div style="padding: 52px 16px 0; display: flex; flex-direction: column; gap: 12px">
+    <header style="display: flex; justify-content: space-between; align-items: flex-start; height: 48px">
+      <a href="W4Home.dc.html" aria-label="Back to Home" style="width: 46px; height: 46px; border-radius: 23px; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
       </a>
-      <button aria-label="More options" style="width: 48px; height: 48px; border-radius: 24px; border: 0; background: #F6F4F1; color: #1E1C1A; display: flex; align-items: center; justify-content: center; cursor: pointer">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle></svg>
+      <button aria-label="More options" style="width: 46px; height: 46px; border-radius: 23px; border: 0; background: #FFFFFF; color: #1D1D1D; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.4"></circle><circle cx="12" cy="12" r="1.4"></circle><circle cx="19" cy="12" r="1.4"></circle></svg>
       </button>
     </header>
-    <h1 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.03em">Solar</h1>
 
-    <section style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
-      <div style="background: #F6F4F1; border-radius: 26px; padding: 14px 16px; display: flex; align-items: center; gap: 10px">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
-        <span style="display: flex; flex-direction: column; line-height: 1.15"><span style="font-size: 28px; font-weight: 300; letter-spacing: -0.03em; font-variant-numeric: tabular-nums">5.4<span style="font-size: 13px"> kW</span></span><span style="font-size: 12px; color: #6B665F">Producing now</span></span>
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <h1 style="margin: 0; font-size: 26px; font-weight: 400; letter-spacing: -0.01em">Solar</h1>
+      <button class="sw" role="switch" aria-checked="{{alerts.on}}" aria-label="Solar alerts" onClick="{{alerts.flip}}" style="width: 56px; height: 44px; border: 0; padding: 0; background: transparent; cursor: pointer; display: flex; align-items: center">
+        <span style="width: 56px; height: 30px; border-radius: 15px; background: {{alerts.track}}; padding: 3px; display: flex"><span class="knob" style="width: 24px; height: 24px; border-radius: 12px; background: {{alerts.knobBg}}; transform: {{alerts.knob}}"></span></span>
+      </button>
+    </div>
+
+    <section style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <div style="background: #F6F5F2; border-radius: 22px; padding: 14px; display: flex; align-items: center; gap: 10px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+        <span style="display: flex; flex-direction: column; line-height: 1.15"><span style="font-size: 26px; font-weight: 300; letter-spacing: -0.02em">5.4<span style="font-size: 12px; vertical-align: top; margin-left: 2px">kW</span></span><span style="font-size: 11px; color: #5F5C57">Now</span></span>
       </div>
-      <div style="background: #F6F4F1; border-radius: 26px; padding: 14px 16px; display: flex; align-items: center; gap: 10px">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg>
-        <span style="display: flex; flex-direction: column; line-height: 1.15"><span style="font-size: 28px; font-weight: 300; letter-spacing: -0.03em; font-variant-numeric: tabular-nums">{{made}}<span style="font-size: 13px"> kWh</span></span><span style="font-size: 12px; color: #6B665F">Made {{periodWord}}</span></span>
+      <div style="background: #F6F5F2; border-radius: 22px; padding: 14px; display: flex; align-items: center; gap: 10px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg>
+        <span style="display: flex; flex-direction: column; line-height: 1.15"><span style="font-size: 26px; font-weight: 300; letter-spacing: -0.02em">14.2<span style="font-size: 12px; vertical-align: top; margin-left: 2px">kWh</span></span><span style="font-size: 11px; color: #5F5C57">Made today</span></span>
       </div>
     </section>
 
-    <div role="radiogroup" aria-label="Period" style="display: flex; justify-content: space-between; padding: 2px 6px">
+    <div role="radiogroup" aria-label="Dial shows" style="display: flex; gap: 14px; padding-left: 2px">
       <sc-for list="{{modes}}" as="m" hint-placeholder-count="4">
-        <button class="mode" role="radio" aria-checked="{{m.on}}" onClick="{{m.pick}}" style="border: 0; background: transparent; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; color: #1E1C1A">
-          <span style="width: 52px; height: 52px; border-radius: 26px; background: {{m.bg}}; color: {{m.fg}}; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">{{m.short}}</span>
-          <span style="font-size: 12px; color: #4F4A44">{{m.label}}</span>
+        <button class="mode" role="radio" aria-checked="{{m.on}}" onClick="{{m.pick}}" style="border: 0; background: transparent; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; color: #1D1D1D; width: 54px">
+          <span style="width: 48px; height: 48px; border-radius: 24px; background: {{m.bg}}; color: {{m.fg}}; display: flex; align-items: center; justify-content: center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{m.icon}}"></path></svg>
+          </span>
+          <span style="font-size: 11px; color: #5F5C57">{{m.label}}</span>
         </button>
       </sc-for>
     </div>
 
-    <section aria-label="Solar output now: 5.4 of a possible 6.6 kW" style="position: relative; height: 172px; display: flex; justify-content: center">
-      <svg width="320" height="172" viewBox="0 0 320 172" aria-hidden="true">
+    <section aria-label="{{dial.aria}}" style="position: relative; height: 196px">
+      <svg width="358" height="196" viewBox="0 0 358 196" aria-hidden="true">
         <defs>
-          <linearGradient id="tickGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#F8C9A6"></stop>
-            <stop offset="1" stop-color="#EE7A3B"></stop>
+          <linearGradient id="tick" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#F7C4A3"></stop>
+            <stop offset="1" stop-color="#E8692A"></stop>
           </linearGradient>
         </defs>
-        <path d="{{ticksDone}}" stroke="url(#tickGrad)" stroke-width="3" stroke-linecap="round" fill="none"></path>
-        <path d="{{ticksLeft}}" stroke="#D3CEC7" stroke-width="2" stroke-linecap="round" fill="none"></path>
-        <circle cx="{{dot.x}}" cy="{{dot.y}}" r="6" fill="#EE7A3B" stroke="#E7E4DF" stroke-width="3"></circle>
+        <path d="{{dial.done}}" stroke="url(#tick)" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+        <path d="{{dial.rest}}" stroke="#D6D2CC" stroke-width="3" stroke-linecap="round" fill="none"></path>
+        <circle cx="{{dial.dx}}" cy="{{dial.dy}}" r="4.5" fill="#E8692A"></circle>
       </svg>
-      <div style="position: absolute; left: 0; right: 0; bottom: 6px; display: flex; flex-direction: column; align-items: center">
-        <span style="font-size: 56px; line-height: 1; font-weight: 300; letter-spacing: -0.04em; font-variant-numeric: tabular-nums">5.4<span style="font-size: 20px"> kW</span></span>
-        <span style="font-size: 12px; color: #6B665F">≈ 3 ACs running · peak 6.1 at 12:40</span>
+      <div style="position: absolute; left: 0; right: 0; top: 92px; display: flex; flex-direction: column; align-items: center">
+        <span style="font-size: 42px; line-height: 1; font-weight: 300; letter-spacing: -0.03em">{{dial.value}}<span style="font-size: 15px; vertical-align: top; margin-left: 2px">{{dial.unit}}</span></span>
+        <span style="font-size: 11px; color: #5F5C57; margin-top: 4px">{{dial.caption}}</span>
       </div>
-      <span style="position: absolute; left: 22px; bottom: 0; font-size: 11px; color: #6B665F">0</span>
-      <span style="position: absolute; right: 16px; bottom: 0; font-size: 11px; color: #6B665F">6.6 kW</span>
+      <span style="position: absolute; left: 48px; bottom: 6px; font-size: 11px; color: #5F5C57">{{dial.min}}</span>
+      <span style="position: absolute; right: 44px; bottom: 6px; font-size: 11px; color: #5F5C57">{{dial.max}}</span>
     </section>
 
-    <section style="position: relative; background: #F6F4F1; border-radius: 28px; overflow: hidden; height: 206px">
-      <canvas ref="{{canvasRef}}" width="350" height="206" role="img" aria-label="3D view of your 18-panel solar array with the sun moving overhead." style="position: absolute; left: 0; top: 0; width: 350px; height: 206px; touch-action: pan-y; cursor: grab"></canvas>
-      <div style="position: absolute; left: 18px; top: 16px; display: flex; flex-direction: column; pointer-events: none">
-        <span style="font-size: 17px; font-weight: 500">Your array</span>
-        <span style="font-size: 12px; color: #4F4A44; display: flex; align-items: center; gap: 4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>18 panels OK</span>
+    <section aria-label="Solar production by hour" style="background: #F6F5F2; border-radius: 24px; padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-size: 15px">Today, hour by hour</span>
+        <span aria-live="polite" style="font-size: 12px; color: #5F5C57">{{readout}}</span>
       </div>
-      <div style="position: absolute; left: 18px; bottom: 14px; display: flex; gap: 22px; pointer-events: none">
-        <span style="display: flex; flex-direction: column; line-height: 1.2"><span style="font-size: 11px; color: #4F4A44">Saved today</span><span style="font-size: 17px">AED 5.70</span></span>
-        <span style="display: flex; flex-direction: column; line-height: 1.2"><span style="font-size: 11px; color: #4F4A44">Sunset</span><span style="font-size: 17px">7:12 pm</span></span>
+      <div style="display: flex; align-items: flex-end; height: 70px; gap: 0">
+        <sc-for list="{{bars}}" as="b" hint-placeholder-count="24">
+          <button class="bar" aria-label="{{b.label}}" onMouseEnter="{{b.pick}}" onFocus="{{b.pick}}" onClick="{{b.pick}}" style="flex: 1; height: 70px; border: 0; padding: 0; background: transparent; display: flex; align-items: flex-end; justify-content: center; cursor: pointer">
+            <span style="display: block; width: 4px; height: {{b.h}}px; border-radius: 2px; background: {{b.bg}}; outline: {{b.ring}}; outline-offset: 2px"></span>
+          </button>
+        </sc-for>
       </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: #5F5C57"><span>12 am</span><span>6 am</span><span>12 pm</span><span>6 pm</span><span>12 am</span></div>
     </section>
-    <p style="margin: 0; font-size: 12px; color: #4F4A44; line-height: 1.45"><b style="font-weight: 600; color: #1E1C1A">kW</b> is power right now; <b style="font-weight: 600; color: #1E1C1A">kWh</b> is energy over time — 1 kWh runs your AC for about 30 minutes.</p>
+
+    <section style="background: #F6F5F2; border-radius: 24px; padding: 14px 16px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px">
+      <span style="display: flex; flex-direction: column; line-height: 1.25"><span style="font-size: 11px; color: #5F5C57">Sunrise</span><span style="font-size: 15px">5:35 AM</span></span>
+      <span style="display: flex; flex-direction: column; line-height: 1.25"><span style="font-size: 11px; color: #5F5C57">Sunset</span><span style="font-size: 15px">7:12 PM</span></span>
+      <span style="display: flex; flex-direction: column; line-height: 1.25"><span style="font-size: 11px; color: #5F5C57">Panels</span><span style="font-size: 15px">18 · all OK</span></span>
+    </section>
   </div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { mode: 0 }; }
-  componentDidMount() { this.tries = 0; this.mount3d(); }
-  componentDidUpdate() { if (!this.view) this.mount3d(); }
-  componentWillUnmount() { clearTimeout(this.retry); if (this.view) this.view.dispose(); }
-  mount3d() {
-    if (this.view || !this.canvas) return;
-    if (!window.Lumo3D) {
-      if (this.tries++ < 40) this.retry = setTimeout(() => this.mount3d(), 150);
-      return;
-    }
-    this.view = window.Lumo3D.mount(this.canvas, { scene: 'panel', theme: 'warm', shift: [0.18, -0.02], zoom: 1.0 });
-  }
+  constructor(props) { super(props); this.state = { mode: 0, hour: 11, alerts: true }; }
   renderVals() {
-    if (!this.refFn) this.refFn = (el) => { if (el) this.canvas = el; };
-    const N = 46, frac = 5.4 / 6.6, cx = 160, cy = 150, r1 = 112, r2 = 136;
-    let done = '', left = '';
+    const modes = [
+      { label: 'Output', icon: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
+        frac: 5.4 / 6.6, value: '5.4', unit: 'kW', caption: '≈ 3 ACs running right now', min: '0', max: '6.6 kW' },
+      { label: 'Saved', icon: 'M3 6h18v13H3zM3 10h18M7 15h3',
+        frac: 5.7 / 9, value: '5.70', unit: 'AED', caption: 'saved today vs. buying it all', min: '0', max: 'AED 9' },
+      { label: 'Peak', icon: 'M13 2 4 14h7l-1 8 9-12h-7z',
+        frac: 6.1 / 6.6, value: '12:40', unit: 'pm', caption: 'peak expected · 6.1 kW', min: '6 am', max: '7 pm' },
+      { label: 'Sold', icon: 'M8 22 12 2l4 20M6 8h12M5 14h14',
+        frac: 1.2 / 4, value: '1.2', unit: 'kWh', caption: 'sent to the grid today', min: '0', max: '4 kWh' }
+    ];
+    const cur = modes[this.state.mode];
+    const N = 44, cx = 179, cy = 172, r1 = 100, r2 = 140, start = Math.PI * 1.08, sweep = Math.PI * 1.16;
+    let done = '', rest = '';
     for (let i = 0; i < N; i++) {
-      const t = i / (N - 1), a = Math.PI - t * Math.PI;
-      const x1 = cx + Math.cos(a) * r1, y1 = cy - Math.sin(a) * r1;
-      const x2 = cx + Math.cos(a) * r2, y2 = cy - Math.sin(a) * r2;
-      const seg = 'M' + x1.toFixed(1) + ' ' + y1.toFixed(1) + 'L' + x2.toFixed(1) + ' ' + y2.toFixed(1);
-      if (t <= frac) done += seg; else left += seg;
+      const t = i / (N - 1), a = start - t * sweep;
+      const seg = 'M' + (cx + Math.cos(a) * r1).toFixed(1) + ' ' + (cy - Math.sin(a) * r1).toFixed(1) + 'L' + (cx + Math.cos(a) * r2).toFixed(1) + ' ' + (cy - Math.sin(a) * r2).toFixed(1);
+      if (t <= cur.frac) done += seg; else rest += seg;
     }
-    const ae = Math.PI - frac * Math.PI;
-    const data = [['D', 'Day', '14.2', 'today'], ['W', 'Week', '96', 'this week'], ['M', 'Month', '412', 'this month'], ['Y', 'Year', '4,890', 'this year']];
-    const modes = data.map((d, i) => ({
-      short: d[0], label: d[1], on: this.state.mode === i,
-      bg: this.state.mode === i ? '#EE7A3B' : '#F6F4F1',
-      fg: this.state.mode === i ? '#1E1C1A' : '#1E1C1A',
-      pick: () => this.setState({ mode: i })
+    const ae = start - cur.frac * sweep;
+    const kw = [0,0,0,0,0,0,0.4,1.6,2.9,3.9,4.8,5.4,6.0,6.1,5.7,4.9,3.8,2.5,1.1,0.2,0,0,0,0];
+    const fmt = (h) => (h % 12 === 0 ? 12 : h % 12) + (h < 12 ? ' am' : ' pm');
+    const bars = kw.map((v, h) => ({
+      h: Math.max(3, Math.round(v / 6.6 * 66)),
+      bg: h > 11 ? '#D6D2CC' : 'linear-gradient(#E8692A, #F7C4A3)',
+      ring: h === this.state.hour ? '1.5px solid #1D1D1D' : 'none',
+      label: fmt(h) + ': ' + v.toFixed(1) + ' kW' + (h > 11 ? ' forecast' : ''),
+      pick: () => this.setState({ hour: h })
     }));
-    const cur = data[this.state.mode];
+    const on = this.state.alerts;
     return {
-      canvasRef: this.refFn, ticksDone: done, ticksLeft: left, modes, made: cur[2], periodWord: cur[3],
-      dot: { x: (cx + Math.cos(ae) * (r2 + 10)).toFixed(1), y: (cy - Math.sin(ae) * (r2 + 10)).toFixed(1) }
+      modes: modes.map((m, i) => ({ label: m.label, icon: m.icon, on: this.state.mode === i,
+        bg: this.state.mode === i ? '#E8692A' : '#FFFFFF', fg: this.state.mode === i ? '#FFFFFF' : '#1D1D1D',
+        pick: () => this.setState({ mode: i }) })),
+      dial: { done: done || 'M0 0', rest: rest || 'M0 0', value: cur.value, unit: cur.unit, caption: cur.caption, min: cur.min, max: cur.max,
+        dx: (cx + Math.cos(ae) * (r2 + 10)).toFixed(1), dy: (cy - Math.sin(ae) * (r2 + 10)).toFixed(1),
+        aria: cur.label + ': ' + cur.value + ' ' + cur.unit + ', ' + cur.caption },
+      bars, readout: fmt(this.state.hour) + ' · ' + kw[this.state.hour].toFixed(1) + ' kW' + (this.state.hour === 11 ? ' · now' : ''),
+      alerts: { on, track: '#FFFFFF', knobBg: on ? '#1D1D1D' : '#D6D2CC', knob: on ? 'translateX(26px)' : 'translateX(0)', flip: () => this.setState({ alerts: !on }) }
     };
   }
 }

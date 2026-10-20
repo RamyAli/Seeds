@@ -11,14 +11,14 @@
 
   var WARMC = { solar: 0xEE7A3B, battery: 0xB8D94A, grid: 0x5B7FAE, ev: 0x1E1C1A };
   var THEMES = {
-    warm: { mode: 'day', hemiSky: 0xfff8ee, hemiGround: 0xd6cfc5, hemi: 0.9, sun: 0xffe2bd, sunI: 1.3, ground: 0xE7E4DF, rim: 0,
-      wall: 0xDCD8D2, wall2: 0xCFCAC3, slab: 0xEAE7E2, glass: 0x3a2f24, glassEm: 0xFFC98A, glassEmI: 0.85, leaf: 0x7E9A6A, trunk: 0xB59A7A, pool: 0x9CC9D9,
+    warm: { mode: 'day', sky: 0xCFCDC9, terrace: 0xBDBBB7, archGround: 0xAFADA9, hemiSky: 0xf2f1ee, hemiGround: 0x8e8c88, hemi: 0.55, sun: 0xfff3e6, sunI: 1.6, ground: 0xE7E4DF, rim: 0,
+      wall: 0xBBB9B5, wall2: 0xA9A7A3, slab: 0xCBC9C5, glass: 0x2a221a, glassEm: 0xEFD3AA, glassEmI: 0.95, leaf: 0x7E9A6A, trunk: 0xB59A7A, pool: 0x9CC9D9,
       exposure: 1.0, cantilever: true, colors: WARMC, coin: 0xDDF57A, coinEdge: 0xB9D24E },
-    warmNight: { mode: 'night', night: true, hemiSky: 0x8a8fb0, hemiGround: 0x1b1a18, hemi: 0.45, sun: 0xb8c2ff, sunI: 0.3, ground: 0x23211E, rim: 0,
+    warmNight: { mode: 'night', night: true, sky: 0x24221F, terrace: 0x3A3733, archGround: 0x2B2926, hemiSky: 0x8a8fb0, hemiGround: 0x1b1a18, hemi: 0.45, sun: 0xb8c2ff, sunI: 0.3, ground: 0x23211E, rim: 0,
       wall: 0xA9A49C, wall2: 0x98928A, slab: 0xB9B4AC, glass: 0x3a2f24, glassEm: 0xFFB866, glassEmI: 1.7, leaf: 0x3d5236, trunk: 0x6b5a48, pool: 0x2B5E7A,
       exposure: 1.0, cantilever: true, colors: { solar: 0x5a5650, battery: 0xC9E86B, grid: 0x86A6D4, ev: 0xF2EFEA } },
-    warmCloudy: { mode: 'cloudy', cloudy: true, hemiSky: 0xeeeae4, hemiGround: 0xcfc9c0, hemi: 1.0, sun: 0xf1ede7, sunI: 0.5, ground: 0xE7E4DF, rim: 0,
-      wall: 0xDCD8D2, wall2: 0xCFCAC3, slab: 0xEAE7E2, glass: 0x3a2f24, glassEm: 0xFFC98A, glassEmI: 0.45, leaf: 0x7E9A6A, trunk: 0xB59A7A, pool: 0xA9C4CE,
+    warmCloudy: { mode: 'cloudy', cloudy: true, sky: 0xC6C6C5, terrace: 0xB5B4B1, archGround: 0xA6A5A2, hemiSky: 0xeeeae4, hemiGround: 0x9a958e, hemi: 0.7, sun: 0xf1ede7, sunI: 0.5, ground: 0xE7E4DF, rim: 0,
+      wall: 0xBBB9B5, wall2: 0xA9A7A3, slab: 0xCBC9C5, glass: 0x2a221a, glassEm: 0xEFD3AA, glassEmI: 0.6, leaf: 0x7E9A6A, trunk: 0xB59A7A, pool: 0xA9C4CE,
       exposure: 1.0, cantilever: true, colors: WARMC },
     day: { mode: 'day', hemiSky: 0xffffff, hemiGround: 0xdfe3e8, hemi: 0.95, sun: 0xfff1dc, sunI: 1.35, ground: 0xF7F8FA, rim: 0xE4E6EA,
       wall: 0xFCFCFB, wall2: 0xF0EEEA, glass: 0x2A3646, glassEm: 0x000000, glassEmI: 0, leaf: 0x58B04E, trunk: 0xB58A5E, pool: 0x5EC2FF, exposure: 1.05 },
@@ -123,7 +123,7 @@
   }
 
   function makeFlow(group, curve, color, kw, active) {
-    var tubeM = new T.MeshBasicMaterial({ color: active ? color : 0xA9AFB7, transparent: true, opacity: active ? 0.28 : 0.35 });
+    var tubeM = new T.MeshBasicMaterial({ color: active ? color : 0xA9AFB7, transparent: true, opacity: active ? 0.22 : 0.25 });
     var tube = new T.Mesh(new T.TubeGeometry(curve, 48, 0.022 + Math.min(kw, 9) * 0.004, 8, false), tubeM);
     group.add(tube);
     var dots = [];
@@ -142,13 +142,20 @@
     return { curve: curve, dots: dots, speed: 0.1 + Math.min(kw, 9) * 0.045 };
   }
 
-  function buildHome(scene, theme) {
+  function buildHome(scene, theme, opts) {
     var th = THEMES[theme] || THEMES.day;
+    var arch = !!(opts && opts.arch);
     var world = new T.Group(); scene.add(world);
 
-    var plat = new T.Mesh(new T.CylinderGeometry(4.6, 4.6, 0.28, 72), std(th.ground, { roughness: 0.9 }));
-    plat.position.y = -0.14; plat.receiveShadow = true; world.add(plat);
-    if (th.rim) {
+    if (arch) {
+      var gp = new T.Mesh(new T.PlaneGeometry(90, 90), std(th.archGround || th.ground, { roughness: 0.95 }));
+      gp.rotation.x = -Math.PI / 2; gp.position.y = -0.1; gp.receiveShadow = true; world.add(gp);
+      var ter = box(8.0, 0.1, 7.0, std(th.terrace || th.ground, { roughness: 0.85 })); ter.position.set(0.2, -0.05, 0.6); ter.castShadow = false; world.add(ter);
+    } else {
+      var plat = new T.Mesh(new T.CylinderGeometry(4.6, 4.6, 0.28, 72), std(th.ground, { roughness: 0.9 }));
+      plat.position.y = -0.14; plat.receiveShadow = true; world.add(plat);
+    }
+    if (th.rim && !arch) {
       var ring = new T.Mesh(new T.TorusGeometry(4.6, 0.025, 8, 96), std(th.rim));
       ring.rotation.x = Math.PI / 2; world.add(ring);
     }
@@ -166,7 +173,7 @@
     world.add(at(box(2.2, 1.0, 0.04, glass), 0.65, 0.72, 1.51));
     world.add(at(box(1.6, 0.7, 0.04, glass), -0.55, 2.2, 1.01));
     var side = box(0.04, 0.9, 1.6, glass); world.add(at(side, 2.11, 0.75, 0.2));
-    world.add(at(box(0.62, 1.15, 0.05, std(0xC8A27A, { roughness: 0.7 })), -1.35, 0.58, 1.52));
+    world.add(at(box(0.62, 1.15, 0.05, std(th.cantilever ? 0x7E7871 : 0xC8A27A, { roughness: 0.7 })), -1.35, 0.58, 1.52));
     if (th.cantilever) {
       world.add(at(box(1.9, 0.95, 1.5, wall2), 0.95, 2.18, 1.05));
       world.add(at(box(2.1, 0.1, 1.7, slab), 0.95, 2.7, 1.05));
@@ -192,12 +199,14 @@
       });
     });
 
+    if (!arch) {
     var pool = new T.Mesh(new T.BoxGeometry(2.0, 0.06, 1.15), std(th.pool, { roughness: 0.08, metalness: 0.2, emissive: th.night ? 0x1E6FB8 : 0x000000, emissiveIntensity: 0.5 }));
     pool.position.set(1.9, 0.02, 2.45); pool.receiveShadow = true; world.add(pool);
     world.add(at(box(2.2, 0.04, 1.35, std(0xE9ECEF)), 1.9, 0.0, 2.45));
 
     var p1 = palm(th); p1.position.set(-3.0, 0, 1.9); world.add(p1);
     var p2 = palm(th); p2.position.set(-3.5, 0, -0.6); p2.scale.setScalar(0.8); p2.rotation.y = 1.3; world.add(p2);
+    }
 
     var batOffline = th.cloudy;
     var bat = box(0.56, 0.95, 0.28, std(batOffline ? 0xD5D8DD : 0xFFFFFF, { roughness: 0.4 }));
@@ -210,7 +219,8 @@
     var postLed = box(0.1, 0.1, 0.02, std(C.lime, { emissive: C.lime, emissiveIntensity: th.night ? 1.6 : 0.6 }));
     postLed.position.set(2.05, 0.7, -2.76); world.add(postLed);
 
-    var py = pylon(); py.position.set(-2.55, 0, -2.85); world.add(py);
+    if (!arch) { var py = pylon(); py.position.set(-2.55, 0, -2.85); world.add(py); }
+    if (arch) { var warmIn = new T.PointLight(0xFFC98A, th.night ? 1.6 : 0.8, 4.5); warmIn.position.set(0.9, 2.1, 1.3); world.add(warmIn); }
 
     var clouds = [];
     if (th.cloudy) {
@@ -236,7 +246,7 @@
     var P = {
       solar: new T.Vector3(-0.6, 3.15, -0.5),
       battery: new T.Vector3(-2.3, 1.1, 0.5),
-      grid: new T.Vector3(-2.55, 2.45, -2.85),
+      grid: arch ? new T.Vector3(-5.5, 3.2, -3.5) : new T.Vector3(-2.55, 2.45, -2.85),
       ev: new T.Vector3(2.05, 0.95, -2.85)
     };
     var col = th.colors || { solar: C.solar, battery: C.battery, grid: C.grid, ev: th.night ? 0xF3F4F5 : 0x111315 };
@@ -248,8 +258,8 @@
     });
 
     return {
-      world: world, flows: flows, clouds: clouds, hubRing: hubRing,
-      camera: { pos: [8.6, 7.0, 10.6], look: [0, 1.25, 0], fov: 29 }
+      world: world, flows: flows, clouds: clouds, hubRing: hubRing, sky: arch ? th.sky : undefined,
+      camera: arch ? { pos: [5.4, 1.45, 7.0], look: [0.2, 1.75, 0.2], fov: 38 } : { pos: [8.6, 7.0, 10.6], look: [0, 1.25, 0], fov: 29 }
     };
   }
 
@@ -314,12 +324,13 @@
     return { world: world, coin: coin, sparks: sparks, flows: [], camera: { pos: [0, 0.6, 6.4], look: [0, 0, 0], fov: 34 } };
   }
 
-  function buildDevices(scene, theme) {
+  function buildDevices(scene, theme, opts) {
     var th = THEMES[theme] || THEMES.warm;
+    var only = opts && opts.only;
     var world = new T.Group(); scene.add(world);
-    var plat = new T.Mesh(new T.CylinderGeometry(4.2, 4.2, 0.12, 72), std(th.ground || 0xE7E4DF, { roughness: 0.95 }));
+    var plat = new T.Mesh(new T.CylinderGeometry(4.2, 4.2, 0.12, 72), std((opts && opts.ground) || th.ground || 0xE7E4DF, { roughness: 0.95 }));
     plat.position.y = -0.06; plat.receiveShadow = true; world.add(plat);
-    var white = std(0xF5F3F0, { roughness: 0.35 });
+    var white = std(0xDCD8D2, { roughness: 0.38 });
     var dark = std(0x2A2724, { roughness: 0.4, metalness: 0.2 });
     var items = [];
     // AC split unit
@@ -344,11 +355,18 @@
     wb.add(cable);
     wb.position.set(2.2, 1.15, 0); world.add(wb); items.push(wb);
     var wbStand = box(0.05, 0.8, 0.05, std(0xCFCAC3)); wbStand.position.set(2.2, 0.4, -0.15); world.add(wbStand);
+    if (only) {
+      var keep = { ac: ac, battery: bat, wallbox: wb }[only] || bat;
+      [ac, bat, wb, acStand, wbStand].forEach(function (o) { if (o !== keep && !(only === 'ac' && o === acStand) && !(only === 'wallbox' && o === wbStand)) o.visible = false; });
+      keep.position.x = 0; if (only === 'ac') acStand.position.x = 0; if (only === 'wallbox') wbStand.position.x = 0;
+      return { world: world, devices: [keep], flows: [], sky: opts.ground, camera: { pos: [1.2, 1.5, 4.4], look: [0, 0.95, 0], fov: 30 } };
+    }
     return { world: world, devices: items, flows: [], camera: { pos: [0, 2.4, 7.6], look: [0, 0.85, 0], fov: 30 } };
   }
 
   function mount(canvas, opts) {
     opts = opts || {};
+    if (T.ColorManagement && (opts.arch || opts.scene === 'devices' || opts.trueColor)) T.ColorManagement.legacyMode = false;
     var w = canvas.clientWidth || +canvas.getAttribute('width') || 300;
     var h = canvas.clientHeight || +canvas.getAttribute('height') || 200;
     var renderer;
@@ -364,7 +382,7 @@
 
     var theme = opts.theme || 'day';
     var th = THEMES[theme] || THEMES.day;
-    renderer.toneMappingExposure = th.exposure;
+    renderer.toneMappingExposure = opts.arch ? 0.9 : th.exposure;
     var scene = new T.Scene();
     scene.add(new T.HemisphereLight(th.hemiSky, th.hemiGround, opts.scene === 'coin' ? 1.0 : th.hemi));
     var isHome = !opts.scene || opts.scene === 'home';
@@ -377,7 +395,11 @@
     var fill = new T.DirectionalLight(0xdfe9ff, 0.35); fill.position.set(-6, 4, -3); scene.add(fill);
 
     var built = opts.scene === 'panel' ? buildPanel(scene, theme) : opts.scene === 'coin' ? buildCoin(scene, theme)
-      : opts.scene === 'devices' ? buildDevices(scene, theme) : buildHome(scene, theme);
+      : opts.scene === 'devices' ? buildDevices(scene, theme, opts) : buildHome(scene, theme, opts);
+    if (built.sky !== undefined) {
+      renderer.setClearColor(built.sky, 1);
+      scene.fog = new T.Fog(built.sky, opts.scene === 'devices' ? 6 : 13, opts.scene === 'devices' ? 14 : 34);
+    }
     if (opts.mirror) built.world.scale.x = -1;
 
     var cam = new T.PerspectiveCamera(built.camera.fov, w / h, 0.1, 100);
@@ -415,7 +437,7 @@
         built.world.rotation.y = yaw;
         built.devices.forEach(function (d, i) { d.rotation.y = reduce ? -0.35 : -0.35 + Math.sin(t * 0.4 + i * 1.3) * 0.35; });
       } else {
-        built.world.rotation.y = yaw + sway;
+        built.world.rotation.y = yaw + (opts.arch ? sway * 0.5 : sway);
       }
       if (built.sun) {
         var sa = 0.9 + (reduce ? 0.3 : Math.sin(t * 0.25) * 0.35);

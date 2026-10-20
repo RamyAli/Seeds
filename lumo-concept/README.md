@@ -31,11 +31,15 @@ On the canvas, `three.min.js` and `lumo3d.js` are loaded as uploaded assets.
 
 ## v4 · Warm minimal (canvas page "v4")
 
-This version takes its style from architectural smart-home UIs. Every v4 artboard file starts with `W4`. It has:
-- warm greige and concrete tones (#E7E4DF ground, #F6F4F1 paper cards, frosted cards over the 3D view)
-- big numerals in Hanken Grotesk Light, with IBM Plex Sans Arabic for Arabic
-- one pale-lime hero tile per screen (#DDF57A), orange tick-mark dials (#EE7A3B), black-knob pill toggles, round nav buttons and black primary buttons
+v4 was rebuilt from a written analysis of the four "Homely"-style reference shots.
 
-`3d/lumo3d-v4.js` adds:
-- warm, warmNight and warmCloudy themes for a cantilevered concrete villa with glowing windows
-- a `devices` scene showing an AC unit, a home battery and an EV wallbox
+- **Imagery.** A full-screen architectural render of the villa, made live with Three.js, sits behind frosted tiles. The camera is low and the concrete is neutral, with warm-lit glass and a fog-matched grey sky. Devices appear as product renders on paper white.
+- **Colour.** The palette is #EBE8E3 ground, #F6F5F2 cards, white circles and #1D1D1D ink. Each screen has one lime tile (#E4F98C). Orange (#E8692A) is used only for the active mode and for progress. Nav and buttons are charcoal or black.
+- **Type.** Geist at regular weight, in sentence case: title 26, label 15, caption 11–12. Numerals use the light 300 weight at 26 to 72. IBM Plex Sans Arabic is used for RTL.
+- **Components.** Each one maps to a reference:
+  - the preset pill, frosted tiles with pill toggles (white track, black knob) and the 4-circle nav (from Home)
+  - mode circles and the long-tick dial (from Climate)
+  - the wheel-picker sheet and the black Save-style button (from the time picker)
+  - the product hero card with From/To, the 2×2 cards and the lime swipe slider (from Lock Settings)
+
+Every v4 artboard file starts with `W4`. The 3D library is `3d/lumo3d-v5.js`, which adds the `arch` render mode and single-product (`only`) renders.
