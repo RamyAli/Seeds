@@ -9,7 +9,8 @@
       "title": "05 Active event · Countdown gauge",
       "w": 390,
       "x": 940,
-      "y": 1244
+      "y": 1244,
+      "page": "v3"
     },
     "CloudyDay.dc.html": {
       "h": 844,
@@ -18,14 +19,16 @@
       "w": 390,
       "x": 1410,
       "y": 0,
-      "is_interactive": true
+      "is_interactive": true,
+      "page": "v3"
     },
     "DesignSystem.dc.html": {
       "h": 2700,
       "title": "Mini design system · clean UI + 3D",
       "w": 1440,
       "x": 0,
-      "y": 3732
+      "y": 3732,
+      "page": "v3"
     },
     "EventResult.dc.html": {
       "h": 844,
@@ -34,7 +37,8 @@
       "title": "06 Event result · Rewards earned",
       "w": 390,
       "x": 1410,
-      "y": 1244
+      "y": 1244,
+      "page": "v3"
     },
     "GridMoment.dc.html": {
       "h": 844,
@@ -43,7 +47,8 @@
       "title": "04 Grid moment · Detail + Accept",
       "w": 390,
       "x": 470,
-      "y": 1244
+      "y": 1244,
+      "page": "v3"
     },
     "GridMomentArabic.dc.html": {
       "h": 844,
@@ -52,7 +57,8 @@
       "title": "04 AR · لحظة الشبكة (RTL)",
       "w": 390,
       "x": 470,
-      "y": 2488
+      "y": 2488,
+      "page": "v3"
     },
     "HomeArabic.dc.html": {
       "h": 844,
@@ -61,7 +67,8 @@
       "w": 390,
       "x": 0,
       "y": 2488,
-      "is_interactive": true
+      "is_interactive": true,
+      "page": "v3"
     },
     "HomeNight.dc.html": {
       "h": 844,
@@ -70,7 +77,8 @@
       "w": 390,
       "x": 470,
       "y": 0,
-      "is_interactive": true
+      "is_interactive": true,
+      "page": "v3"
     },
     "LockScreen.dc.html": {
       "h": 844,
@@ -79,7 +87,8 @@
       "title": "03 Grid moment · Lock screen push",
       "w": 390,
       "x": 0,
-      "y": 1244
+      "y": 1244,
+      "page": "v3"
     },
     "Main.dc.html": {
       "h": 844,
@@ -88,7 +97,8 @@
       "title": "01 Home · Live 3D energy (day)",
       "w": 390,
       "x": 0,
-      "y": 0
+      "y": 0,
+      "page": "v3"
     },
     "SolarDetail.dc.html": {
       "h": 844,
@@ -97,14 +107,16 @@
       "title": "02 Node detail · Solar",
       "w": 390,
       "x": 940,
-      "y": 0
+      "y": 0,
+      "page": "v3"
     },
     "UserFlow.dc.html": {
       "h": 844,
       "title": "User flow · notification → accept → active → reward",
       "w": 1330,
       "x": 940,
-      "y": 2488
+      "y": 2488,
+      "page": "v3"
     },
     "Wallet.dc.html": {
       "h": 844,
@@ -113,7 +125,134 @@
       "title": "07 Rewards wallet",
       "w": 390,
       "x": 1880,
-      "y": 1244
+      "y": 1244,
+      "page": "v3"
+    },
+    "W4Home.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "01 Home · Live energy (day)",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4Night.dc.html": {
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "01b Home · Night, battery discharging",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4Solar.dc.html": {
+      "x": 940,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "02 Node detail · Solar",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4Cloudy.dc.html": {
+      "x": 1410,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "08 Edge state · Cloudy + battery offline",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4Lock.dc.html": {
+      "x": 0,
+      "y": 1244,
+      "w": 390,
+      "h": 844,
+      "title": "03 Grid moment · Lock screen push",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4Moment.dc.html": {
+      "x": 470,
+      "y": 1244,
+      "w": 390,
+      "h": 844,
+      "title": "04 Grid moment · Detail + Accept",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4Active.dc.html": {
+      "x": 940,
+      "y": 1244,
+      "w": 390,
+      "h": 844,
+      "title": "05 Active event · Countdown",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4Result.dc.html": {
+      "x": 1410,
+      "y": 1244,
+      "w": 390,
+      "h": 844,
+      "title": "06 Event result · Rewards",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4Wallet.dc.html": {
+      "x": 1880,
+      "y": 1244,
+      "w": 390,
+      "h": 844,
+      "title": "07 Rewards wallet",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4HomeAR.dc.html": {
+      "x": 0,
+      "y": 2488,
+      "w": 390,
+      "h": 844,
+      "title": "01 AR · الرئيسية (RTL)",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4MomentAR.dc.html": {
+      "x": 470,
+      "y": 2488,
+      "w": 390,
+      "h": 844,
+      "title": "04 AR · لحظة الشبكة (RTL)",
+      "page": "v4",
+      "radius": 44,
+      "is_interactive": true
+    },
+    "W4Flow.dc.html": {
+      "x": 940,
+      "y": 2488,
+      "w": 1330,
+      "h": 844,
+      "title": "User flow · notification → accept → active → reward",
+      "page": "v4"
+    },
+    "W4System.dc.html": {
+      "x": 0,
+      "y": 3732,
+      "w": 1440,
+      "h": 2600,
+      "title": "Design system · v4 warm minimal",
+      "page": "v4"
     }
   },
   "createdOnFiles": {
@@ -122,7 +261,8 @@
   },
   "designSystems": [],
   "launch": {
-    "view": "canvas"
+    "view": "canvas",
+    "page": "v4"
   },
   "notes": {
     "t1": {
@@ -131,7 +271,8 @@
       "text": "Feature 1 · Live Energy Flow",
       "w": 240,
       "x": 0,
-      "y": -300
+      "y": -300,
+      "page": "v3"
     },
     "t2": {
       "kind": "title1",
@@ -139,7 +280,8 @@
       "text": "Feature 2 · Shift & Earn",
       "w": 240,
       "x": 0,
-      "y": 944
+      "y": 944,
+      "page": "v3"
     },
     "t3": {
       "kind": "title1",
@@ -147,7 +289,8 @@
       "text": "Arabic RTL + user flow",
       "w": 240,
       "x": 0,
-      "y": 2188
+      "y": 2188,
+      "page": "v3"
     },
     "t4": {
       "kind": "title1",
@@ -155,7 +298,40 @@
       "text": "Design system",
       "w": 240,
       "x": 0,
-      "y": 3432
+      "y": 3432,
+      "page": "v3"
+    },
+    "v4t1": {
+      "x": 0,
+      "y": -300,
+      "text": "v4 · Live Energy Flow",
+      "kind": "title1",
+      "maxW": 1800,
+      "page": "v4"
+    },
+    "v4t2": {
+      "x": 0,
+      "y": 944,
+      "text": "v4 · Shift & Earn",
+      "kind": "title1",
+      "maxW": 2270,
+      "page": "v4"
+    },
+    "v4t3": {
+      "x": 0,
+      "y": 2188,
+      "text": "v4 · Arabic RTL + user flow",
+      "kind": "title1",
+      "maxW": 2270,
+      "page": "v4"
+    },
+    "v4t4": {
+      "x": 0,
+      "y": 3432,
+      "text": "v4 · Design system",
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "v4"
     }
   },
   "order": [
@@ -171,8 +347,30 @@
     "HomeArabic.dc.html",
     "GridMomentArabic.dc.html",
     "UserFlow.dc.html",
-    "DesignSystem.dc.html"
+    "DesignSystem.dc.html",
+    "W4Home.dc.html",
+    "W4Night.dc.html",
+    "W4Solar.dc.html",
+    "W4Cloudy.dc.html",
+    "W4Lock.dc.html",
+    "W4Moment.dc.html",
+    "W4Active.dc.html",
+    "W4Result.dc.html",
+    "W4Wallet.dc.html",
+    "W4HomeAR.dc.html",
+    "W4MomentAR.dc.html",
+    "W4Flow.dc.html",
+    "W4System.dc.html"
   ],
-  "pages": [],
+  "pages": [
+    {
+      "id": "v3",
+      "name": "v3 · Lime + 3D"
+    },
+    {
+      "id": "v4",
+      "name": "v4 · Warm minimal"
+    }
+  ],
   "title": "Lumo – Energy App Concept"
 }

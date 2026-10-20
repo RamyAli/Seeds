@@ -28,3 +28,14 @@ Visual language (v0.3): clean, modern UI with white cards on soft grey (#F2F3F5)
 On the canvas, `three.min.js` and `lumo3d.js` are loaded as uploaded assets.
 
 `canvas.json` holds the artboard layout. The files use the Design canvas format: inline styles, plus a small `DCLogic` class for state such as the toggles, the countdown and the points counter.
+
+## v4 · Warm minimal (canvas page "v4")
+
+This version takes its style from architectural smart-home UIs. Every v4 artboard file starts with `W4`. It has:
+- warm greige and concrete tones (#E7E4DF ground, #F6F4F1 paper cards, frosted cards over the 3D view)
+- big numerals in Hanken Grotesk Light, with IBM Plex Sans Arabic for Arabic
+- one pale-lime hero tile per screen (#DDF57A), orange tick-mark dials (#EE7A3B), black-knob pill toggles, round nav buttons and black primary buttons
+
+`3d/lumo3d-v4.js` adds:
+- warm, warmNight and warmCloudy themes for a cantilevered concrete villa with glowing windows
+- a `devices` scene showing an AC unit, a home battery and an EV wallbox

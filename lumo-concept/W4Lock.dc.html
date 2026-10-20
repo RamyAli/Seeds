@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lumo v4 – Grid moment notification</title>
+<script src="./support.js"></script>
+<script src="/_blob/b182923961479cc4ed198465a486c3a2"></script>
+<script src="/_blob/6473e9ec8cdb05100ed004f812e4e6de"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+button,a{font-family:inherit}
+a{color:#1E1C1A}a:hover{color:#6B665F}
+canvas{display:block}
+.frost{background:rgba(248,246,243,.8);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);border:1px solid rgba(255,255,255,.75)}
+@keyframes lumoDrop{0%{transform:translateY(-28px) scale(.95);opacity:0}100%{transform:none;opacity:1}}
+.drop{animation:lumoDrop .55s cubic-bezier(.2,.9,.3,1.2) both}
+.drop2{animation:lumoDrop .55s .12s cubic-bezier(.2,.9,.3,1.2) both}
+@media (prefers-reduced-motion: reduce){.drop,.drop2{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #E7E4DF; color: #1E1C1A; font-family: 'Hanken Grotesk', -apple-system, system-ui, sans-serif; line-height: 1.4">
+  <canvas ref="{{canvasRef}}" width="390" height="844" role="img" aria-label="Lock screen wallpaper: a 3D model of your villa with warm lit windows." style="position: absolute; left: 0; top: 0; width: 390px; height: 844px"></canvas>
+
+  <div style="position: relative; display: flex; flex-direction: column; align-items: center; padding-top: 68px; pointer-events: none">
+    <span style="font-size: 17px; font-weight: 500; color: #3A3632">Wednesday 15 July</span>
+    <span style="font-size: 108px; line-height: 0.95; font-weight: 300; letter-spacing: -0.05em; font-variant-numeric: tabular-nums">3:42</span>
+  </div>
+
+  <div style="position: absolute; left: 12px; right: 12px; bottom: 120px; display: flex; flex-direction: column; gap: 8px">
+    <a href="W4Moment.dc.html" class="drop frost" aria-label="Lumo notification: Grid moment 5 to 7 pm, earn 120 points. Open to review" style="display: flex; gap: 12px; padding: 14px; border-radius: 28px; text-decoration: none; color: #1E1C1A">
+      <span style="width: 44px; height: 44px; flex: none; border-radius: 13px; background: #1E1C1A; display: flex; align-items: center; justify-content: center">
+        <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="11" r="5" fill="#DDF57A"></circle><rect x="5" y="17" width="14" height="2.5" rx="1.25" fill="#EE7A3B"></rect></svg>
+      </span>
+      <span style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+        <span style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 600"><span>Grid moment · 5–7 pm</span><span style="font-size: 12px; font-weight: 400; color: #6B665F">now</span></span>
+        <span style="font-size: 14px; line-height: 1.4; color: #3A3632">Earn 120 points tonight. Pre-cool now and pause the EV charge — one tap and Lumo handles it.</span>
+      </span>
+    </a>
+    <div class="drop2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <a href="W4Moment.dc.html" style="height: 54px; border-radius: 27px; background: #1E1C1A; color: #FFFFFF; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; text-decoration: none">Review &amp; accept</a>
+      <button class="frost" style="height: 54px; border-radius: 27px; color: #1E1C1A; font-size: 15px; font-weight: 500; cursor: pointer">Not today</button>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 44px; right: 44px; bottom: 40px; display: flex; justify-content: space-between">
+    <button class="frost" aria-label="Torch" style="width: 52px; height: 52px; border-radius: 26px; color: #1E1C1A; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2h8l-1 6H9zM9 8h6v13a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zM12 12v3"></path></svg>
+    </button>
+    <button class="frost" aria-label="Camera" style="width: 52px; height: 52px; border-radius: 26px; color: #1E1C1A; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+    </button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  componentDidMount() { this.tries = 0; this.mount3d(); }
+  componentDidUpdate() { if (!this.view) this.mount3d(); }
+  componentWillUnmount() { clearTimeout(this.retry); if (this.view) this.view.dispose(); }
+  mount3d() {
+    if (this.view || !this.canvas) return;
+    if (!window.Lumo3D) {
+      if (this.tries++ < 40) this.retry = setTimeout(() => this.mount3d(), 150);
+      return;
+    }
+    this.view = window.Lumo3D.mount(this.canvas, { scene: 'home', theme: 'warm', shift: [0, 0.02], zoom: 0.62 });
+  }
+  renderVals() {
+    if (!this.refFn) this.refFn = (el) => { if (el) this.canvas = el; };
+    return { canvasRef: this.refFn };
+  }
+}
+</script>
+</body>
+</html>

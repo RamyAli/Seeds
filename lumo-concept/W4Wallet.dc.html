@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lumo v4 – Rewards</title>
+<script src="./support.js"></script>
+<script src="/_blob/b182923961479cc4ed198465a486c3a2"></script>
+<script src="/_blob/6473e9ec8cdb05100ed004f812e4e6de"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+button,a{font-family:inherit}
+a{color:#1E1C1A}a:hover{color:#6B665F}
+canvas{display:block}
+.seg:focus-visible,.cta:focus-visible{outline:2px solid #3F628F;outline-offset:2px}
+.frost{background:rgba(248,246,243,.9);-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.75)}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #E7E4DF; color: #1E1C1A; font-family: 'Hanken Grotesk', -apple-system, system-ui, sans-serif; font-size: 15px; line-height: 1.4">
+  <div style="padding: 52px 20px 0; display: flex; flex-direction: column; gap: 12px">
+    <header style="display: flex; justify-content: space-between; align-items: center; height: 48px">
+      <h1 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.03em">Rewards</h1>
+      <button aria-label="How points work" style="width: 48px; height: 48px; border-radius: 24px; border: 0; background: #F6F4F1; color: #1E1C1A; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+      </button>
+    </header>
+
+    <section style="position: relative; height: 164px; border-radius: 30px; background: #DDF57A; padding: 18px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between">
+      <canvas ref="{{canvasRef}}" width="170" height="164" role="img" aria-label="Your Lumo points coin." style="position: absolute; right: -14px; top: 0; width: 170px; height: 164px"></canvas>
+      <span style="position: relative; font-size: 13px; color: #3E4421">Level 3 · Sun Shifter</span>
+      <span style="position: relative; display: flex; flex-direction: column; line-height: 1.1">
+        <span style="font-size: 52px; font-weight: 300; letter-spacing: -0.045em; font-variant-numeric: tabular-nums">2,340</span>
+        <span style="font-size: 13px; color: #3E4421">points · worth AED 117.00</span>
+      </span>
+    </section>
+
+    <section style="background: #F6F4F1; border-radius: 30px; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 10px">
+      <span style="font-size: 13px; color: #4F4A44">Turn points into bill credit</span>
+      <div role="radiogroup" aria-label="Amount" style="display: flex; gap: 6px; background: #EAE6E1; padding: 4px; border-radius: 24px">
+        <sc-for list="{{options}}" as="o" hint-placeholder-count="3">
+          <button class="seg" role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 40px; min-width: 76px; padding: 0 14px; border-radius: 20px; border: {{o.border}}; background: {{o.bg}}; color: #1E1C1A; font-size: 13px; cursor: pointer; font-variant-numeric: tabular-nums">{{o.pts}} pts</button>
+        </sc-for>
+      </div>
+      <span style="font-size: 64px; line-height: 1; font-weight: 300; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; margin-top: 4px">AED {{aed}}</span>
+      <span style="font-size: 12px; color: #4F4A44">comes off your July bill · 20 pts = AED 1</span>
+      <button class="cta" style="align-self: stretch; height: 56px; border-radius: 28px; border: 0; background: #1E1C1A; color: #FFFFFF; font-size: 16px; font-weight: 500; cursor: pointer; margin-top: 4px">Redeem</button>
+    </section>
+
+    <section style="background: #F6F4F1; border-radius: 26px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 15px; font-weight: 500">Badges</span><span style="font-size: 12px; color: #4F4A44">3 of 12 · 4-moment streak</span></div>
+      <div style="display: flex; gap: 14px">
+        <span style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px"><span style="width: 48px; height: 48px; border-radius: 24px; background: #DDF57A; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg></span>First shift</span>
+        <span style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px"><span style="width: 48px; height: 48px; border-radius: 24px; background: #1E1C1A; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></span>Night owl</span>
+        <span style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px"><span style="width: 48px; height: 48px; border-radius: 24px; background: #EE7A3B; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"></path></svg></span>Heatwave</span>
+        <span style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #4F4A44"><span style="width: 48px; height: 48px; border-radius: 24px; border: 1.5px dashed #8B857D; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></span>Guardian</span>
+      </div>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 22px; display: flex; justify-content: center; gap: 10px">
+    <a href="W4Home.dc.html" class="frost" aria-label="Home" style="width: 56px; height: 56px; border-radius: 28px; color: #1E1C1A; display: flex; align-items: center; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"></rect></svg></a>
+    <a href="W4Solar.dc.html" class="frost" aria-label="Usage" style="width: 56px; height: 56px; border-radius: 28px; color: #1E1C1A; display: flex; align-items: center; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M8 15v-2M12 15V9M16 15v-4"></path></svg></a>
+    <a href="W4Wallet.dc.html" aria-current="page" aria-label="Rewards" style="width: 56px; height: 56px; border-radius: 28px; background: #1E1C1A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(30,28,26,.25)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"></path></svg></a>
+    <a href="W4Home.dc.html" class="frost" aria-label="Account" style="width: 56px; height: 56px; border-radius: 28px; color: #1E1C1A; display: flex; align-items: center; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { pick: 1 }; }
+  componentDidMount() { this.tries = 0; this.mount3d(); }
+  componentDidUpdate() { if (!this.view) this.mount3d(); }
+  componentWillUnmount() { clearTimeout(this.retry); if (this.view) this.view.dispose(); }
+  mount3d() {
+    if (this.view || !this.canvas) return;
+    if (!window.Lumo3D) {
+      if (this.tries++ < 40) this.retry = setTimeout(() => this.mount3d(), 150);
+      return;
+    }
+    this.view = window.Lumo3D.mount(this.canvas, { scene: 'coin', theme: 'warm', zoom: 1.1 });
+  }
+  renderVals() {
+    if (!this.refFn) this.refFn = (el) => { if (el) this.canvas = el; };
+    const opts = [{ pts: '500', aed: 25 }, { pts: '1,000', aed: 50 }, { pts: '2,000', aed: 100 }];
+    const options = opts.map((o, i) => {
+      const on = this.state.pick === i;
+      return Object.assign({}, o, {
+        on,
+        bg: on ? '#FFFFFF' : 'transparent',
+        border: on ? '0' : '1px solid #D3CEC7',
+        pick: () => this.setState({ pick: i })
+      });
+    });
+    return { canvasRef: this.refFn, options, aed: opts[this.state.pick].aed };
+  }
+}
+</script>
+</body>
+</html>

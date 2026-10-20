@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lumo v4 – Home</title>
+<script src="./support.js"></script>
+<script src="/_blob/b182923961479cc4ed198465a486c3a2"></script>
+<script src="/_blob/6473e9ec8cdb05100ed004f812e4e6de"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+button,a{font-family:inherit}
+a{color:#1E1C1A}a:hover{color:#6B665F}
+canvas{display:block}
+.frost{background:rgba(248,246,243,.74);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);border:1px solid rgba(255,255,255,.75)}
+.knob{transition:transform .25s cubic-bezier(.3,1.3,.5,1)}
+.sw:focus-visible{outline:2px solid #3F628F;outline-offset:3px}
+@media (prefers-reduced-motion: reduce){.knob{transition:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #E7E4DF; color: #1E1C1A; font-family: 'Hanken Grotesk', -apple-system, system-ui, sans-serif; font-size: 15px; line-height: 1.4">
+  <canvas ref="{{canvasRef}}" width="390" height="480" role="img" aria-label="3D view of your villa. Solar panels send 5.4 kW into the house, 2.1 kW charges the battery, 0.7 kW comes from the grid, the car charger is idle." style="position: absolute; left: 0; top: 0; width: 390px; height: 480px; touch-action: pan-y; cursor: grab"></canvas>
+  <div style="position: absolute; left: 0; right: 0; top: 400px; height: 90px; background: linear-gradient(rgba(231,228,223,0), #E7E4DF); pointer-events: none"></div>
+
+  <header style="position: absolute; left: 20px; right: 20px; top: 54px; display: flex; justify-content: space-between">
+    <span class="frost" aria-label="Omar's profile" style="width: 50px; height: 50px; border-radius: 25px; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 500">O</span>
+    <button class="frost" aria-label="Notifications, 1 new" style="width: 50px; height: 50px; border-radius: 25px; color: #1E1C1A; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; padding: 0">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+      <span style="position: absolute; top: 12px; right: 13px; width: 8px; height: 8px; border-radius: 4px; background: #EE7A3B"></span>
+    </button>
+  </header>
+
+  <section aria-label="Right now" style="position: absolute; left: 20px; right: 20px; top: 300px; display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none">
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 13px; color: #4F4A44; font-weight: 500">Right now</span>
+      <span style="font-size: 76px; line-height: 0.95; font-weight: 300; letter-spacing: -0.045em; font-variant-numeric: tabular-nums">82<span style="font-size: 36px">%</span></span>
+      <span style="font-size: 14px; color: #3A3632">of your home runs on sunshine</span>
+    </div>
+    <div class="frost" style="border-radius: 20px; padding: 8px 14px; display: flex; flex-direction: column; align-items: flex-end; line-height: 1.25">
+      <span style="font-size: 11px; color: #6B665F">Today so far</span>
+      <span style="font-size: 19px; font-weight: 400; font-variant-numeric: tabular-nums">AED 12.60</span>
+    </div>
+  </section>
+
+  <div style="position: absolute; left: 20px; right: 20px; top: 412px; display: flex; flex-direction: column; gap: 10px">
+    <a href="W4Solar.dc.html" class="frost" style="height: 66px; border-radius: 33px; padding: 0 16px 0 8px; display: flex; align-items: center; gap: 12px; text-decoration: none; background: rgba(250,249,247,.88)">
+      <span style="width: 48px; height: 48px; flex: none; border-radius: 24px; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="3"></rect><circle cx="12" cy="13" r="5"></circle><path d="M8 6h.01M11 6h2"></path></svg>
+      </span>
+      <span style="flex: 1; display: flex; flex-direction: column; line-height: 1.3">
+        <span style="font-size: 12px; color: #6B665F">Today · until 1:00 pm</span>
+        <span style="font-size: 15px; font-weight: 500">Battery full soon — run the washer</span>
+      </span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+    </a>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <a href="W4Solar.dc.html" aria-label="Solar producing 5.4 kW. Open solar details" style="height: 128px; border-radius: 28px; background: #DDF57A; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none">
+        <span style="width: 40px; height: 40px; border-radius: 20px; background: rgba(255,255,255,.55); display: flex; align-items: center; justify-content: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+        </span>
+        <span style="display: flex; flex-direction: column; line-height: 1.3"><span style="font-size: 16px; font-weight: 500">Solar</span><span style="font-size: 13px; color: #3E4421">5.4 kW · producing</span></span>
+      </a>
+      <div class="frost" style="height: 128px; border-radius: 28px; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <span style="width: 40px; height: 40px; border-radius: 20px; background: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="18" height="10" rx="2"></rect><path d="M22 11v2M11.5 9.5 9.5 12h3l-2 2.5"></path></svg></span>
+          <span style="font-size: 24px; font-weight: 300; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">64%</span>
+        </div>
+        <span style="display: flex; flex-direction: column; line-height: 1.3"><span style="font-size: 16px; font-weight: 500">Battery</span><span style="font-size: 13px; color: #6B665F">Charging · full 1 pm</span></span>
+      </div>
+      <div class="frost" style="height: 128px; border-radius: 28px; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <span style="width: 40px; height: 40px; border-radius: 20px; background: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 22 12 2l4 20M6 8h12M5 14h14M9.5 14 16 22M14.5 14 8 22"></path></svg></span>
+          <span style="font-size: 24px; font-weight: 300; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">0.7<span style="font-size: 13px"> kW</span></span>
+        </div>
+        <span style="display: flex; flex-direction: column; line-height: 1.3"><span style="font-size: 16px; font-weight: 500">Grid</span><span style="font-size: 13px; color: #6B665F">Buying a little</span></span>
+      </div>
+      <div class="frost" style="height: 128px; border-radius: 28px; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <span style="width: 40px; height: 40px; border-radius: 20px; background: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14v-5l-2-5H7l-2 5z"></path><circle cx="7.5" cy="17.5" r="1.5"></circle><circle cx="16.5" cy="17.5" r="1.5"></circle><path d="M5 12h14"></path></svg></span>
+          <button class="sw" role="switch" aria-checked="{{ev.on}}" aria-label="Smart EV charging at the night rate" onClick="{{ev.toggle}}" style="width: 56px; height: 44px; border: 0; padding: 0; background: transparent; cursor: pointer; display: flex; align-items: center">
+            <span style="width: 56px; height: 32px; border-radius: 16px; background: {{ev.track}}; padding: 3px; display: flex; box-shadow: inset 0 0 0 1px rgba(30,28,26,.08)">
+              <span class="knob" style="width: 26px; height: 26px; border-radius: 13px; background: {{ev.knobBg}}; transform: {{ev.knob}}; box-shadow: {{ev.knobShadow}}"></span>
+            </span>
+          </button>
+        </div>
+        <span style="display: flex; flex-direction: column; line-height: 1.3"><span style="font-size: 16px; font-weight: 500">EV charger</span><span style="font-size: 13px; color: #6B665F">{{ev.label}}</span></span>
+      </div>
+    </div>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 22px; display: flex; justify-content: center; gap: 10px">
+    <a href="W4Home.dc.html" aria-current="page" aria-label="Home" style="width: 56px; height: 56px; border-radius: 28px; background: #1E1C1A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(30,28,26,.25)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"></rect></svg></a>
+    <a href="W4Solar.dc.html" class="frost" aria-label="Usage" style="width: 56px; height: 56px; border-radius: 28px; color: #1E1C1A; display: flex; align-items: center; justify-content: center; background: rgba(250,249,247,.9)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M8 15v-2M12 15V9M16 15v-4"></path></svg></a>
+    <a href="W4Wallet.dc.html" class="frost" aria-label="Rewards" style="width: 56px; height: 56px; border-radius: 28px; color: #1E1C1A; display: flex; align-items: center; justify-content: center; background: rgba(250,249,247,.9)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"></path></svg></a>
+    <a href="W4Home.dc.html" class="frost" aria-label="Account" style="width: 56px; height: 56px; border-radius: 28px; color: #1E1C1A; display: flex; align-items: center; justify-content: center; background: rgba(250,249,247,.9)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"motion":{"editor":"boolean","default":true,"section":"Motion"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { ev: true }; }
+  componentDidMount() { this.tries = 0; this.mount3d(); }
+  componentDidUpdate() { if (!this.view) this.mount3d(); }
+  componentWillUnmount() { clearTimeout(this.retry); if (this.view) this.view.dispose(); }
+  mount3d() {
+    if (this.view || !this.canvas) return;
+    if (!window.Lumo3D) {
+      if (this.tries++ < 40) this.retry = setTimeout(() => this.mount3d(), 150);
+      return;
+    }
+    this.view = window.Lumo3D.mount(this.canvas, { scene: 'home', theme: 'warm', shift: [0.04, 0.14], zoom: 1.1, still: this.props.motion === false });
+  }
+  renderVals() {
+    if (!this.refFn) this.refFn = (el) => { if (el) this.canvas = el; };
+    const on = this.state.ev;
+    return {
+      canvasRef: this.refFn,
+      ev: {
+        on,
+        track: on ? '#FFFFFF' : '#DDD9D3',
+        knobBg: on ? '#1E1C1A' : '#FFFFFF',
+        knob: on ? 'translateX(24px)' : 'translateX(0)',
+        knobShadow: on ? 'none' : '0 1px 3px rgba(0,0,0,.2)',
+        label: on ? 'Smart charge · 11 pm' : 'Manual charging',
+        toggle: () => this.setState({ ev: !on })
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
