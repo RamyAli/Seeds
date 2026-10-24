@@ -25,6 +25,7 @@ CANOPY = "#2E4B33"
 SHOOT = "#9DBF6A"
 TRACK = "#EAE3D8"
 HATCH = "#CFC3B1"
+HATCH_ON = True  # hatched "left" part of progress bars
 
 # ---------------------------------------------------------------- icons
 ICONS = {
@@ -96,8 +97,9 @@ def money(v, cur="AED", sign="", big=False, rtl=False):
 _clip = [0]
 
 
-def bar(w, frac, color=ORANGE, today=None, h=10, rtl=False):
+def bar(w, frac, color=None, today=None, h=10, rtl=False):
     """Grassfeld progress bar: solid spent part, hatched remainder, Today tick."""
+    color = color or ORANGE
     _clip[0] += 1
     cid = f"c{_clip[0]}"
     pad = 5 if today is not None else 0
@@ -109,7 +111,7 @@ def bar(w, frac, color=ORANGE, today=None, h=10, rtl=False):
 
     lines = []
     x = sw - h
-    while x < w + h:
+    while HATCH_ON and x < w + h:
         x0, x1 = X(x), X(x + h)
         lines.append(f'<line x1="{x0:.1f}" y1="{pad + h}" x2="{x1:.1f}" y2="{pad}" stroke="{HATCH}" stroke-width="1.6"/>')
         x += 5.5
@@ -128,9 +130,12 @@ def bar(w, frac, color=ORANGE, today=None, h=10, rtl=False):
     return "".join(out)
 
 
-def legend_swatch(kind, color=ORANGE):
+def legend_swatch(kind, color=None):
+    color = color or ORANGE
     if kind == "solid":
         return f'<span class="sw" style="background:{color}"></span>'
+    if kind == "hatch" and not HATCH_ON:
+        return f'<span class="sw" style="background:{TRACK}"></span>'
     if kind == "hatch":
         return (
             '<svg width="12" height="12" viewBox="0 0 12 12" style="flex:none">'
@@ -758,7 +763,8 @@ def profile_body():
 
 
 # ---------------------------------------------------------------- CSS
-CSS = f"""
+def build_css():
+    return f"""
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{background:#D8D2C8;font-family:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;color:{INK};
   display:flex;flex-wrap:wrap;gap:48px;padding:48px;-webkit-font-smoothing:antialiased}}
@@ -995,7 +1001,7 @@ def main():
     parts = [screen(name, fn(), bg, **kw) for name, fn, bg, kw in SCREENS]
     html = (f'<!doctype html><html lang="en"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
-            f'<title>Nestly screens</title>{FONTS}<style>{CSS}</style></head>'
+            f'<title>Nestly screens</title>{FONTS}<style>{build_css()}</style></head>'
             f'<body>{"".join(parts)}</body></html>')
     OUT.write_text(html, encoding="utf-8")
     print(f"wrote {OUT} ({len(html)//1024} KB, {len(parts)} screens)")

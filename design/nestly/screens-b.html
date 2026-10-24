@@ -1,0 +1,907 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nestly screens, option B</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@1,400;1,500&display=swap" rel="stylesheet"><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#D8D2C8;font-family:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;color:#0E1424;
+  display:flex;flex-wrap:wrap;gap:48px;padding:48px;-webkit-font-smoothing:antialiased}
+[lang=ar]{font-family:"IBM Plex Sans Arabic","Schibsted Grotesk",sans-serif}
+.screen{width:393px;height:852px;position:relative;overflow:hidden;flex:none}
+.status{position:absolute;top:0;left:0;right:0;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 30px 0 44px;z-index:20}
+[dir=rtl] .status{direction:ltr}
+.time{font-weight:600;font-size:17px;letter-spacing:-.2px;font-family:"Schibsted Grotesk",sans-serif}
+.island{position:absolute;left:50%;top:11px;width:124px;height:36px;margin-left:-62px;border-radius:20px;background:#000}
+.sys{display:flex;gap:6px;align-items:center}
+.content{position:absolute;inset:0;padding:62px 16px 0}
+.hdr{display:flex;justify-content:space-between;align-items:center;margin:4px 4px 16px}
+.hdr-actions{display:flex;gap:10px;align-items:center}
+.hello{font-size:24px;font-weight:700;letter-spacing:-.4px}
+.title{font-size:32px;font-weight:700;letter-spacing:-.8px}
+.meta{font-size:13px;color:#5B6478}
+.meta b{color:#0E1424;font-weight:600}
+.muted{color:#9AA2B4}
+.center{text-align:center}
+.between{display:flex;justify-content:space-between;align-items:center}
+.flex{display:flex;gap:12px;align-items:center}
+.grow{flex:1;min-width:0}
+
+/* Liquid Glass */
+.glass{background:linear-gradient(160deg,rgba(255,255,255,.78),rgba(255,255,255,.42));
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:0 8px 28px rgba(20,40,90,.10),0 1px 2px rgba(20,40,90,.06),inset 0 1px 0 rgba(255,255,255,1),inset 0 -1px 1px rgba(255,255,255,.35);
+  backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%)}
+.glass-inset{background:rgba(14,20,36,.05);border:1px solid rgba(14,20,36,.04)}
+.glass-sheet{background:linear-gradient(180deg,rgba(252,250,246,.92),rgba(247,243,236,.96));
+  border:1px solid rgba(255,255,255,.9);box-shadow:0 -10px 40px rgba(20,40,90,.18),inset 0 1px 0 #fff;
+  backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%)}
+.iconbtn{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:#0E1424;flex:none}
+.iconbtn.sm{width:34px;height:34px}
+.iconbtn.plain{width:28px;height:28px}
+.iconbtn.accent{background:linear-gradient(160deg,#5B82F7,#2F5BEA 55%,#1E43C8);border:1px solid rgba(255,255,255,.45);
+  box-shadow:0 8px 20px rgba(47,91,234,.35),inset 0 1px 0 rgba(255,255,255,.55)}
+.avatar{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#1F48D6}
+.avatar.big{width:60px;height:60px;border-radius:30px;font-size:20px;color:#fff;background:linear-gradient(160deg,#5B82F7,#2F5BEA 55%,#1E43C8);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+
+/* Cards */
+.card{background:rgba(255,255,255,.80);border:1px solid rgba(255,255,255,.95);border-radius:22px;padding:18px;
+  box-shadow:0 1px 2px rgba(20,40,90,.04)}
+.card.flat{background:rgba(255,255,255,.72)}
+.card+.card{margin-top:10px}
+.ctitle{font-weight:600;font-size:16px}
+.rtitle{font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px}
+.rsub{font-size:12.5px;color:#5B6478;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.num{white-space:nowrap}
+[dir=rtl] .num{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.cur{font-size:.82em;font-weight:500}
+.dec{color:#9AA2B4}
+.hero{display:flex;align-items:center;gap:8px;font-size:30px;font-weight:700;letter-spacing:-.6px}
+.hero .cur{font-size:18px;font-weight:600}
+.hero-lab{font-size:13px;font-weight:400;color:#5B6478;letter-spacing:0;align-self:flex-end;margin-bottom:5px}
+.today{font-size:11px;color:#5B6478;margin-top:2px}
+.legend-wrap{margin-top:10px;align-items:flex-start}
+.legend{display:flex;flex-direction:column;gap:7px;font-size:13px;color:#5B6478}
+.legend>div{display:flex;align-items:center;gap:8px}
+.legend b{color:#0E1424;font-weight:600}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block;flex:none}
+.amounts{text-align:right;font-size:13.5px;display:flex;flex-direction:column;gap:6px;color:#5B6478}
+.amounts .strong{color:#0E1424;font-weight:600}
+.dots{display:flex;gap:5px;justify-content:center;margin-top:14px}
+.dots span{width:6px;height:6px;border-radius:3px;background:#E4E9F2}
+.dots .on{width:18px;background:#0E1424}
+
+.quick{margin-top:12px;border-radius:24px;display:flex;align-items:center;padding:12px 8px}
+.q{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.qdiv{width:1px;height:44px;background:rgba(14,20,36,.08)}
+.tile{border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.card.slim{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-top:12px}
+.count{font-size:13px;font-weight:600;color:#1F48D6}
+.section{display:flex;justify-content:space-between;align-items:center;margin:20px 6px 8px}
+.caps{font-size:11.5px;letter-spacing:.9px;text-transform:uppercase;color:#5B6478;font-weight:500}
+[lang=ar] .caps{letter-spacing:0;font-size:13px}
+.grp{margin:18px 6px 8px}
+.link{font-size:14px;font-weight:600;color:#1F48D6}
+.card.list{padding:4px 14px}
+.row{display:flex;align-items:center;gap:12px;padding:11px 0}
+.row+.row,.kv+.kv{border-top:1px solid rgba(14,20,36,.07)}
+.ramt{text-align:right;font-weight:600;font-size:15px}
+[dir=rtl] .ramt{text-align:left}
+
+/* Tab bar */
+.tabbar{position:absolute;bottom:26px;height:64px;width:291px;border-radius:32px;display:flex;align-items:center;padding:0 6px;z-index:10}
+.tab{flex:1;height:52px;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10.5px;font-weight:600}
+.tab.on{background:rgba(47,91,234,.13)}
+.ai-btn{position:absolute;bottom:26px;width:64px;height:64px;border-radius:32px;display:flex;align-items:center;justify-content:center;z-index:10}
+.orb{width:48px;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 35% 28%,#A8BEFF 0%,#2F5BEA 50%,#A9441D 100%);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 4px 12px rgba(47,91,234,.35)}
+.orb.sm{width:24px;height:24px;border-radius:12px}
+
+/* Sheets */
+.backdrop{position:absolute;inset:0;filter:blur(6px)}
+.ghost{position:absolute;left:16px;right:16px;border-radius:22px;background:rgba(255,255,255,.75)}
+.dim{position:absolute;inset:0;background:rgba(14,20,36,.30)}
+.sheet{position:absolute;left:8px;right:8px;bottom:8px;border-radius:40px;padding:10px 18px 22px;z-index:5}
+.grabber{width:38px;height:5px;border-radius:3px;background:rgba(14,20,36,.18);margin:0 auto 10px}
+.stitle{font-size:22px;font-weight:700;letter-spacing:-.4px}
+.mic-wrap{display:flex;justify-content:center;margin:22px 0 14px}
+.quote{border-radius:18px;padding:14px 16px;font-size:16px;line-height:1.4;font-style:italic}
+.btns{display:flex;gap:10px;margin-top:18px}
+.btn{height:54px;border-radius:27px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:16px;padding:0 22px}
+.btn.primary{background:#0E1424;color:#fff;box-shadow:0 8px 20px rgba(14,20,36,.22),inset 0 1px 0 rgba(255,255,255,.18)}
+.btn.secondary{background:rgba(47,91,234,.12);color:#1F48D6}
+.seg{display:flex;border-radius:16px;padding:3px}
+.seg>div{flex:1;text-align:center;padding:9px 0;border-radius:13px;font-size:14px;font-weight:600;color:#5B6478}
+.seg .on{background:#fff;color:#0E1424;box-shadow:0 2px 8px rgba(14,20,36,.10)}
+.seg.sm>div{padding:7px 0;font-size:13px}
+.kv{display:flex;align-items:center;gap:12px;padding:12px 0;font-size:14.5px}
+.kv>span:first-child{flex:1;color:#5B6478}
+.kv b{font-weight:600;display:flex;align-items:center;gap:6px}
+.chip{font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:8px}
+.chip.warn{background:rgba(245,165,36,.20);color:#9A6212}
+.chip.ok{background:rgba(18,161,80,.14);color:#12A150}
+.chip.bad{background:rgba(229,72,77,.12);color:#E5484D}
+.toggle{width:51px;height:31px;border-radius:16px;background:rgba(14,20,36,.14);padding:2px;flex:none}
+.toggle span{display:block;width:27px;height:27px;border-radius:14px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.toggle.on{background:#12A150}
+.toggle.on span{margin-left:20px}
+
+/* Cheque */
+.cheque{position:relative;margin-top:16px;border-radius:18px;padding:16px;background:linear-gradient(135deg,#F6F8FE,#E7EDFB);
+  border:1.5px dashed rgba(31,72,214,.45);font-size:12px;color:#5B6478}
+.chq-bank{font-weight:700;letter-spacing:1.2px;font-size:11px;color:#0E1424}
+.chq-date{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#0E1424}
+.chq-line{display:flex;gap:10px;margin-top:10px;border-bottom:1px solid rgba(14,20,36,.15);padding-bottom:4px}
+.chq-line b{color:#0E1424;font-weight:500;font-family:"Newsreader",Georgia,serif;font-style:italic;font-size:14px}
+.chq-micr{font-family:"IBM Plex Mono",monospace;letter-spacing:1px}
+.chq-amt{font-family:"IBM Plex Mono",monospace;font-weight:500;color:#0E1424;border:1px solid rgba(14,20,36,.25);padding:4px 8px;border-radius:6px;background:rgba(255,255,255,.6)}
+.scan-ok{position:absolute;top:-10px;right:-8px;width:30px;height:30px;border-radius:15px;background:#12A150;display:flex;align-items:center;justify-content:center;border:3px solid #FFFFFF}
+
+/* Activity */
+.search{height:46px;border-radius:23px;display:flex;align-items:center;gap:10px;padding:0 16px;font-size:15px;color:#9AA2B4}
+.pills{display:flex;gap:8px;margin-top:12px;overflow:hidden}
+.pill{padding:9px 15px;border-radius:20px;font-size:14px;font-weight:600;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.9);white-space:nowrap;color:#5B6478}
+.pill.on{background:#0E1424;color:#fff;border-color:#0E1424}
+.summary{margin-top:12px;border-radius:22px;display:flex;align-items:center;padding:14px 18px;gap:16px}
+.summary>div:not(.vdiv){flex:1}
+.sumv{font-size:18px;font-weight:700;margin-top:3px;letter-spacing:-.3px}
+.vdiv{width:1px;height:36px;background:rgba(14,20,36,.10)}
+
+/* New entry */
+.amount-in{display:flex;flex-direction:column;align-items:center;margin:18px 0 14px;gap:6px}
+.curpick{border-radius:16px;padding:5px 10px;font-size:13px;font-weight:600;display:flex;gap:4px;align-items:center}
+.bigamt{font-size:52px;font-weight:700;letter-spacing:-1.5px;line-height:1}
+.catgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 6px}
+.cat{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#5B6478}
+.cat .tile{border-radius:16px;border:1px solid rgba(255,255,255,.9);box-shadow:0 1px 3px rgba(20,40,90,.08)}
+.cat.on{color:#1F48D6}
+.cat.on .tile{box-shadow:0 6px 14px rgba(47,91,234,.35),inset 0 1px 0 rgba(255,255,255,.5)}
+
+/* Insights */
+.stepper{display:flex;justify-content:space-between;align-items:center;margin:16px 6px 10px;font-size:14px;font-weight:600}
+.donut-card{display:flex;flex-direction:column;align-items:center}
+.donut{position:relative;width:180px;height:180px}
+.donut-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dv{font-size:22px;font-weight:700;letter-spacing:-.4px;margin:2px 0}
+.insight{align-items:flex-start}
+.insight .rsub{white-space:normal}
+.cats{padding:6px 16px}
+.catrow{padding:12px 0}
+.catrow+.catrow{border-top:1px solid rgba(14,20,36,.07)}
+.dot{width:8px;height:8px;border-radius:4px;display:inline-block}
+.lim{font-size:13.5px}
+.lim b{font-weight:600}
+
+/* Goals */
+.goal{padding:16px 18px}
+.gval{font-size:22px;font-weight:700;letter-spacing:-.4px}
+.gval .cur{font-size:14px}
+
+/* New goal */
+.flabel{font-size:12px;color:#5B6478}
+.fval{font-size:17px;font-weight:600;margin-top:2px}
+.fval.big{font-size:26px;font-weight:700;letter-spacing:-.5px}
+.linked{position:relative;display:flex;flex-direction:column;gap:8px}
+.linked .card{margin-top:0}
+.eq{position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-weight:700;z-index:2}
+.presets{display:flex;gap:8px;margin-top:10px}
+.presets div{flex:1;text-align:center;padding:9px 0;border-radius:14px;font-size:13.5px;font-weight:600;color:#1F48D6;background:rgba(255,255,255,.6)}
+.presets .on{background:rgba(47,91,234,.14)}
+.tip{display:flex;gap:10px;align-items:flex-start;margin-top:12px;padding:12px 14px;border-radius:16px;background:rgba(47,91,234,.08);font-size:13px;line-height:1.4;color:#5B6478}
+.cdots{display:flex;gap:14px;padding:0 4px}
+.cdot{width:30px;height:30px;border-radius:15px;display:block}
+.cdot.on{box-shadow:0 0 0 3px #FFFFFF,0 0 0 5px #0E1424}
+
+/* AI */
+.ai-top{position:absolute;top:58px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center;z-index:5}
+.ai-name{height:44px;border-radius:22px;padding:0 16px 0 10px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px}
+.chat{display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:300px;padding:12px 15px;border-radius:22px;font-size:15px;line-height:1.42}
+.bubble.bot{background:rgba(255,255,255,.82);border:1px solid #fff;border-bottom-left-radius:8px}
+.bubble.me{align-self:flex-end;background:#0E1424;color:#fff;border-bottom-right-radius:8px}
+.mini{margin-top:10px;padding:12px;border-radius:16px;background:rgba(14,20,36,.04)}
+.chips{display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:6px}
+.chip-q{border-radius:20px;padding:9px 14px;font-size:14px;font-weight:500}
+.composer{position:absolute;left:16px;right:16px;bottom:30px;display:flex;gap:8px;align-items:center}
+.input{flex:1;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:space-between;padding:0 14px 0 16px;font-size:15px;color:#9AA2B4}
+
+/* Profile */
+.prof{display:flex;align-items:center;gap:14px}
+.vis{display:flex;gap:6px;align-items:baseline}
+.vis>span{padding:0 2px;white-space:nowrap}
+.ar-text .rsub{overflow:visible}
+.ar-text{text-align:right}
+.tight .grp{margin:14px 6px 6px}
+.tight .kv{padding:10px 0}
+.tight .hdr{margin-bottom:12px}
+
+body{font-family:"Inter","Helvetica Neue",Arial,sans-serif;background:#CBD3E1}
+.time{font-family:"Inter",sans-serif}
+.title{font-weight:600;font-size:30px;letter-spacing:-.8px}
+.hello{font-weight:600}
+.glass{background:rgba(255,255,255,.80);border:1px solid rgba(255,255,255,.95);
+  box-shadow:0 8px 24px rgba(20,40,90,.08),inset 0 1px 0 #fff}
+.glass-inset{background:#EEF1F6;border-color:transparent}
+.glass-sheet{background:#fff;border:none;box-shadow:0 -8px 30px rgba(20,40,90,.16)}
+.card{background:#fff;border:1px solid rgba(14,20,36,.04);border-radius:20px;box-shadow:0 1px 3px rgba(20,40,90,.05)}
+.card.flat{background:#F5F7FB;border-color:transparent;box-shadow:none}
+.sheet .card.flat{background:#F5F7FB}
+.caps{text-transform:none;letter-spacing:0;font-size:13.5px;font-weight:600;color:#0E1424}
+.pill{background:#fff;border:1px solid rgba(14,20,36,.07);padding:8px 14px;font-size:13.5px;font-weight:500;color:#5B6478;display:flex;align-items:center;gap:6px}
+.pill.on{background:#0E1424;color:#fff;border-color:#0E1424}
+.pill.on-blue{background:#D6E2FF;color:#2F5BEA;border-color:#D6E2FF}
+.pills.sm{margin-top:8px}
+.btn.primary{background:#0E1424;box-shadow:0 8px 20px rgba(14,20,36,.20)}
+.btn.secondary{background:#EEF2FE;color:#1F48D6}
+.seg .on{box-shadow:0 1px 4px rgba(20,40,90,.10)}
+.chip.blue{background:#E6EDFF;color:#2F5BEA}
+.iconbtn.onblue{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28)}
+.dec{color:#9AA2B4}
+
+/* hero */
+.hero-b{position:absolute;left:0;right:0;top:0;height:392px;padding:62px 20px 0;color:#fff}
+.hb-top{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.av-w{width:44px;height:44px;border-radius:22px;background:rgba(255,255,255,.95);color:#2F5BEA;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+.hb-sm{font-size:13px;color:rgba(255,255,255,.75)}
+.hb-name{font-size:17px;font-weight:600;margin-top:1px}
+.hamt{display:flex;align-items:center;gap:8px;margin-top:4px}
+.hcur{font-size:22px;font-weight:500;opacity:.85;margin-right:2px}
+.hnum{font-size:44px;font-weight:600;letter-spacing:-1.4px}
+.hdec{opacity:.55}
+.hb-chip{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 10px;border-radius:14px;background:rgba(255,255,255,.16);font-size:12.5px;font-weight:500}
+.ra-row{display:flex;justify-content:space-between;margin-top:22px;padding:0 6px}
+.ra{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:12.5px;font-weight:500;width:70px}
+.ra-btn{width:56px;height:56px;border-radius:28px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.body-b{position:absolute;left:0;right:0;top:372px;bottom:0;background:#F3F5F9;border-radius:28px 28px 0 0;padding:16px 16px 0}
+.promo{background:linear-gradient(135deg,#EAF0FF,#F5F8FF);border-color:#DCE5FF}
+.promo-text{font-size:14px;line-height:1.45;color:#5B6478;margin-top:10px}
+.promo-text b{color:#0E1424}
+.promo-btn{display:inline-flex;align-items:center;gap:4px;margin-top:12px;background:#fff;border-radius:14px;padding:9px 14px;font-size:14px;font-weight:600;box-shadow:0 1px 3px rgba(20,40,90,.08)}
+.stitle-b{font-size:17px;font-weight:600;letter-spacing:-.2px}
+.section{margin:18px 4px 4px}
+
+/* tab bar */
+.tabbar-b{position:absolute;bottom:28px;left:50%;margin-left:-150px;width:300px;height:62px;border-radius:31px;display:flex;align-items:center;justify-content:space-around;padding:0 10px;z-index:10}
+.tb{display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:6px}
+.tdot{width:5px;height:5px;border-radius:3px;display:block}
+
+/* family */
+.center-title{text-align:center;font-size:16px;font-weight:500;color:#5B6478;margin-top:6px}
+.actions3{display:flex;justify-content:space-around;background:#E9EEF9;border:none;box-shadow:none;padding:16px 8px}
+.a3{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;font-weight:500}
+.a3 .tile{border-radius:26px;box-shadow:0 2px 8px rgba(20,40,90,.08)}
+.recents{display:flex;gap:16px;margin-top:10px;padding:0 2px}
+.rec{display:flex;flex-direction:column;align-items:center;gap:6px;width:72px;text-align:center}
+.rec .rsub{margin-top:-4px}
+.person{position:relative;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px;flex:none}
+.row .person{font-size:15px}
+.pflag{position:absolute;right:-3px;bottom:-3px;display:block;line-height:0}
+
+/* modal */
+.modal{position:absolute;left:28px;right:28px;top:250px;background:#fff;border-radius:30px;padding:28px 22px 22px;z-index:6;box-shadow:0 20px 50px rgba(14,20,36,.25)}
+.okring{width:76px;height:76px;border-radius:38px;margin:0 auto;background:#EEF1F6;display:flex;align-items:center;justify-content:center}
+.okdot{width:54px;height:54px;border-radius:27px;background:#0E1424;display:flex;align-items:center;justify-content:center}
+</style></head><body><section class="screen " data-name="B01 Home" lang="en" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+<div class="hero-b" style="background:radial-gradient(90% 70% at 85% 0%, rgba(120,160,255,.55) 0%, rgba(120,160,255,0) 60%),radial-gradient(80% 60% at 0% 100%, rgba(20,40,160,.55) 0%, rgba(20,40,160,0) 60%),linear-gradient(160deg, #3D6BF5 0%, #2F5BEA 45%, #1B3FC4 100%)">
+  
+<div class="status" style="color:#fff">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#fff"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#fff"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#fff"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#fff"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#fff"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#fff" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#fff"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#fff" fill-opacity=".45"/></svg>
+  </span>
+</div>
+  <div class="hb-top">
+    <div class="flex"><div class="av-w">AJ</div><div><div class="hb-sm">Good morning</div><div class="hb-name">Alex Johnson</div></div></div>
+    <div class="hdr-actions"><div class="iconbtn onblue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg></div><div class="iconbtn onblue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16v-5a6 6 0 0 0-12 0v5l-1.5 2h15zM10 21h4"/></svg></div></div>
+  </div>
+  <div class="hb-sm" style="margin-top:22px">Total balance · 4 accounts</div>
+  <div class="hamt"><span class="hcur">AED</span><span class="hnum">24,892<span class="hdec">.65</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg></div>
+  <div class="hb-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9.5 7H17v7.5"/></svg>AED 2,350 saved this cycle</div>
+  <div class="ra-row">
+    <div class="ra"><div class="ra-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a3 3 0 0 0-3 3V12a3 3 0 0 0 6 0V6.5a3 3 0 0 0-3-3zM5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg></div><span>Say it</span></div><div class="ra"><div class="ra-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5V6a2 2 0 0 1 2-2h2.5M15.5 4H18a2 2 0 0 1 2 2v2.5M20 15.5V18a2 2 0 0 1-2 2h-2.5M8.5 20H6a2 2 0 0 1-2-2v-2.5M7.5 12h9"/></svg></div><span>Scan</span></div><div class="ra"><div class="ra-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/></svg></div><span>Family</span></div><div class="ra"><div class="ra-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h.01M12 12h.01M18 12h.01"/></svg></div><span>More</span></div>
+  </div>
+</div>
+
+<div class="body-b">
+  <div class="card">
+    <div class="between"><div class="ctitle">April pay cycle</div><span class="chip blue">9 days left</span></div>
+    <div class="between" style="margin-top:12px;align-items:flex-end">
+      <div><div class="meta">Left to spend</div><div class="gval" style="margin-top:2px"><span class="num"><span class="cur">AED</span> 6,660<span class="dec">.00</span></span></div></div>
+      <div class="meta" style="text-align:right">of AED 18,000<br><b>AED 740</b> a day</div>
+    </div>
+    <div style="margin-top:12px"><svg width="321" height="18" viewBox="0 0 321 18" style="display:block;overflow:visible"><defs><clipPath id="c1"><rect x="0" y="5" width="321" height="8" rx="4.0"/></clipPath></defs><g clip-path="url(#c1)"><rect x="0" y="5" width="321" height="8" fill="#E4E9F2"/><rect x="0.0" y="5" width="202.2" height="8" rx="4.0" fill="#2F5BEA"/></g><rect x="217.0" y="0" width="2.5" height="18" rx="1.25" fill="#0E1424"/></svg></div>
+    <div class="between" style="margin-top:6px"><span class="meta">Spent 63%</span><span class="meta">Today</span></div>
+  </div>
+
+  <div class="card promo">
+    <div class="flex"><div class="tile" style="width:34px;height:34px;background:#fff;color:#2F5BEA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/></svg></div><span class="ctitle">Family support</span></div>
+    <div class="promo-text">Mum's <b>AED 1,500</b> is due in 3 days. Your balance covers it.</div>
+    <div class="promo-btn">Mark as sent <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+  </div>
+
+  <div class="section"><span class="stitle-b">Upcoming</span><span class="link">See all</span></div>
+  <div class="pills sm"><div class="pill on">All</div><div class="pill">Bills</div><div class="pill">Cheques</div></div>
+  <div class="card list" style="margin-top:10px">
+    
+<div class="row">
+  <div class="tile" style="width:40px;height:40px;background:rgba(245,165,36,.16);color:#B7791F"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5.5 13.5h5.5L10 21l8-10.5h-5.5z"/></svg></div>
+  <div class="grow"><div class="rtitle">DEWA</div><div class="rsub">Due 28 Apr · 3 days left</div></div>
+  <div class="ramt"><div style="color:#22201E"><span class="num"><span class="cur">AED</span> 412<span class="dec">.30</span></span></div></div>
+</div>
+    
+<div class="row">
+  <div class="tile" style="width:40px;height:40px;background:rgba(47,91,234,.12);color:#2F5BEA"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.5h18v11H3zM6.5 10.5h6M6.5 13.5h4M15 13h3"/></svg></div>
+  <div class="grow"><div class="rtitle">Rent cheque 4 of 4</div><div class="rsub">Clears 1 May · post-dated</div></div>
+  <div class="ramt"><div style="color:#22201E"><span class="num"><span class="cur">AED</span> 6,250<span class="dec">.00</span></span></div></div>
+</div>
+    
+<div class="row">
+  <div class="tile" style="width:40px;height:40px;background:rgba(20,184,166,.14);color:#0F8C80"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 2.6 3.5 5.6 3.5 9s-1 6.4-3.5 9c-2.5-2.6-3.5-5.6-3.5-9S9.5 5.6 12 3z"/></svg></div>
+  <div class="grow"><div class="rtitle">e& Home internet</div><div class="rsub">Due 2 May · 7 days left</div></div>
+  <div class="ramt"><div style="color:#22201E"><span class="num"><span class="cur">AED</span> 389<span class="dec">.00</span></span></div></div>
+</div>
+  </div>
+</div>
+<div class="tabbar-b glass"><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2F5BEA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/></svg><span class="tdot" style="background:#2F5BEA"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3.5 7.5 7 11M3.5 7.5H17M17 20l3.5-3.5L17 13M20.5 16.5H7"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 12.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="tdot" style="background:transparent"></span></div></div></section><section class="screen " data-name="B02 Home · Arabic" lang="ar" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+<div class="hero-b" style="background:radial-gradient(90% 70% at 85% 0%, rgba(120,160,255,.55) 0%, rgba(120,160,255,0) 60%),radial-gradient(80% 60% at 0% 100%, rgba(20,40,160,.55) 0%, rgba(20,40,160,0) 60%),linear-gradient(160deg, #3D6BF5 0%, #2F5BEA 45%, #1B3FC4 100%)">
+  
+<div class="status" style="color:#fff">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#fff"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#fff"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#fff"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#fff"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#fff"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#fff" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#fff"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#fff" fill-opacity=".45"/></svg>
+  </span>
+</div>
+  <div class="hb-top">
+    <div class="hdr-actions"><div class="iconbtn onblue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16v-5a6 6 0 0 0-12 0v5l-1.5 2h15zM10 21h4"/></svg></div><div class="iconbtn onblue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg></div></div>
+    <div class="flex"><div class="ar-text"><div class="hb-sm">صباح الخير</div><div class="hb-name">أليكس جونسون</div></div><div class="av-w">أ</div></div>
+  </div>
+  <div class="hb-sm ar-text" style="margin-top:22px"><div class="vis " style="justify-content:flex-end"><span>حسابات</span><span>4</span><span>·</span><span>الرصيد الإجمالي</span></div></div>
+  <div class="hamt" style="justify-content:flex-end"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg><div class="vis " style="justify-content:flex-end"><span><span class="hcur">د.إ</span></span><span><span class="hnum">24,892<span class="hdec">.65</span></span></span></div></div>
+  <div style="display:flex;justify-content:flex-end"><div class="hb-chip"><div class="vis " style="justify-content:flex-end"><span>في هذه الدورة</span><span>د.إ</span><span>2,350</span><span>وفّرت</span></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9.5 7H17v7.5"/></svg></div></div>
+  <div class="ra-row">
+    <div class="ra"><div class="ra-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h.01M12 12h.01M18 12h.01"/></svg></div><span>المزيد</span></div><div class="ra"><div class="ra-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/></svg></div><span>العائلة</span></div><div class="ra"><div class="ra-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5V6a2 2 0 0 1 2-2h2.5M15.5 4H18a2 2 0 0 1 2 2v2.5M20 15.5V18a2 2 0 0 1-2 2h-2.5M8.5 20H6a2 2 0 0 1-2-2v-2.5M7.5 12h9"/></svg></div><span>امسح</span></div><div class="ra"><div class="ra-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a3 3 0 0 0-3 3V12a3 3 0 0 0 6 0V6.5a3 3 0 0 0-3-3zM5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg></div><span>تحدّث</span></div>
+  </div>
+</div>
+
+<div class="body-b">
+  <div class="card">
+    <div class="between"><span class="chip blue"><div class="vis " style="justify-content:flex-end"><span>أيام</span><span>9</span><span>متبقي</span></div></span><div class="ctitle">دورة أبريل</div></div>
+    <div class="between" style="margin-top:12px;align-items:flex-end">
+      <div class="meta" style="text-align:left"><div class="vis " style="justify-content:flex-start"><span>18,000</span><span>من</span></div><div class="vis " style="justify-content:flex-start"><span>يوميًا</span><span><b>740</b></span></div></div>
+      <div class="ar-text"><div class="meta">المتبقي للإنفاق</div><div class="gval" style="margin-top:2px"><div class="vis " style="justify-content:flex-end"><span><span class="cur">د.إ</span></span><span><span class="num">6,660<span class="dec">.00</span></span></span></div></div></div>
+    </div>
+    <div style="margin-top:12px"><svg width="321" height="18" viewBox="0 0 321 18" style="display:block;overflow:visible"><defs><clipPath id="c2"><rect x="0" y="5" width="321" height="8" rx="4.0"/></clipPath></defs><g clip-path="url(#c2)"><rect x="0" y="5" width="321" height="8" fill="#E4E9F2"/><rect x="118.8" y="5" width="202.2" height="8" rx="4.0" fill="#2F5BEA"/></g><rect x="101.5" y="0" width="2.5" height="18" rx="1.25" fill="#0E1424"/></svg></div>
+    <div class="between" style="margin-top:6px"><span class="meta">اليوم</span><span class="meta"><div class="vis " style="justify-content:flex-end"><span>63%</span><span>المصروف</span></div></span></div>
+  </div>
+
+  <div class="card promo ar-text">
+    <div class="flex" style="justify-content:flex-end"><span class="ctitle">دعم العائلة</span><div class="tile" style="width:34px;height:34px;background:#fff;color:#2F5BEA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/></svg></div></div>
+    <div class="promo-text"><div class="vis " style="justify-content:flex-end"><span>أيام</span><span>3</span><span>خلال</span><span>د.إ</span><span><b>1,500</b></span><span>تحويل أمي مستحق</span></div><div class="vis " style="justify-content:flex-end"><span>ورصيدك يغطيه</span></div></div>
+    <div style="display:flex;justify-content:flex-end"><div class="promo-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6l-6 6 6 6"/></svg>تحديد كمُرسَل</div></div>
+  </div>
+
+  <div class="section"><span class="link">عرض الكل</span><span class="stitle-b">القادم</span></div>
+  <div class="pills sm" style="justify-content:flex-end"><div class="pill">شيكات</div><div class="pill">فواتير</div><div class="pill on">الكل</div></div>
+  <div class="card list" style="margin-top:10px">
+    
+<div class="row">
+  <div class="ramt" style="text-align:left"><div class="vis " style="justify-content:flex-start"><span><span class="cur">د.إ</span></span><span><span class="num">412<span class="dec">.30</span></span></span></div></div>
+  <div class="grow ar-text"><div class="rtitle"><div class="vis " style="justify-content:flex-end"><span>ديوا</span></div></div><div class="rsub"><div class="vis " style="justify-content:flex-end"><span>متبقية</span><span>أيام</span><span>3</span><span>·</span><span>أبريل</span><span>28</span><span>تستحق</span></div></div></div>
+  <div class="tile" style="width:40px;height:40px;background:rgba(245,165,36,.16);color:#B7791F"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5.5 13.5h5.5L10 21l8-10.5h-5.5z"/></svg></div>
+</div>
+    
+<div class="row">
+  <div class="ramt" style="text-align:left"><div class="vis " style="justify-content:flex-start"><span><span class="cur">د.إ</span></span><span><span class="num">6,250<span class="dec">.00</span></span></span></div></div>
+  <div class="grow ar-text"><div class="rtitle"><div class="vis " style="justify-content:flex-end"><span>4</span><span>من</span><span>4</span><span>شيك الإيجار</span></div></div><div class="rsub"><div class="vis " style="justify-content:flex-end"><span>مؤجل</span><span>·</span><span>مايو</span><span>1</span><span>يُصرف</span></div></div></div>
+  <div class="tile" style="width:40px;height:40px;background:rgba(47,91,234,.12);color:#2F5BEA"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.5h18v11H3zM6.5 10.5h6M6.5 13.5h4M15 13h3"/></svg></div>
+</div>
+  </div>
+</div>
+<div class="tabbar-b glass"><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 12.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3.5 7.5 7 11M3.5 7.5H17M17 20l3.5-3.5L17 13M20.5 16.5H7"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2F5BEA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/></svg><span class="tdot" style="background:#2F5BEA"></span></div></div></section><section class="screen " data-name="B03 Say it (voice)" lang="en" style="background:#1B2440">
+
+<div class="status" style="color:#0E1424">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0E1424"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#0E1424"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#0E1424"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0E1424"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#0E1424"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#0E1424" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#0E1424"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#0E1424" fill-opacity=".45"/></svg>
+  </span>
+</div>
+
+<div class="backdrop" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+  <div style="position:absolute;left:0;right:0;top:0;height:372px;background:radial-gradient(90% 70% at 85% 0%, rgba(120,160,255,.55) 0%, rgba(120,160,255,0) 60%),radial-gradient(80% 60% at 0% 100%, rgba(20,40,160,.55) 0%, rgba(20,40,160,0) 60%),linear-gradient(160deg, #3D6BF5 0%, #2F5BEA 45%, #1B3FC4 100%)"></div>
+  <div class="ghost" style="top:392px;height:150px"></div>
+  <div class="ghost" style="top:556px;height:110px"></div>
+  <div class="ghost" style="top:680px;height:150px"></div>
+</div>
+<div class="dim"></div>
+<div class="sheet glass-sheet" style="top:300px">
+  <div class="grabber"></div>
+  <div class="between"><div class="stitle">Say it</div><div class="iconbtn glass sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></div></div>
+  <div class="meta center" style="margin-top:6px">Try “Paid 45 for groceries”, in English or Arabic</div>
+
+  <div class="mic-wrap">
+    <svg width="220" height="40" viewBox="0 0 220 40"><rect x="0" y="16.0" width="3.5" height="8" rx="1.75" fill="#2F5BEA"/><rect x="7" y="13.0" width="3.5" height="14" rx="1.75" fill="#2F5BEA"/><rect x="14" y="9.0" width="3.5" height="22" rx="1.75" fill="#2F5BEA"/><rect x="21" y="5.0" width="3.5" height="30" rx="1.75" fill="#2F5BEA"/><rect x="28" y="11.0" width="3.5" height="18" rx="1.75" fill="#2F5BEA"/><rect x="35" y="15.0" width="3.5" height="10" rx="1.75" fill="#2F5BEA"/><rect x="42" y="8.0" width="3.5" height="24" rx="1.75" fill="#2F5BEA"/><rect x="49" y="2.0" width="3.5" height="36" rx="1.75" fill="#2F5BEA"/><rect x="56" y="6.0" width="3.5" height="28" rx="1.75" fill="#2F5BEA"/><rect x="63" y="12.0" width="3.5" height="16" rx="1.75" fill="#2F5BEA"/><rect x="70" y="14.0" width="3.5" height="12" rx="1.75" fill="#2F5BEA"/><rect x="77" y="10.0" width="3.5" height="20" rx="1.75" fill="#2F5BEA"/><rect x="84" y="4.0" width="3.5" height="32" rx="1.75" fill="#2F5BEA"/><rect x="91" y="0.0" width="3.5" height="40" rx="1.75" fill="#2F5BEA"/><rect x="98" y="7.0" width="3.5" height="26" rx="1.75" fill="#2F5BEA"/><rect x="105" y="13.0" width="3.5" height="14" rx="1.75" fill="#2F5BEA"/><rect x="112" y="16.0" width="3.5" height="8" rx="1.75" fill="#2F5BEA"/><rect x="119" y="11.0" width="3.5" height="18" rx="1.75" fill="#2F5BEA"/><rect x="126" y="6.0" width="3.5" height="28" rx="1.75" fill="#2F5BEA"/><rect x="133" y="9.0" width="3.5" height="22" rx="1.75" fill="#2F5BEA"/><rect x="140" y="14.0" width="3.5" height="12" rx="1.75" fill="#2F5BEA"/><rect x="147" y="12.0" width="3.5" height="16" rx="1.75" fill="#2F5BEA"/><rect x="154" y="5.0" width="3.5" height="30" rx="1.75" fill="#2F5BEA"/><rect x="161" y="8.0" width="3.5" height="24" rx="1.75" fill="#2F5BEA"/><rect x="168" y="15.0" width="3.5" height="10" rx="1.75" fill="#2F5BEA"/><rect x="175" y="17.0" width="3.5" height="6" rx="1.75" fill="#2F5BEA"/><rect x="182" y="14.0" width="3.5" height="12" rx="1.75" fill="#C9D2E3"/><rect x="189" y="16.0" width="3.5" height="8" rx="1.75" fill="#C9D2E3"/><rect x="196" y="13.0" width="3.5" height="14" rx="1.75" fill="#C9D2E3"/><rect x="203" y="17.0" width="3.5" height="6" rx="1.75" fill="#C9D2E3"/><rect x="210" y="15.0" width="3.5" height="10" rx="1.75" fill="#C9D2E3"/><rect x="217" y="17.0" width="3.5" height="6" rx="1.75" fill="#C9D2E3"/></svg>
+  </div>
+  <div class="quote glass-inset">“Spent 45 on groceries at Carrefour, then sent Priya 1,000”</div>
+
+  <div class="caps" style="margin:18px 4px 8px">Nestly understood 2 entries</div>
+  <div class="card list flat">
+    
+<div class="row">
+  <div class="tile" style="width:40px;height:40px;background:rgba(245,165,36,.18);color:#B7791F"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h2l2.3 10.5h10.9L20.5 7.5H6.2M9 20a1 1 0 1 0 0-.01M17.5 20a1 1 0 1 0 0-.01"/></svg></div>
+  <div class="grow"><div class="rtitle">Carrefour</div><div class="rsub">Groceries · Today · Cash</div></div>
+  <div class="ramt"><div style="color:#22201E"><span class="num"><span class="cur">−AED</span> 45<span class="dec">.00</span></span></div></div>
+</div>
+    
+<div class="row">
+  <div class="tile" style="width:40px;height:40px;background:rgba(124,58,237,.25);color:#7C3AED"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/></svg></div>
+  <div class="grow"><div class="rtitle">Priya</div><div class="rsub">Family support · Today</div></div>
+  <div class="ramt"><div style="color:#22201E"><span class="num"><span class="cur">−AED</span> 1,000<span class="dec">.00</span></span></div></div>
+</div>
+  </div>
+
+  <div class="btns">
+    <div class="btn secondary">Edit</div>
+    <div class="btn primary grow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Add 2 entries</div>
+  </div>
+</div></section><section class="screen " data-name="B04 Scan cheque" lang="en" style="background:#1B2440">
+
+<div class="status" style="color:#0E1424">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0E1424"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#0E1424"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#0E1424"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0E1424"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#0E1424"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#0E1424" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#0E1424"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#0E1424" fill-opacity=".45"/></svg>
+  </span>
+</div>
+
+<div class="backdrop" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+  <div style="position:absolute;left:0;right:0;top:0;height:372px;background:radial-gradient(90% 70% at 85% 0%, rgba(120,160,255,.55) 0%, rgba(120,160,255,0) 60%),radial-gradient(80% 60% at 0% 100%, rgba(20,40,160,.55) 0%, rgba(20,40,160,0) 60%),linear-gradient(160deg, #3D6BF5 0%, #2F5BEA 45%, #1B3FC4 100%)"></div>
+  <div class="ghost" style="top:392px;height:150px"></div>
+  <div class="ghost" style="top:556px;height:110px"></div>
+  <div class="ghost" style="top:680px;height:150px"></div>
+</div>
+<div class="dim"></div>
+<div class="sheet glass-sheet" style="top:150px">
+  <div class="grabber"></div>
+  <div class="between"><div class="stitle">Scan</div><div class="iconbtn glass sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></div></div>
+  <div class="seg glass-inset" style="margin-top:14px">
+    <div>Receipt</div><div class="on">Cheque</div><div>Bill</div>
+  </div>
+
+  <div class="cheque">
+    <div class="between"><span class="chq-bank">EMIRATES NBD</span><span class="chq-date">01 · 05 · 2026</span></div>
+    <div class="chq-line"><span>Pay</span><b>Al Barsha Properties LLC</b></div>
+    <div class="chq-line"><span>Dirhams</span><b>Six thousand two hundred fifty only</b></div>
+    <div class="between" style="margin-top:10px"><span class="chq-micr">⑈000431⑈ 0260 ⑆</span><span class="chq-amt">AED 6,250.00</span></div>
+    <div class="scan-ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div>
+  </div>
+
+  <div class="card list flat" style="margin-top:16px">
+    <div class="kv"><span>Amount</span><b><span class="num"><span class="cur">AED</span> 6,250<span class="dec">.00</span></span></b></div>
+    <div class="kv"><span>Payee</span><b>Al Barsha Properties</b></div>
+    <div class="kv"><span>Category</span><b>Rent</b></div>
+    <div class="kv"><span>Cheque date</span><b>1 May 2026 <span class="chip warn">Post-dated</span></b></div>
+  </div>
+
+  <div class="card slim flat" style="margin-top:10px">
+    <div class="tile" style="width:36px;height:36px;background:rgba(245,165,36,.18);color:#B7791F"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16v-5a6 6 0 0 0-12 0v5l-1.5 2h15zM10 21h4"/></svg></div>
+    <div class="grow"><div class="rtitle">Remind me 3 days before</div><div class="rsub">Check the account can cover it</div></div>
+    <div class="toggle on"><span></span></div>
+  </div>
+
+  <div class="btns">
+    <div class="btn secondary"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13l-3-3M20 15H7l3 3"/></svg>Rescan</div>
+    <div class="btn primary grow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Add expense</div>
+  </div>
+</div></section><section class="screen " data-name="B05 Activity" lang="en" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+
+<div class="status" style="color:#0E1424">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0E1424"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#0E1424"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#0E1424"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0E1424"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#0E1424"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#0E1424" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#0E1424"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#0E1424" fill-opacity=".45"/></svg>
+  </span>
+</div>
+<div class="content">
+  <div class="hdr"><div class="title">Activity</div>
+    <div class="hdr-actions"><div class="iconbtn glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg></div><div class="iconbtn glass accent"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div></div>
+  </div>
+  <div class="search glass"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg><span>Search Talabat, rent, Mum…</span></div>
+  <div class="pills">
+    <div class="pill on">All</div><div class="pill">Income</div><div class="pill">Spending</div><div class="pill">Cash</div><div class="pill">Family</div>
+  </div>
+
+  <div class="summary glass">
+    <div><div class="meta">In this cycle</div><div class="sumv" style="color:#12A150"><span class="num"><span class="cur">+AED</span> 19,500<span class="dec">.00</span></span></div></div>
+    <div class="vdiv"></div>
+    <div><div class="meta">Out this cycle</div><div class="sumv"><span class="num"><span class="cur">−AED</span> 11,340<span class="dec">.00</span></span></div></div>
+  </div>
+
+  <div class="caps grp">Today</div>
+  <div class="card list">
+    
+<div class="row">
+  <div class="tile" style="width:40px;height:40px;background:rgba(245,165,36,.18);color:#B7791F"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h2l2.3 10.5h10.9L20.5 7.5H6.2M9 20a1 1 0 1 0 0-.01M17.5 20a1 1 0 1 0 0-.01"/></svg></div>
+  <div class="grow"><div class="rtitle">Carrefour</div><div class="rsub">Groceries · Cash</div></div>
+  <div class="ramt"><div style="color:#22201E"><span class="num"><span class="cur">−AED</span> 312<span class="dec">.50</span></span></div></div>
+</div>
+    
+<div class="row">
+  <div class="tile" style="width:40px;height:40px;background:rgba(47,91,234,.13);color:#1F48D6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5h12l-1 11.5H7zM9 8.5V7a3 3 0 0 1 6 0v1.5"/></svg></div>
+  <div class="grow"><div class="rtitle">Talabat</div><div class="rsub">Food delivery · Mashreq card</div></div>
+  <div class="ramt"><div style="color:#22201E"><span class="num"><span class="cur">−AED</span> 68<span class="dec">.00</span></span></div></div>
+</div>
+    
+<div class="row">
+  <div class="tile" style="width:40px;height:40px;background:rgba(20,184,166,.14);color:#14B8A6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16.5v-4l2.5-6h11l2.5 6v4zM4 16.5V19h3v-2.5M17 16.5V19h3v-2.5M7.5 13h.01M16.5 13h.01"/></svg></div>
+  <div class="grow"><div class="rtitle">Salik</div><div class="rsub">Transport · Auto-captured</div></div>
+  <div class="ramt"><div style="color:#22201E"><span class="num"><span class="cur">−AED</span> 8<span class="dec">.00</span></span></div></div>
+</div>
+  </div>
+  <div class="caps grp">Mon, 13 Apr</div>
+  <div class="card list">
+    
+<div class="row">
+  <div class="tile" style="width:40px;height:40px;background:rgba(124,58,237,.25);color:#7C3AED"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/></svg></div>
+  <div class="grow"><div class="rtitle">Mum · Al Ansari</div><div class="rsub">Family support · ₹ 33,900</div></div>
+  <div class="ramt"><div style="color:#22201E"><span class="num"><span class="cur">−AED</span> 1,500<span class="dec">.00</span></span></div></div>
+</div>
+    
+<div class="row">
+  <div class="tile" style="width:40px;height:40px;background:rgba(245,165,36,.18);color:#B7791F"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5.5 13.5h5.5L10 21l8-10.5h-5.5z"/></svg></div>
+  <div class="grow"><div class="rtitle">DEWA</div><div class="rsub">Utilities · Bill</div></div>
+  <div class="ramt"><div style="color:#22201E"><span class="num"><span class="cur">−AED</span> 412<span class="dec">.30</span></span></div></div>
+</div>
+  </div>
+</div>
+<div class="tabbar-b glass"><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2F5BEA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3.5 7.5 7 11M3.5 7.5H17M17 20l3.5-3.5L17 13M20.5 16.5H7"/></svg><span class="tdot" style="background:#2F5BEA"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 12.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="tdot" style="background:transparent"></span></div></div></section><section class="screen " data-name="B06 New entry" lang="en" style="background:#1B2440">
+
+<div class="status" style="color:#0E1424">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0E1424"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#0E1424"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#0E1424"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0E1424"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#0E1424"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#0E1424" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#0E1424"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#0E1424" fill-opacity=".45"/></svg>
+  </span>
+</div>
+
+<div class="backdrop" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+  <div style="position:absolute;left:0;right:0;top:0;height:372px;background:radial-gradient(90% 70% at 85% 0%, rgba(120,160,255,.55) 0%, rgba(120,160,255,0) 60%),radial-gradient(80% 60% at 0% 100%, rgba(20,40,160,.55) 0%, rgba(20,40,160,0) 60%),linear-gradient(160deg, #3D6BF5 0%, #2F5BEA 45%, #1B3FC4 100%)"></div>
+  <div class="ghost" style="top:392px;height:150px"></div>
+  <div class="ghost" style="top:556px;height:110px"></div>
+  <div class="ghost" style="top:680px;height:150px"></div>
+</div>
+<div class="dim"></div>
+<div class="sheet glass-sheet" style="top:96px">
+  <div class="grabber"></div>
+  <div class="between"><div class="stitle">New entry</div><div class="iconbtn glass sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></div></div>
+  <div class="seg glass-inset" style="margin-top:14px"><div class="on">Expense</div><div>Income</div><div>Transfer</div></div>
+
+  <div class="amount-in">
+    <div class="curpick glass">AED <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5B6478" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5l6 6 6-6"/></svg></div>
+    <div class="bigamt">312<span class="dec big">.50</span></div>
+    <div class="meta">≈ USD 85.08</div>
+  </div>
+
+  <div class="caps" style="margin:4px 4px 10px">Category</div>
+  <div class="catgrid"><div class="cat on"><div class="tile" style="width:46px;height:46px;background:#2F5BEA;color:#fff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h2l2.3 10.5h10.9L20.5 7.5H6.2M9 20a1 1 0 1 0 0-.01M17.5 20a1 1 0 1 0 0-.01"/></svg></div><span>Groceries</span></div><div class="cat"><div class="tile" style="width:46px;height:46px;background:rgba(255,255,255,.7);color:#0E1424"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5h12l-1 11.5H7zM9 8.5V7a3 3 0 0 1 6 0v1.5"/></svg></div><span>Food</span></div><div class="cat"><div class="tile" style="width:46px;height:46px;background:rgba(255,255,255,.7);color:#0E1424"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16.5v-4l2.5-6h11l2.5 6v4zM4 16.5V19h3v-2.5M17 16.5V19h3v-2.5M7.5 13h.01M16.5 13h.01"/></svg></div><span>Transport</span></div><div class="cat"><div class="tile" style="width:46px;height:46px;background:rgba(255,255,255,.7);color:#0E1424"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/></svg></div><span>Rent</span></div><div class="cat"><div class="tile" style="width:46px;height:46px;background:rgba(255,255,255,.7);color:#0E1424"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5.5 13.5h5.5L10 21l8-10.5h-5.5z"/></svg></div><span>Bills</span></div><div class="cat"><div class="tile" style="width:46px;height:46px;background:rgba(255,255,255,.7);color:#0E1424"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/></svg></div><span>Family</span></div><div class="cat"><div class="tile" style="width:46px;height:46px;background:rgba(255,255,255,.7);color:#0E1424"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h11v4.5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5zM16 10h1.5a2.2 2.2 0 0 1 0 4.4H16M8.5 3.5v3M12.5 3.5v3"/></svg></div><span>Coffee</span></div><div class="cat"><div class="tile" style="width:46px;height:46px;background:rgba(255,255,255,.7);color:#0E1424"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div><span>More</span></div></div>
+
+  <div class="card list flat" style="margin-top:14px">
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5h15a1 1 0 0 1 1 1V19H5a1 1 0 0 1-1-1zM4 7.5 15.5 4.5v3M16 13.5h.01"/></svg></div><span class="grow">Paid with</span><b>Cash</b><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14v14H5zM5 10h14M9 3.5v4M15 3.5v4"/></svg></div><span class="grow">Date</span><b>Today · April cycle</b><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13l-3-3M20 15H7l3 3"/></svg></div><span class="grow">Repeat</span><b>Never</b><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19.5 8.5l-4-4L4 16zM13.5 6.5l4 4"/></svg></div><span class="grow muted">Add a note</span></div>
+  </div>
+
+  <div class="btns"><div class="btn primary grow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Add expense</div></div>
+</div></section><section class="screen " data-name="B07 Insights" lang="en" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+
+<div class="status" style="color:#0E1424">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0E1424"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#0E1424"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#0E1424"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0E1424"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#0E1424"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#0E1424" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#0E1424"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#0E1424" fill-opacity=".45"/></svg>
+  </span>
+</div>
+<div class="content">
+  <div class="hdr"><div class="title">Insights</div><div class="iconbtn glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg></div></div>
+  <div class="pills"><div class="pill on">Spending</div><div class="pill">Income</div><div class="pill">Money flow</div><div class="pill">Family</div></div>
+  <div class="stepper"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6478" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6l-6 6 6 6"/></svg><span>April cycle · 25 Mar → 24 Apr</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6478" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+
+  <div class="card donut-card">
+    <div class="donut"><svg width="180" height="180" viewBox="0 0 180 180"><path d="M95.16 16.18A74 74 0 1 1 71.58 161.67" stroke="#2F5BEA" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M61.79 158.41A74 74 0 0 1 30.30 133.73" stroke="#F5A524" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M24.80 124.99A74 74 0 0 1 30.74 45.68" stroke="#A78BFA" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M37.49 37.86A74 74 0 0 1 49.13 28.31" stroke="#14B8A6" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M58.11 23.22A74 74 0 0 1 64.16 20.66" stroke="#7C3AED" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M74.07 17.74A74 74 0 0 1 84.84 16.18" stroke="#C9D2E3" stroke-width="22" stroke-linecap="round" fill="none"/></svg><div class="donut-c"><div class="meta">Spent</div><div class="dv">AED 11,340</div><div class="meta">of 18,000 budget</div></div></div>
+    <div class="seg glass-inset sm" style="margin-top:14px;width:200px"><div class="on">Totals</div><div>Over time</div></div>
+  </div>
+
+  <div class="card slim insight">
+    <div class="tile" style="width:40px;height:40px;background:rgba(47,91,234,.14);color:#1F48D6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></div>
+    <div class="grow"><div class="rtitle">Groceries are <span style="color:#E5484D">AED 140</span> over</div><div class="rsub">Mostly weekend Carrefour runs. Move AED 140 from Coffee?</div></div>
+  </div>
+
+  <div class="section"><span class="caps">Categories</span><span class="caps">Spent / limit</span></div>
+  <div class="card cats">
+<div class="catrow">
+  <div class="between"><span class="rtitle"><span class="dot" style="background:#2F5BEA"></span>Rent</span>
+  <span class="lim"><b style="color:#0E1424"><span class="num"><span class="cur">AED</span> 6,250<span class="dec">.00</span></span></b> <span class="muted">of 6,250</span></span></div>
+  <div style="margin-top:8px"><svg width="305" height="8" viewBox="0 0 305 8" style="display:block;overflow:visible"><defs><clipPath id="c3"><rect x="0" y="0" width="305" height="8" rx="4.0"/></clipPath></defs><g clip-path="url(#c3)"><rect x="0" y="0" width="305" height="8" fill="#E4E9F2"/><rect x="0.0" y="0" width="305.0" height="8" rx="4.0" fill="#2F5BEA"/></g></svg></div>
+</div>
+<div class="catrow">
+  <div class="between"><span class="rtitle"><span class="dot" style="background:#F5A524"></span>Groceries</span>
+  <span class="lim"><b style="color:#E5484D"><span class="num"><span class="cur">AED</span> 1,240<span class="dec">.00</span></span></b> <span class="muted">of 1,100</span></span></div>
+  <div style="margin-top:8px"><svg width="305" height="8" viewBox="0 0 305 8" style="display:block;overflow:visible"><defs><clipPath id="c4"><rect x="0" y="0" width="305" height="8" rx="4.0"/></clipPath></defs><g clip-path="url(#c4)"><rect x="0" y="0" width="305" height="8" fill="#E4E9F2"/><rect x="0.0" y="0" width="305.0" height="8" rx="4.0" fill="#E5484D"/></g></svg></div>
+</div>
+<div class="catrow">
+  <div class="between"><span class="rtitle"><span class="dot" style="background:#A78BFA"></span>Family</span>
+  <span class="lim"><b style="color:#0E1424"><span class="num"><span class="cur">AED</span> 2,300<span class="dec">.00</span></span></b> <span class="muted">of 3,300</span></span></div>
+  <div style="margin-top:8px"><svg width="305" height="8" viewBox="0 0 305 8" style="display:block;overflow:visible"><defs><clipPath id="c5"><rect x="0" y="0" width="305" height="8" rx="4.0"/></clipPath></defs><g clip-path="url(#c5)"><rect x="0" y="0" width="305" height="8" fill="#E4E9F2"/><rect x="0.0" y="0" width="212.6" height="8" rx="4.0" fill="#A78BFA"/></g></svg></div>
+</div>
+<div class="catrow">
+  <div class="between"><span class="rtitle"><span class="dot" style="background:#14B8A6"></span>Transport</span>
+  <span class="lim"><b style="color:#0E1424"><span class="num"><span class="cur">AED</span> 620<span class="dec">.00</span></span></b> <span class="muted">of 800</span></span></div>
+  <div style="margin-top:8px"><svg width="305" height="8" viewBox="0 0 305 8" style="display:block;overflow:visible"><defs><clipPath id="c6"><rect x="0" y="0" width="305" height="8" rx="4.0"/></clipPath></defs><g clip-path="url(#c6)"><rect x="0" y="0" width="305" height="8" fill="#E4E9F2"/><rect x="0.0" y="0" width="236.4" height="8" rx="4.0" fill="#14B8A6"/></g></svg></div>
+</div></div>
+</div>
+<div class="tabbar-b glass"><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3.5 7.5 7 11M3.5 7.5H17M17 20l3.5-3.5L17 13M20.5 16.5H7"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2F5BEA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg><span class="tdot" style="background:#2F5BEA"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 12.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="tdot" style="background:transparent"></span></div></div></section><section class="screen " data-name="B08 Goals" lang="en" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+
+<div class="status" style="color:#0E1424">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0E1424"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#0E1424"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#0E1424"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0E1424"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#0E1424"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#0E1424" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#0E1424"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#0E1424" fill-opacity=".45"/></svg>
+  </span>
+</div>
+<div class="content">
+  <div class="hdr"><div class="title">Goals</div><div class="iconbtn glass accent"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div></div>
+
+  <div class="summary glass">
+    <div><div class="meta">Saved so far</div><div class="sumv"><span class="num"><span class="cur">AED</span> 21,600<span class="dec">.00</span></span></div></div>
+    <div class="vdiv"></div>
+    <div><div class="meta">This cycle</div><div class="sumv" style="color:#12A150">+AED 2,350</div></div>
+  </div>
+
+  
+<div class="card goal">
+  <div class="between">
+    <div class="flex"><div class="tile" style="width:40px;height:40px;background:rgba(18,161,80,.13);color:#12A150"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6.5V11c0 4.4 3 7.9 7 9.5 4-1.6 7-5.1 7-9.5V6.5z"/></svg></div><div><div class="rtitle">Emergency fund</div><div class="rsub">AED 1,200 every payday</div></div></div>
+    <div class="iconbtn plain"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+  </div>
+  <div class="between" style="margin-top:14px;align-items:flex-end">
+    <div class="gval"><span class="num"><span class="cur">AED</span> 12,400<span class="dec">.00</span></span></div><div class="meta">of 30,000</div>
+  </div>
+  <div style="margin-top:8px"><svg width="313" height="10" viewBox="0 0 313 10" style="display:block;overflow:visible"><defs><clipPath id="c7"><rect x="0" y="0" width="313" height="10" rx="5.0"/></clipPath></defs><g clip-path="url(#c7)"><rect x="0" y="0" width="313" height="10" fill="#E4E9F2"/><rect x="0.0" y="0" width="129.4" height="10" rx="5.0" fill="#12A150"/></g></svg></div>
+  <div class="between" style="margin-top:10px"><span class="chip ok">On track</span><span class="meta"><b>41%</b> saved</span></div>
+</div>
+  
+<div class="card goal">
+  <div class="between">
+    <div class="flex"><div class="tile" style="width:40px;height:40px;background:rgba(47,91,234,.13);color:#1F48D6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.2 6.2 0 0 0 10 10z"/></svg></div><div><div class="rtitle">Umrah with family</div><div class="rsub">Target Feb 2027</div></div></div>
+    <div class="iconbtn plain"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+  </div>
+  <div class="between" style="margin-top:14px;align-items:flex-end">
+    <div class="gval"><span class="num"><span class="cur">AED</span> 6,800<span class="dec">.00</span></span></div><div class="meta">of 18,000</div>
+  </div>
+  <div style="margin-top:8px"><svg width="313" height="10" viewBox="0 0 313 10" style="display:block;overflow:visible"><defs><clipPath id="c8"><rect x="0" y="0" width="313" height="10" rx="5.0"/></clipPath></defs><g clip-path="url(#c8)"><rect x="0" y="0" width="313" height="10" fill="#E4E9F2"/><rect x="0.0" y="0" width="118.2" height="10" rx="5.0" fill="#2F5BEA"/></g></svg></div>
+  <div class="between" style="margin-top:10px"><span class="chip ok">On track</span><span class="meta"><b>38%</b> saved</span></div>
+</div>
+  
+<div class="card goal">
+  <div class="between">
+    <div class="flex"><div class="tile" style="width:40px;height:40px;background:rgba(20,184,166,.14);color:#14B8A6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13.5l6.5-1.5L16 5.5a1.6 1.6 0 0 1 2.4 2.1L12 14l-1.5 6.5-2-1.5.5-4.5-4.5.5z"/></svg></div><div><div class="rtitle">Summer in Kerala</div><div class="rsub">Target Jul 2026</div></div></div>
+    <div class="iconbtn plain"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+  </div>
+  <div class="between" style="margin-top:14px;align-items:flex-end">
+    <div class="gval"><span class="num"><span class="cur">AED</span> 2,400<span class="dec">.00</span></span></div><div class="meta">of 9,000</div>
+  </div>
+  <div style="margin-top:8px"><svg width="313" height="10" viewBox="0 0 313 10" style="display:block;overflow:visible"><defs><clipPath id="c9"><rect x="0" y="0" width="313" height="10" rx="5.0"/></clipPath></defs><g clip-path="url(#c9)"><rect x="0" y="0" width="313" height="10" fill="#E4E9F2"/><rect x="0.0" y="0" width="83.5" height="10" rx="5.0" fill="#14B8A6"/></g></svg></div>
+  <div class="between" style="margin-top:10px"><span class="chip warn">2 cycles behind</span><span class="meta"><b>27%</b> saved</span></div>
+</div>
+</div>
+<div class="tabbar-b glass"><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3.5 7.5 7 11M3.5 7.5H17M17 20l3.5-3.5L17 13M20.5 16.5H7"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2F5BEA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 12.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/></svg><span class="tdot" style="background:#2F5BEA"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="tdot" style="background:transparent"></span></div></div></section><section class="screen " data-name="B09 New goal" lang="en" style="background:#1B2440">
+
+<div class="status" style="color:#0E1424">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0E1424"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#0E1424"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#0E1424"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0E1424"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#0E1424"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#0E1424" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#0E1424"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#0E1424" fill-opacity=".45"/></svg>
+  </span>
+</div>
+
+<div class="backdrop" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+  <div style="position:absolute;left:0;right:0;top:0;height:372px;background:radial-gradient(90% 70% at 85% 0%, rgba(120,160,255,.55) 0%, rgba(120,160,255,0) 60%),radial-gradient(80% 60% at 0% 100%, rgba(20,40,160,.55) 0%, rgba(20,40,160,0) 60%),linear-gradient(160deg, #3D6BF5 0%, #2F5BEA 45%, #1B3FC4 100%)"></div>
+  <div class="ghost" style="top:392px;height:150px"></div>
+  <div class="ghost" style="top:556px;height:110px"></div>
+  <div class="ghost" style="top:680px;height:150px"></div>
+</div>
+<div class="dim"></div>
+<div class="sheet glass-sheet" style="top:96px">
+  <div class="grabber"></div>
+  <div class="between"><div class="stitle">New goal</div><div class="iconbtn glass sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></div></div>
+
+  <div class="card slim flat" style="margin-top:14px">
+    <div class="tile" style="width:44px;height:44px;background:rgba(47,91,234,.13);color:#1F48D6"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.2 6.2 0 0 0 10 10z"/></svg></div>
+    <div class="grow"><div class="flabel">Goal name</div><div class="fval">Umrah with family</div></div>
+  </div>
+  <div class="card slim flat" style="margin-top:8px">
+    <div class="grow"><div class="flabel">Target amount</div><div class="fval big"><span class="num"><span class="cur">AED</span> 18,000<span class="dec">.00</span></span></div></div>
+  </div>
+
+  <div class="pills" style="margin-top:12px"><div class="pill">Emergency</div><div class="pill on">Travel</div><div class="pill">Home</div><div class="pill">Education</div><div class="pill">Wedding</div></div>
+
+  <div class="caps" style="margin:18px 4px 8px">Plan contributions</div>
+  <div class="linked">
+    <div class="card slim flat"><div class="grow"><div class="flabel">Every payday</div><div class="fval"><span class="num"><span class="cur">AED</span> 1,200<span class="dec">.00</span></span></div></div></div>
+    <div class="eq glass">=</div>
+    <div class="card slim flat"><div class="grow"><div class="flabel">Reach it by</div><div class="fval">Feb 2027</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B6478" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14v14H5zM5 10h14M9 3.5v4M15 3.5v4"/></svg></div>
+  </div>
+  <div class="presets"><div>6 cycles</div><div class="on">10 cycles</div><div>12 cycles</div></div>
+
+  <div class="tip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F48D6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg><span>At your current savings rate this is realistic. You saved AED 2,350 last cycle.</span></div>
+
+  <div class="caps" style="margin:16px 4px 10px">Colour</div>
+  <div class="cdots"><span class="cdot on" style="background:#2F5BEA"></span><span class="cdot" style="background:#12A150"></span><span class="cdot" style="background:#14B8A6"></span><span class="cdot" style="background:#F5A524"></span><span class="cdot" style="background:#7C3AED"></span><span class="cdot" style="background:#EC4899"></span></div>
+
+  <div class="btns"><div class="btn primary grow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 12.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/></svg>Create goal</div></div>
+</div></section><section class="screen " data-name="B10 Nestly AI" lang="en" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+
+<div class="status" style="color:#0E1424">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0E1424"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#0E1424"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#0E1424"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0E1424"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#0E1424"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#0E1424" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#0E1424"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#0E1424" fill-opacity=".45"/></svg>
+  </span>
+</div>
+<div class="ai-top">
+  <div class="iconbtn glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6l-6 6 6 6"/></svg></div>
+  <div class="ai-name glass"><span class="orb sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></span>Nestly AI</div>
+  <div class="iconbtn glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7.5V12l3 2"/></svg></div>
+</div>
+<div class="content chat" style="padding-top:116px">
+  <div class="bubble bot">Morning Alex. You have <b>AED 6,660</b> left for 9 days, about <b>AED 740 a day</b>. Ask me anything about your money.</div>
+  <div class="bubble me">How much did I spend on Talabat this cycle?</div>
+  <div class="bubble bot">AED 486 across 11 orders. That's 18% more than March and AED 86 over your limit.
+<div class="mini">
+  <div class="between"><span class="meta">Talabat · April cycle</span><span class="chip bad">+18%</span></div>
+  <div class="gval" style="margin-top:4px"><span class="num"><span class="cur">AED</span> 486<span class="dec">.00</span></span></div>
+  <div style="margin-top:8px"><svg width="236" height="8" viewBox="0 0 236 8" style="display:block;overflow:visible"><defs><clipPath id="c10"><rect x="0" y="0" width="236" height="8" rx="4.0"/></clipPath></defs><g clip-path="url(#c10)"><rect x="0" y="0" width="236" height="8" fill="#E4E9F2"/><rect x="0.0" y="0" width="236.0" height="8" rx="4.0" fill="#E5484D"/></g></svg></div>
+  <div class="between" style="margin-top:6px"><span class="meta">11 orders</span><span class="meta">Limit AED 400</span></div>
+</div></div>
+  <div class="chips">
+    <div class="chip-q glass">Move AED 100 from Coffee</div>
+    <div class="chip-q glass">Can I afford a new phone?</div>
+    <div class="chip-q glass" lang="ar" dir="rtl">كم صرفت على البقالة؟</div>
+  </div>
+</div>
+<div class="composer">
+  <div class="iconbtn glass"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div>
+  <div class="input glass"><span>Ask or log, e.g. “coffee 18”</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B6478" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a3 3 0 0 0-3 3V12a3 3 0 0 0 6 0V6.5a3 3 0 0 0-3-3zM5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg></div>
+  <div class="iconbtn glass accent"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12 20 4.5 14 20l-3-7z"/></svg></div>
+</div></section><section class="screen " data-name="B11 Profile" lang="en" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+
+<div class="status" style="color:#0E1424">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0E1424"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#0E1424"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#0E1424"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0E1424"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#0E1424"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#0E1424" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#0E1424"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#0E1424" fill-opacity=".45"/></svg>
+  </span>
+</div>
+<div class="content tight">
+  <div class="hdr"><div class="title">Profile</div><div class="iconbtn glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></div></div>
+  <div class="card prof">
+    <div class="avatar big">AJ</div>
+    <div class="grow"><div class="rtitle" style="font-size:19px">Alex Johnson</div><div class="rsub">alex@example.com · Dubai</div></div>
+    <div class="iconbtn glass sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19.5 8.5l-4-4L4 16zM13.5 6.5l4 4"/></svg></div>
+  </div>
+
+  <div class="caps grp">Money</div>
+  <div class="card list flat">
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14v14H5zM5 10h14M9 3.5v4M15 3.5v4"/></svg></div><span class="grow" style="color:#0E1424">Payday</span><span class="muted">25th of the month</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16v11H4zM9 8V5.5h6V8M4 13h16"/></svg></div><span class="grow" style="color:#0E1424">Monthly income</span><span class="muted">AED 19,500</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 2.6 3.5 5.6 3.5 9s-1 6.4-3.5 9c-2.5-2.6-3.5-5.6-3.5-9S9.5 5.6 12 3z"/></svg></div><span class="grow" style="color:#0E1424">Currencies</span><span class="muted">AED · INR</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20a6.5 6.5 0 0 1 13 0M16 4.3a3.5 3.5 0 0 1 0 6.4M18.5 14.5A6.5 6.5 0 0 1 21.5 20"/></svg></div><span class="grow" style="color:#0E1424">Family support</span><span class="muted">3 people</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+  </div>
+
+  <div class="caps grp">Capture</div>
+  <div class="card list flat">
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10v18H7zM11 18h2"/></svg></div><span class="grow" style="color:#0E1424">Read bank alerts</span><div class="toggle on"><span></span></div></div>
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.5h18v11H3zM7 10h.01M10.5 10h.01M14 10h.01M17.5 10h.01M8 14h8"/></svg></div><span class="grow" style="color:#0E1424">Language</span><span class="muted">English · العربية</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16v-5a6 6 0 0 0-12 0v5l-1.5 2h15zM10 21h4"/></svg></div><span class="grow" style="color:#0E1424">Payday & cheque reminders</span><div class="toggle on"><span></span></div></div>
+  </div>
+
+  <div class="caps grp">Account</div>
+  <div class="card list flat">
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(14,20,36,.06);color:#0E1424"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6.5V11c0 4.4 3 7.9 7 9.5 4-1.6 7-5.1 7-9.5V6.5z"/></svg></div><span class="grow" style="color:#0E1424">Privacy & data</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+    <div class="kv"><div class="tile" style="width:32px;height:32px;background:rgba(229,72,77,.10);color:#E5484D"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h4.5v16h-4.5M10 8l-4 4 4 4M6 12h10"/></svg></div><span class="grow" style="color:#E5484D">Sign out</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></div>
+  </div>
+</div></section><section class="screen " data-name="B12 Family support" lang="en" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+
+<div class="status" style="color:#0E1424">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0E1424"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#0E1424"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#0E1424"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0E1424"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#0E1424"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#0E1424" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#0E1424"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#0E1424" fill-opacity=".45"/></svg>
+  </span>
+</div>
+<div class="content">
+  <div class="center-title">Family support</div>
+  <div class="hdr" style="margin-top:14px"><div class="title">Send home</div></div>
+  <div class="card actions3">
+    <div class="a3"><div class="tile" style="width:52px;height:52px;background:#fff;color:#0E1424"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div><span>Add person</span></div>
+    <div class="a3"><div class="tile" style="width:52px;height:52px;background:#fff;color:#0E1424"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div><span>Log transfer</span></div>
+    <div class="a3"><div class="tile" style="width:52px;height:52px;background:#fff;color:#0E1424"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5v15M4 16.5l3 3 3-3M17 19.5v-15M14 7.5l3-3 3 3"/></svg></div><span>Rates</span></div>
+  </div>
+
+  <div class="section"><span class="stitle-b">People</span><span class="meta">AED 3,300 a month</span></div>
+  <div class="recents"><div class="rec"><div class="person" style="width:60px;height:60px;background:#F59E0B">M<span class="pflag"><svg width="22" height="22" viewBox="0 0 22 22" class="flag"><defs><clipPath id="fIN22"><circle cx="11.0" cy="11.0" r="11.0"/></clipPath></defs><g clip-path="url(#fIN22)"><rect width="22" height="7.333333333333333" fill="#FF9933"/><rect y="7.333333333333333" width="22" height="7.333333333333333" fill="#fff"/><rect y="14.666666666666666" width="22" height="7.333333333333333" fill="#138808"/><circle cx="11.0" cy="11.0" r="2.4444444444444446" fill="#000080"/></g><circle cx="11.0" cy="11.0" r="10.25" fill="none" stroke="#fff" stroke-width="1.5"/></svg></span></div><div class="rtitle" style="justify-content:center">Mum</div><div class="rsub">Kerala</div></div><div class="rec"><div class="person" style="width:60px;height:60px;background:#0EA5E9">O<span class="pflag"><svg width="22" height="22" viewBox="0 0 22 22" class="flag"><defs><clipPath id="fEG22"><circle cx="11.0" cy="11.0" r="11.0"/></clipPath></defs><g clip-path="url(#fEG22)"><rect width="22" height="7.333333333333333" fill="#CE1126"/><rect y="7.333333333333333" width="22" height="7.333333333333333" fill="#fff"/><rect y="14.666666666666666" width="22" height="7.333333333333333" fill="#000"/><circle cx="11.0" cy="11.0" r="2.2" fill="#C09300"/></g><circle cx="11.0" cy="11.0" r="10.25" fill="none" stroke="#fff" stroke-width="1.5"/></svg></span></div><div class="rtitle" style="justify-content:center">Omar</div><div class="rsub">Cairo</div></div><div class="rec"><div class="person" style="width:60px;height:60px;background:#EC4899">A<span class="pflag"><svg width="22" height="22" viewBox="0 0 22 22" class="flag"><defs><clipPath id="fPH22"><circle cx="11.0" cy="11.0" r="11.0"/></clipPath></defs><g clip-path="url(#fPH22)"><rect width="22" height="11.0" fill="#0038A8"/><rect y="11.0" width="22" height="11.0" fill="#CE1126"/><path d="M0 0L12.100000000000001 11.0L0 22z" fill="#fff"/><circle cx="3.96" cy="11.0" r="1.8333333333333333" fill="#FCD116"/></g><circle cx="11.0" cy="11.0" r="10.25" fill="none" stroke="#fff" stroke-width="1.5"/></svg></span></div><div class="rtitle" style="justify-content:center">Ana</div><div class="rsub">Manila</div></div><div class="rec"><div class="person" style="width:60px;height:60px;background:#10B981">B<span class="pflag"><svg width="22" height="22" viewBox="0 0 22 22" class="flag"><defs><clipPath id="fPK22"><circle cx="11.0" cy="11.0" r="11.0"/></clipPath></defs><g clip-path="url(#fPK22)"><rect width="22" height="22" fill="#01411C"/><rect width="5.5" height="22" fill="#fff"/><circle cx="13.64" cy="11.0" r="4.4" fill="#fff"/><circle cx="14.96" cy="9.9" r="4.0" fill="#01411C"/></g><circle cx="11.0" cy="11.0" r="10.25" fill="none" stroke="#fff" stroke-width="1.5"/></svg></span></div><div class="rtitle" style="justify-content:center">Bilal</div><div class="rsub">Lahore</div></div></div>
+
+  <div class="between" style="margin-top:18px">
+    <div class="pills sm" style="margin-top:0"><div class="pill on-blue">All</div><div class="pill">Due</div><div class="pill">Sent</div></div>
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5B6478" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg> Search</div>
+  </div>
+  <div class="card list" style="margin-top:10px">
+    
+<div class="row">
+  <div class="person" style="width:42px;height:42px;background:#F59E0B">M<span class="pflag"><svg width="16" height="16" viewBox="0 0 16 16" class="flag"><defs><clipPath id="fIN16"><circle cx="8.0" cy="8.0" r="8.0"/></clipPath></defs><g clip-path="url(#fIN16)"><rect width="16" height="5.333333333333333" fill="#FF9933"/><rect y="5.333333333333333" width="16" height="5.333333333333333" fill="#fff"/><rect y="10.666666666666666" width="16" height="5.333333333333333" fill="#138808"/><circle cx="8.0" cy="8.0" r="1.7777777777777777" fill="#000080"/></g><circle cx="8.0" cy="8.0" r="7.25" fill="none" stroke="#fff" stroke-width="1.5"/></svg></span></div>
+  <div class="grow"><div class="rtitle">Mum</div><div class="rsub">AED 1,500 · Federal Bank</div></div>
+  <span class="chip warn">Due in 3 days</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg>
+</div>
+    
+<div class="row">
+  <div class="person" style="width:42px;height:42px;background:#0EA5E9">O<span class="pflag"><svg width="16" height="16" viewBox="0 0 16 16" class="flag"><defs><clipPath id="fEG16"><circle cx="8.0" cy="8.0" r="8.0"/></clipPath></defs><g clip-path="url(#fEG16)"><rect width="16" height="5.333333333333333" fill="#CE1126"/><rect y="5.333333333333333" width="16" height="5.333333333333333" fill="#fff"/><rect y="10.666666666666666" width="16" height="5.333333333333333" fill="#000"/><circle cx="8.0" cy="8.0" r="1.6" fill="#C09300"/></g><circle cx="8.0" cy="8.0" r="7.25" fill="none" stroke="#fff" stroke-width="1.5"/></svg></span></div>
+  <div class="grow"><div class="rtitle">Omar</div><div class="rsub">AED 800 · CIB</div></div>
+  <span class="chip ok">Sent 12 Apr</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg>
+</div>
+    
+<div class="row">
+  <div class="person" style="width:42px;height:42px;background:#EC4899">A<span class="pflag"><svg width="16" height="16" viewBox="0 0 16 16" class="flag"><defs><clipPath id="fPH16"><circle cx="8.0" cy="8.0" r="8.0"/></clipPath></defs><g clip-path="url(#fPH16)"><rect width="16" height="8.0" fill="#0038A8"/><rect y="8.0" width="16" height="8.0" fill="#CE1126"/><path d="M0 0L8.8 8.0L0 16z" fill="#fff"/><circle cx="2.88" cy="8.0" r="1.3333333333333333" fill="#FCD116"/></g><circle cx="8.0" cy="8.0" r="7.25" fill="none" stroke="#fff" stroke-width="1.5"/></svg></span></div>
+  <div class="grow"><div class="rtitle">Ana</div><div class="rsub">AED 1,000 · BDO</div></div>
+  <span class="chip ok">Sent today</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA2B4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg>
+</div>
+  </div>
+</div>
+<div class="tabbar-b glass"><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2F5BEA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/></svg><span class="tdot" style="background:#2F5BEA"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3.5 7.5 7 11M3.5 7.5H17M17 20l3.5-3.5L17 13M20.5 16.5H7"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 12.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/></svg><span class="tdot" style="background:transparent"></span></div><div class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E1424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="tdot" style="background:transparent"></span></div></div></section><section class="screen " data-name="B13 Logged as sent" lang="en" style="background:#1B2440">
+
+<div class="status" style="color:#fff">
+  <span class="time">9:41</span>
+  <div class="island"></div>
+  <span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#fff"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#fff"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#fff"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#fff"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.4 1.4a7.9 7.9 0 0 0-11.2 0z" fill="#fff"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" stroke="#fff" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2.4" fill="#fff"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#fff" fill-opacity=".45"/></svg>
+  </span>
+</div>
+
+<div class="backdrop" style="background:radial-gradient(110% 38% at 0% 0%, rgba(47,91,234,.16) 0%, rgba(47,91,234,0) 60%),radial-gradient(90% 30% at 100% 0%, rgba(160,185,245,.35) 0%, rgba(160,185,245,0) 65%),linear-gradient(#E8EEFB, #F1F4F9 38%, #F4F6F9)">
+  <div style="position:absolute;left:0;right:0;top:0;height:372px;background:radial-gradient(90% 70% at 85% 0%, rgba(120,160,255,.55) 0%, rgba(120,160,255,0) 60%),radial-gradient(80% 60% at 0% 100%, rgba(20,40,160,.55) 0%, rgba(20,40,160,0) 60%),linear-gradient(160deg, #3D6BF5 0%, #2F5BEA 45%, #1B3FC4 100%)"></div>
+  <div class="ghost" style="top:392px;height:150px"></div>
+  <div class="ghost" style="top:556px;height:110px"></div>
+  <div class="ghost" style="top:680px;height:150px"></div>
+</div>
+<div class="dim"></div>
+<div class="modal">
+  <div class="okring"><div class="okdot"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div></div>
+  <div class="stitle" style="text-align:center;margin-top:16px">Logged as sent</div>
+  <div class="meta center" style="margin-top:8px;line-height:1.45;font-size:14px">AED 1,500 to Mum, about ₹ 33,900.<br>Family support is 3 of 3 for April.</div>
+  <div class="btn primary" style="margin-top:20px">Back to home</div>
+  <div class="link center" style="margin-top:14px">Share receipt</div>
+</div></section></body></html>

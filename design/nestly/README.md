@@ -66,3 +66,39 @@ python3 design/nestly/build.py   # then open screens.html
 with numbers. So the Arabic screen is written in visual left-to-right order,
 and every text run uses a single direction (see `vis()` in `build.py`). Some
 gaps between Arabic runs come out tighter in Figma than in the browser.
+
+---
+
+# Option B: blue fintech (Revolut-style)
+
+A second visual direction built from two blue fintech references and the
+Revolut app. It uses the same content and GCC features as option A, with a
+different visual system.
+
+- **Figma:** section `Nestly option B · Blue fintech (Revolut-style)` (node `748:735`), below option A.
+- **Source:** `build_b.py` generates `screens-b.html`. It reuses the screen bodies from `build.py` and swaps the tokens, CSS and chrome.
+
+```
+python3 design/nestly/build_b.py
+```
+
+| | Option A: Grassfeld + Liquid Glass | Option B: Blue fintech |
+| --- | --- | --- |
+| Mood | Warm, calm, editorial | Crisp, confident, "bank-grade" |
+| Canvas | Warm Silt with section tints | Cool pale blue with white cards |
+| Accent | Seed Orange (matches the Nestly logo) | Royal blue `#2F5BEA` |
+| Home | Pay-cycle budget card is the hero | Blue hero with **total balance** and 4 round actions; budget card below |
+| Progress | Hatched "left" part + Today tick | Solid bar on a light track + Today tick |
+| Tab bar | Labelled glass tabs + separate AI button | Icon-only floating bar with an active dot; AI is the 5th icon |
+| Type | Schibsted Grotesk | Inter |
+| Primary button | Loam (near-black) | Navy-black |
+
+Option B adds two screens:
+
+- **B12 Family support (Send home):** people with country flags (India,
+  Egypt, Philippines, Pakistan), the monthly amount and the bank for each,
+  and Due / Sent status. Quick actions are Add person, Log transfer and Rates.
+- **B13 Logged as sent:** a success modal that confirms the transfer was
+  logged, with the amount in the home currency.
+
+Nestly *tracks* money, so "Send home" logs a transfer. It does not move money.
