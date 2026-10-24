@@ -102,3 +102,31 @@ Option B adds two screens:
   logged, with the amount in the home currency.
 
 Nestly *tracks* money, so "Send home" logs a transfer. It does not move money.
+
+---
+
+# Option C: #FF5002 with IBM Plex Sans, Inter and Tajawal
+
+Option B's layout re-skinned with a new brand colour and new type.
+
+- **Figma:** section `Nestly option C · #FF5002 · IBM Plex Sans / Inter / Tajawal` (node `764:762`), on the Nestly page below option B.
+- **Source:** `build_c.py` renders option B through `build_b.render()`, then swaps the colours and adds the type rules. It writes `screens-c.html`.
+
+```
+python3 design/nestly/build_c.py
+```
+
+| Token | Value | Use |
+| --- | --- | --- |
+| Main | `#FF5002` | Hero, bars, icons, active tab, accent buttons, fills |
+| Main text | `#C23D00` | Orange text at small sizes on white (≈5.3:1, passes WCAG AA; `#FF5002` is ≈3.2:1) |
+| Ink | `#18120E` | Text and primary buttons |
+| Canvas | `#F6F4F2` with a peach wash `#FDEEE5` | Backgrounds |
+
+| Text | English | Arabic |
+| --- | --- | --- |
+| Headlines, titles, hero numbers | IBM Plex Sans (500–700) | Tajawal 700 |
+| Body, labels, buttons in lists | Inter (400–600) | Tajawal 400–500 |
+
+Tajawal has no 600 weight, so semibold Arabic text uses 700. All 14 font styles
+resolved in Figma, with no missing fonts.

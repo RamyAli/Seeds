@@ -388,14 +388,20 @@ SCREENS = [
 ]
 
 
-def main():
+def render(title="Nestly screens, option B", fonts=FONTS, extra_css=""):
     parts = [screen(name, fn(), bg, **kw) for name, fn, bg, kw in SCREENS]
     html = (f'<!doctype html><html lang="en"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
-            f'<title>Nestly screens, option B</title>{FONTS}<style>{css_b()}</style></head>'
+            f'<title>{title}</title>{fonts}<style>{css_b()}{extra_css}</style></head>'
             f'<body>{"".join(parts)}</body></html>')
     for a, z in RECOLOR:
         html = html.replace(a, z)
+    return html, len(parts)
+
+
+def main():
+    html, n = render()
+    parts = range(n)
     OUT.write_text(html, encoding="utf-8")
     print(f"wrote {OUT} ({len(html)//1024} KB, {len(parts)} screens)")
 
