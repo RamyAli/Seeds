@@ -130,3 +130,48 @@ python3 design/nestly/build_c.py
 
 Tajawal has no 600 weight, so semibold Arabic text uses 700. All 14 font styles
 resolved in Figma, with no missing fonts.
+
+---
+
+# Option D: Arabic-first with 3D illustrations
+
+Built with the `arabic-rtl-apps` skill. It uses option B's layout and option
+C's brand (#FF5002, IBM Plex Sans + Inter, Tajawal), and adds 3D illustrations
+so the app feels friendlier and is quicker to scan.
+
+- **Figma:** section `Nestly option D · Arabic-first + 3D (Fluent 3D emoji)` (node `788:762`), on the Nestly page below option C. The Arabic screens are in the top row, with their English versions below.
+- **Source:** `build_d.py`
+- **3D art:** Microsoft Fluent 3D emoji, MIT licence (`assets/3d/`, see `LICENSE-fluentui-emoji.txt`), resized to 160 px.
+
+```
+python3 design/nestly/build_d.py           # screens-d.html: real RTL (dir="rtl", <bdi>) for code reference
+python3 design/nestly/build_d.py --figma   # screens-d-figma.html: baked visual order for html_to_figma
+```
+
+There are nine screens, each in Arabic and English: Welcome (new),
+Home, Say it, Scan cheque, Activity, Insights, Goals, Send home and Logged as
+sent.
+
+**3D illustrations:** the Welcome hero (a money bag, coins and a seedling).
+On Home, a money bag in the balance area, 3D quick actions (microphone,
+camera, heart, robot) and a heart on the Family support card. 3D tiles on
+every bill, transaction, category and goal (a Kaaba for Umrah, a shield for
+the emergency fund, a plane for travel). A microphone on the voice sheet, a
+light bulb on insights and a party popper on the success modal.
+
+**RTL, following the skill:** each screen is written once, in logical order.
+
+- `flow()` lays out rows and `T()` handles mixed-direction text.
+- The **web** build is real RTL, with `dir="rtl"` and `<bdi>` around numbers and Latin names.
+- The **figma** build bakes the same screens into visual order, because the converter ignores `dir`.
+- A pixel diff of the two builds is identical for English and differs by about 1% for Arabic, which is text-run spacing.
+
+Other skill rules applied:
+
+- Arabic line height 1.7–1.8 for body text.
+- No letter spacing on Arabic.
+- Tajawal at 500/700 for labels.
+- Chevrons and back arrows mirrored, and progress bars and donut charts that fill from the right.
+- Toggles mirrored.
+- Western digits.
+- Close buttons on the left in RTL.
