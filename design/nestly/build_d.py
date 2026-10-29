@@ -75,7 +75,14 @@ def T(s):
         return s
     if MODE == "web":
         return re.sub("(" + LTR_RUN + ")", r"<bdi>\1</bdi>", s)
-    runs = [r.strip() for r in TOKENS.findall(s) if r.strip()]
+    runs = []
+    for r in (r.strip() for r in TOKENS.findall(s)):
+        if not r:
+            continue
+        if len(r) > 1 and r[-1] in "،؟":    # trailing Arabic punctuation is its own run
+            runs += [r[:-1].strip(), r[-1]]
+        else:
+            runs.append(r)
     if len(runs) == 1:
         return runs[0]
     spans = (f'<span class="{"pu" if r in PUNCT else "w"}">{r}</span>' for r in reversed(runs))

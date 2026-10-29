@@ -175,3 +175,42 @@ Other skill rules applied:
 - Toggles mirrored.
 - Western digits.
 - Close buttons on the left in RTL.
+
+---
+
+# Option E: blue with brand-tinted 3D (Arabic-first)
+
+A new direction after feedback on option D. The colour use follows a blue
+bill-tracker reference: a vivid blue gradient hero that fades into the page,
+white cards with soft inner panels, list rows on the page, and a labelled
+floating tab bar. The 3D follows Grassfeld and Opay: glossy objects tinted in
+the brand colour, not multicolour emoji.
+
+- **Figma:** section `Nestly option E · Blue + 3D (Arabic-first)` (node `811:762`), on the Nestly page below option D. Arabic is in the top row and English below.
+- **Source:** `build_e.py` (reuses `flow()`/`T()` from `build_d.py`). `tint3d.py` turns the Fluent 3D emoji (MIT) into one glossy blue family in `assets/3d-blue/`.
+
+```
+python3 design/nestly/build_e.py           # screens-e.html (real RTL)
+python3 design/nestly/build_e.py --figma   # screens-e-figma.html (for html_to_figma)
+```
+
+| Token | Value | Use |
+| --- | --- | --- |
+| Blue | `#2563EB` | **Main actions**: primary buttons, add buttons, active tab, toggles, progress |
+| Blue text | `#1D4ED8` | Links and blue text on white |
+| Navy | `#0B1736` | **Secondary actions** (secondary buttons, active filter pill) and text |
+| Hero | `#2B63F0 → #3A82FF → #7FB0FF → #CFE0FF → #F6F8FC` | Gradient that fades into the page |
+| Fonts | IBM Plex Sans (titles), Inter (body), Tajawal (Arabic) | |
+
+There are ten screens, each in Arabic and English:
+
+1. Welcome
+2. Home: "left this pay cycle" in the hero, a Family support card, bills with a post-dated tag, and "Add a bill"
+3. **Connect a source** (new, based on the reference's "Connect a Provider")
+4. Say it
+5. Scan cheque
+6. Activity
+7. Insights: a "verdict first" card with a 3D light bulb, and comparison bars against last cycle instead of a pie chart, as Opay does
+8. Goals: a blue hero with the amount saved and large 3D goal icons
+9. Send home
+10. Logged as sent: a 3D check mark, with a blue primary button and a navy secondary one
